@@ -1,0 +1,29 @@
+#
+# yast startup set console to unicode with big font and back
+#
+
+#sudo /etc/init.d/ntp stop 
+#sleep 0.7s
+#sudo /usr/sbin/ntpdate -v 192.168.1.1
+#sleep 0.3s
+
+unicode_stop
+setfont -m cp437 -f Uni2-VGA28x16
+
+#sync
+
+# ./yast -s -D 2 -l 10 -d 200 -o -a -N1 "Martin" -N2 Merle -N3 Max -N4 Tom -r 2>> yast_error.log
+./yast -u 4 -a -f -s -D 2 -t 10 -d 200 -o -r -N1 Martin -N2 Ralf 2>> yast_error.log
+#sudo ./yast -t 3600 -o -a 
+#sudo ./yast -s -d 2500 -t 3000 -u 4 -a -r -N1 "Martin" -N2 Merle -N3 Max -N4 Tom 
+#sudo ./yast -d 250 -t 30 -o -u 2
+#sudo ./yast_check
+
+unicode_start
+#setfont -f Lat15-TerminusBold14.psf.gz
+setfont -m cp437 -f CyrKoi-TerminusBold24x12
+
+
+#sudo /etc/init.d/ntp start 
+
+

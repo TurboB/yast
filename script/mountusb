@@ -1,0 +1,4 @@
+#
+# /dev/sda or /dev/sda1
+
+sudo mount -t vfat -o uid=pi,gid=pi /dev/sda /media/usbstick/

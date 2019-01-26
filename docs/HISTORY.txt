@@ -1,0 +1,216 @@
+	yast - yet another slotcar timer
+	Changes
+
+0.4.7: 2019-01-19
+	- in result file: track related starts now with Track X
+	- fastest lap in result file
+0.4.6: 2018-12-31
+	- rework of result string algo, algo rework required
+	- -vv option now shows also ncurses parameters
+	- -c option now for MCP23008 and 230017
+0.4.5: 2018-12-25 
+	- print out the last three timings
+	- rework of the result clear (right side clear)
+	- rework of place / finished in display, algo rework required
+0.4.4: 2018-12-05
+	- result (place) now in timing file
+0.4.3: 2018-11-21
+	- fix of MCP23008 init - thanks to Ralf
+	- new define: MCP23008 because different from MCP23017
+0.4.3: 2018-11-15
+	- fix color bug in start lights - thanks to Ralf
+0.4.2: 2018-11-07
+	- new command line  parameter: -n for complete file name
+	- some small corrections in -c and -v
+0.4.1: 2018-09-30
+	- new define: MCP23017EASY -> implementation of an easy schematic at
+	  MCP23017 GPIO's with only one output byte in use, MCP23008 also
+	- make the screen updates in idle some more realistic for RTC
+0.4.0: 2018-07-09
+	- first UNICODE version, takes approx. 10,5% load on a PI_B(700MHz),
+	  the CP437 takes only 6,5%
+0.3.24: 2018-02-18
+	- Char resolution of 80 x 36 will be warned, but does not stop program
+0.3.23: 2018-02-17
+	- TrackPowerActive: is now in config file, because it's track HW related
+	- small script tuning -> 
+		- some font examples 
+		- yast now in userspace, no sudo
+		- some more variables
+0.3.22: 2018-02-10
+	- Panicdelaytime and RACEENDDELAYTIME set to zero, if no track current switching is enabled, because tis is not useful
+	- after time race "REMAIN X:" is written into result file to store the additional track length
+	- some small changes in result file format
+	- one more sound for end of timing -> it is in collision with track power on/off depending on parameters
+	- added seconds on race length display
+0.3.21: 2018-02-05
+	- if reaction time = 0 it will not be written while no run
+	- new config name: PANICDELAYTIME, default 800 ms 
+	- new config name: TIMERACEENDDELAYTIME, default 800 ms
+	- read back of environment now configured to minlaptime, not MINLAPTIME (#DEFINE)
+	- panic for lap race while finish optimized
+0.3.20: 2018-01-15
+	- bug in CSV file: laps equ 0 not clear separated -> fixed
+	  double writing of lap count -> fixed
+0.3.19: 2018-01-12
+	- combine source of CSV and old file format	
+	- change the *.csv format type 1 -> Leading # as REMARK, ; as separator, no space
+	- bug on exit: with no sound enabled, sound_dev close crashes -> fixed 
+0.3.18: 2018-01-05
+	- some times a complete screen update (update by random)
+	- REAL TIME CLOCK VIEW integrated while no race (option -r)
+	- -a and -c options do not work together -> fixed 
+	- in hardwaretest some more delay to reduce the system load < 5% on Pi1b
+	- more verbose on GPIO input setup
+0.3.17: 2017-11-05
+	- DATESPACELENGTH corrected from 30 to 120 bytes to write complete path
+0.3.16: 2017-10-28
+	- set up the Makefile to a minimum, so yast can be used with wiringPi only
+	- time shift between panic button pressed with track current off and time measurement
+	  off, default 1000ms
+0.3.15: 2017-10-26
+	- usage of a "Random Number" for start delay (1..3 seconds), can be
+	  switched off by config file
+	- one second blank after red lights is out, now start is more like
+	  standard start light
+0.3.14: 2017-07-05
+	- clearing all ISR_Signal_Flags including unused ones
+0.3.13: 2017-07-04
+	- no F12 (race start) while race
+	- no SHIFT_F(X) (fastest lap reset) while race
+	- a new sound for non valid timing signal ( line crossing )
+0.3.12: 2017-05-08
+	- starting up with drivers names
+	- command line parser corrected
+	- delay for sound at normal program end 
+0.3.11: 2017-02-17
+	- lap time correction for each used track in case of panic
+0.3.10: 2017-02-07
+	- automatic height control for time/ lap to go
+	- spreadsheet format has now always the same header length at same configuration 
+	- now sounds with different length possible, sample rate down from 48000 to 44100
+0.3.9: 2017-02-03
+	- new config option: RESULTFILEFORMAT for more soft spreadsheet import
+	- clean up rough sound code
+0.3.8: 2017-01-31
+	- first steps into sound with -s option and first alsa config, can be undefined im makefile
+	  at this time only Track Power on/off has a sound 
+	- new -vv option to print out the compiled and configured parameters
+	- time / lap to go will now be erased if no longer required
+0.3.7: 2017-01-16
+	- with wiringPi 2.36 there is no workaround for first ISR event required
+	- time / lap to go implemeted between inside the flag line or three lines lower
+	- file will only be written after race or by force writing by "W"
+0.3.6: 2016-11-18
+	- moved defines to file beginning
+0.3.5: 2016-11-16
+	- cleanup after runtests
+0.3.4: 2016-11-11
+	- printmessage() in display.c now did the message and error printing
+	- debug level can set the verbosity 	
+0.3.3: 2016-11-07
+	- writing a lock file (/var/lock/pigpio) to prevent double run on gpio 
+0.3.2: 2016-10-27
+	- reset for fastest lap work now also on display
+0.3.1: 2016-10-10
+	- Reset of reaction time on f1 to f4
+	- Panic time is now correct while time race 
+0.3.0: 2016-10-05
+	- path and name for resultfile possible in config file
+	- Power State also on display
+	- NumberOfTracks is now in config file
+	- command line option for TrackCurrentOff
+	- fail start detection option -f implemented -> yellow flag, no timing off, power off
+0.2.8: 2016-09-15
+	- end of race position "- finish -" line not longer wrong hard coded
+	- Track current switching possible whole panic/error and end of race
+	- TrackCurrentOutput placed in config file 
+0.2.7: 2016-08-17
+	- start reaction time now shown at the beginning and stored in file
+0.2.6: 2016-06-01
+	- signal handler moved in front of the hardware check
+0.2.5: 2015-12-27
+	- some changes setting up wiringPi for run and check mode
+	- adding wiringPi PUD (PullUpDown) modes to config file for the input channels
+0.2.4: 2015-12-25
+	- BUGFIX: Configuration file was not correct used by track setup
+0.2.3: 2015-12-24
+	- choice for font definition has moved to makefile
+0.2.2: 2015-12-24
+	- configuration file yast.conf now works for track setup
+	  ( Track Color, Track input WiringPi number, Track input event )
+0.2.1: 2015-12-23
+	- first part of configuration file for run time configuration internally structured 
+0.2.0: 2015-12-22
+	- cleaning up the code for normal Makefile, *.c and *.h structure
+	- stripping from project "make rasptar" to a minimum required
+	- yast_check is now inside yast with -c
+0.1.13: 2015-12-18
+	- starting up with a font 3x5 in addition to old font 3x3
+0.1.12: 2015-12-02
+	- writing timing data to file after "all cars in" after race
+0.1.11: 2015-11-06
+	- race end force button works now
+	- ALX_X for track simulation now also working on PC curses
+0.1.10: 2015-10-20
+	- Track number correction in Timing Data File
+	- only used tracks are shown on display 
+	- don't view places bigger than used tracks
+0.1.9: 2015-10-13
+	- finishing by lap counter should stop all cars by next crossing the line
+	- using a parameter for max. number of used tracks, 1 to 4 at this moment ( only used for lap count races )
+0.1.8: 2015-10-10
+	- writing files while yast is running 
+0.1.7: 2015-10-08
+	- PANIC button integrated with time stop, means time shift for ongoing race
+	- file number for result file generation in display
+0.1.6: 2015-10-06
+	- try to handle environment and data files more user friendly,
+		date code in header, prevent overwriting by cyclic file writing, etc....
+0.1.5: 2015-08-26
+	- new function keys with respect to the track numbers 1 to 4 ( 5 to 8 as spare )
+		Shift F "Tracknumber" will reset the fastest lap entry
+		ALt "Tracknumber" simulates a track pulse
+0.1.4: 2015-08-17
+	- signal handler for SIGINT integrated 
+	- GPIO config now complete in define.h
+	- delay inserted to remove the polling system load
+0.1.3: 2015-06-11
+	- overall fastest time for each track is now shown under fastest race time (smaller), written to a storage file
+		and read back while startup
+	- now up to 9999 laps are viewed on display
+0.1.2: 2015-03-25
+	- new "-o" option to write an result file of the race timing events for evaluation
+	- signal handler for SIGTERM integrated to make sure the file writing for timing data
+0.1.1: 2015-01-29	
+	- adding I2C MCP23017 output for TrafficLights, layout with addressing and ports included
+	- adding I2C SN3218 output for TrafficLights
+0.1.0: early 2015
+	- first test release
+0.0.15:
+	- new racemode: Time programming as end of a race, endtime can be given as parameter (-t n), up to 12 hours
+	- command line parser slightly modified
+	- max. displayed variable cutting
+0.0.14:
+	- all lapcounter inside a race count stopped at endlap 
+		(single stopping of timing on Tracks now possible -> forward to different racemodes possible)
+0.0.13:
+	- GPL3 header implemented after ascertain the rights of the ASCII font
+	- make all MESSAGE and ERROR strings same length.... ( not clean but fast ) 
+0.0.12:
+	- all messages and warning slightly tuned
+0.0.11:
+	- new screen setup to fit text only and CP437 layout on Raspberry 
+	- check for colors used as standard for slotcar tracks -> now red / green / blue / yellow hard coded
+	- behind the leader time displayed ( leader, second place timing, third place timing)
+	- online state places, leader and so on included
+	- make a new trafficlight for 80x25 on network terminal
+0.0.10:
+	- insertion on an update flag in ISR's for display redraw
+	- who was first, who was last.... next try required, seems to work.....
+0.0.9:
+	- ascii design error in trafficlight -> fixed
+	- change EXIT additional on PPAGE key
+	- deaddelay now as parameter (-d n) 
+0.0.8 and prior:
+	- internal coding backups

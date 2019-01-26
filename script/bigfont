@@ -1,0 +1,23 @@
+#
+# yast startup set console to unicode with big font and back
+#
+# here are some fonts placed to be used with yast under code page 437
+
+#unicode_stop
+
+#setfont -m cp437 -f CyrKoi-VGA28x16
+#setfont -m cp437 -f CyrKoi-TerminusBold32x16
+#setfont -m cp437 -f CyrKoi-TerminusBold28x14
+
+setfont -m cp437 -f CyrKoi-TerminusBold24x12
+
+#setfont -m cp437 -f CyrKoi-VGA16
+#setfont -m cp437 -f CyrKoi-VGA28x16
+#setfont -m cp437 -f Uni2-VGA28x16
+
+#unicode_start
+
+#setfont -f Lat15-TerminusBold14.psf.gz
+
+
+

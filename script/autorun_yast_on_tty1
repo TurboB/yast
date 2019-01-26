@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# start script for yast slotcar time 
+# used to start at startup on /dev/tty1
+
+# Actions
+
+echo -n "autorun_yast_on_tty1 : "
+case "$1" in
+    start)
+    	# start
+
+	if [ $(tty) = "/dev/tty1" ]; then
+
+		cd /home/pi/yast
+		echo "starting yast"
+		./script/startyast
+		cd /home/pi
+		# clear
+	else
+		echo "not running on /dev/tty1"
+	fi
+        ;;        
+    stop)
+    	# stop
+    	echo "killing yast" 
+        sudo killall yast
+        ;;
+    restart)
+        # restart
+        ;;
+	*)
+	echo "use start|stop|restart as parameter"
+esac
+
+
+

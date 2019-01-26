@@ -1,0 +1,59 @@
+# install script for yast
+# 2018-07-07
+# should be started from /home/pi/yast
+
+# wiring Pi
+echo "********************************"
+echo " Installing WiringPi"
+echo "********************************"
+
+cd ..
+git clone git://git.drogon.net/wiringPi 
+cd wiringPi 
+./build
+cd ..
+
+# libcurses
+echo "********************************"
+echo " Installing libCurses dev"
+echo " 8 bit and unicode"
+echo "********************************"
+
+sudo apt-get install -y libncurses5-dev
+sudo apt-get install -y libncursesw5-dev
+
+# alsa sound dev
+echo "********************************"
+echo " Installing alsa sound dev"
+echo "********************************"
+
+sudo apt-get install -y gcc libasound2 libasound2-dev 
+
+
+# CodePgae 437 
+# check for codepage allready installed
+
+echo "********************************"
+echo " Installing CpdePage 437"
+echo "********************************"
+
+if [ -f /usr/share/consoletrans/cp437.acm.gz ]
+then
+	echo "Codepage file allready exists ....."
+else
+	wget ftp://ftp4.gwdg.de/pub/linux/handhelds/distributions/intimate/beta/usr/share/consoletrans/cp437.acm.gz
+	sudo mv -v cp437.acm.gz /usr/share/consoletrans
+fi
+
+# ntpdate
+
+echo "********************************"
+echo " Installing ntpdate"
+echo "********************************"
+
+sudo apt-get install ntpdate
+
+if [ -d yast ]
+then
+	cd yast
+fi

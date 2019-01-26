@@ -1,0 +1,62 @@
+#
+# yast standard startup 
+#
+# 2018-06-30
+#
+# stop ntp or timesyncd
+# set console to unicode with big font and back
+# start yast untill end
+# do everything reverse
+#
+
+TIMESERVER=192.168.1.1
+
+if [ -f /etc/init.d/ntp ]   # check for old ntp services
+then
+	echo "stopping NTP........."
+	sudo /etc/init.d/ntp stop 
+	sleep 0.7s
+	sudo /usr/sbin/ntpdate -v $TIMESERVER
+	sleep 0.3s
+elif [ -f /usr/bin/timedatectl ] 
+then
+	echo "stopping timesyncd........"
+	sudo /usr/bin/timedatectl set-ntp false
+	sleep 0.7s
+	sudo /usr/sbin/ntpdate -v $TIMESERVER
+#	/usr/bin/timedatectl 
+	sleep 0.3s
+
+fi
+
+echo "unicode off ......"
+unicode_stop
+
+setfont -m cp437 -f Uni2-VGA28x16
+
+echo "syncing SD card ......"
+sync
+
+#
+# modify here for your own start conditions
+#
+
+sudo ./yast -s -o -r -t 300 -N1 Martin -N2 Martin 2> yast_error.log
+
+echo "unicode on ......"
+unicode_start
+
+setfont -m cp437 -f CyrKoi-TerminusBold24x12
+
+#setfont -f Lat15-TerminusBold14.psf.gz
+
+if [ -f /etc/init.d/ntp ] 
+then
+	echo "starting NTP........."
+	sudo /etc/init.d/ntp start 
+elif [ -f /usr/bin/timedatectl ] 
+then
+	echo "starting timesyncd........"
+	sudo /usr/bin/timedatectl set-ntp true
+#	/usr/bin/timedatectl 
+fi

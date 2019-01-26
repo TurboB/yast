@@ -1,0 +1,9 @@
+#
+# yast startup set console to unicode with big font and back
+#
+
+# unicode_start
+setfont -f Lat15-TerminusBold14.psf.gz
+
+
+
