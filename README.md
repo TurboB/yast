@@ -412,7 +412,7 @@ Or you clone yast with git.
 
 ## Screenshots
 
-![Main Screen](pictures/yast_screenshot_0319.JPG =600 "Main Race Screen Local")
+![Main Screen](pictures/yast_screenshot_0319.JPG "Main Race Screen Local")
 
 Main window with traffic light in yellow state while PANIC on a 19 inch local HDMI monitor.
 ( Version 0.3.19, Font 3x5 )
@@ -423,7 +423,7 @@ At the lower screen is a traffic light, which can show green, yellow, red, check
 At the end you see the "time to go" or "laps to go" counter.
 Here you can activate the realtime clock while no race is running.
 
-![Main Race Screen Network](pictures/yast_screenshot_0_1_9.gif =600 "Main Race Screen Network")
+![Main Race Screen Network](pictures/yast_screenshot_0_1_9.gif "Main Race Screen Network")
 
 The main and only window inside a terminal over network.
 You see here the Version 0.1.9. Font is here 3x3 (small).
