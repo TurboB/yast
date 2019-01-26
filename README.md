@@ -173,7 +173,7 @@ Last in this chapter a summary of the possible hardware connections to the Pi wi
 
 Installation seems to be more complex with these fast development cycles of debian/raspbian versions.
 So i spend a separate file for this.
-[YAST - Installation](installation.md)
+[YAST - Installation](install.md)
 
 ## Sound
 
