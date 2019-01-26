@@ -119,7 +119,6 @@ However, for me it works as a first timing solution.
   
 ```  
 
-
 ## Hardware
 
 I use a Raspberry Pi Type B, B+ is also tested. But also Type A, A+, B2 and later are usable (I think so).
@@ -164,18 +163,17 @@ There is no Traffic Light hardware urgently required to run yast.
 | I2C SDL | PIN 5 |
 | GND | PIN 6 |
 	
-For more details on pulse shaping, track power switching and more hardware take a look at [YAST - Hardware Collection](docs/yast_hardware.md).
+For more details on pulse shaping, track power switching and more hardware take a look at [YAST - Hardware Collection](hardware.md).
 
 Last in this chapter a summary of the possible hardware connections to the Pi with YAST.
 
-![Hardware Connection] (pictures/PINBELEGUNG.GIF "Possible hardeware connections")
+![Hardware Connection](pictures/PINBELEGUNG.GIF "Possible hardeware connections")
  
 ## Installation
 
 Installation seems to be more complex with these fast development cycles of debian/raspbian versions.
 So i spend a separate file for this.
-[YAST - Installation](docs/installation.md)
-
+[YAST - Installation](installation.md)
 
 ## Sound
 
