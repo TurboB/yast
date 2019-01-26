@@ -134,11 +134,11 @@ For each track I use such schematic for power switching with an automotive relay
 A changer relays is used to change between power and brake.  
 This is used seperate for each tracks.
 
-![four canal 3,3V to relays board"](pictures/IMG_2740_SMALL.PNG "four canal 3,3V to relays board"")
+![four canal 3,3V to relays board"](pictures/IMG_2740_SMALL.PNG "four canal 3,3V to relays board")
 
 To switch all track relays together witc one gpio chanel i use such a standard relay bank.
 
-![30A automotive relays](pictures/IMG_2743_SMALL.PNG" "30A automotive relays")
+![30A automotive relays](pictures/IMG_2743_SMALL.PNG "30A automotive relays")
 
 The power switching itself is done by a 30A automotive changer relay.
 
