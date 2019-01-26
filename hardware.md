@@ -7,7 +7,7 @@ Don't connect any 5V systems direct to the I/O pins.
 
 ## Input Track Pulse Shaping
 
-![Raspberry Pi Type B](pictures/P1080109S.JPG" ALT="Raspberry Pi Type B" =640x480 )
+![Raspberry Pi Type B](pictures/P1080109S.JPG" ALT="Raspberry Pi Type B" )
 
 I use a Raspberry Pi Type B, B+ is also tested. But also Type A, A+, B2 and later are usable (I think so).
 On the picture it has an additional breakout PCB mounted. So is development soldering more easy.
@@ -35,15 +35,15 @@ The Pi and the other hardware is powered over a 78S05 (5V/2A) linear voltage reg
 For a newer Pi you need a more powerful regulator, because there are more than 2A required.
 Also there is a HEF 4528 monostable multi vibrator for a defined pulse shaping used.
 
-![Hardware principle of one input path](pictures/hardwareschematic_input.gif "Hardware principle of one input path" =1110x420 )
+![Hardware principle of one input path](pictures/hardwareschematic_input.gif "Hardware principle of one input path" )
 
 Just to show the principle of my input hardware here you see one input path from track to Pi.
 
-![Input hardware with supply for Raspberry Pi](pictures/P1080115S.JPG "Input hardware with supply for Raspberry Pi" =640x480 )
+![Input hardware with supply for Raspberry Pi](pictures/P1080115S.JPG "Input hardware with supply for Raspberry Pi" )
  
 First prototype of pulse shaping hardware and supply connected to a Raspberry Pi.
 
-![Emitter line and Sensor line for two tracks](pictures/P1080120S.JPG "Emitter line and Sensor line for two tracks" =640x480 )
+![Emitter line and Sensor line for two tracks](pictures/P1080120S.JPG "Emitter line and Sensor line for two tracks" )
 
 First prototypes of emitter pcb and track detector sensor pcb.
 As track detector is used an IR-LED on top of the track and an IR-Photo transistor under the track.
@@ -59,7 +59,7 @@ Be carefully, the Raspberry Pi is a **3,3V** System.
 I use a 1 KOhm / 2 KOhm  resistor combination  to
 bring down the 5V at the used input lines.
 
-![Input Level Shifter](pictures/5V_TO_33V.PNG "Input Level Shifter" =640 )
+![Input Level Shifter](pictures/5V_TO_33V.PNG "Input Level Shifter" )
 
 Level decrease with two resistors to fulfill the **3.3 V** input limitation.  
 A clean schematic of my hardware will follow after more testing and optimization.......
@@ -113,9 +113,9 @@ yellow and one for green.
 
 ##Output Traffic Light Hardware
 
-![MCP23017 based TrafficLight](pictures/P1080508S.JPG "MCP23017 based TrafficLight" =640 )
+![MCP23017 based TrafficLight](pictures/P1080508S.JPG "MCP23017 based TrafficLight" )
 
-![Schematic TrafficLight](pictures/MCP23017_Ampel.GIF "Schematic TrafficLight" =640 )
+![Schematic TrafficLight](pictures/MCP23017_Ampel.GIF "Schematic TrafficLight" )
 
 On the picture you can see my own hardware, but also these "Ready to Run" solutions from many
 RPi hardware toolkits should run also. For the I2C setup please ask a search engine.
@@ -129,16 +129,16 @@ The relays for all tracks can be switched from one GPIO line.
 
 For each track I use such schematic for power switching with an automotive relays.
 
-![Track Power Switching Hardware](pictures/TPS.PNG "Track Power Switching Hardware" =853x671 )
+![Track Power Switching Hardware](pictures/TPS.PNG "Track Power Switching Hardware" )
 
 A changer relays is used to change between power and brake.  
 This is used seperate for each tracks.
 
-![four canal 3,3V to relays board"] (pictures/IMG_2740_SMALL.PNG" =800 "four canal 3,3V to relays board"")
+![four canal 3,3V to relays board"] (pictures/IMG_2740_SMALL.PNG "four canal 3,3V to relays board"")
 
 To switch all track relays together witc one gpio chanel i use such a standard relay bank.
 
-![30A automotive relays] (pictures/IMG_2743_SMALL.PNG" =800 "30A automotive relays")
+![30A automotive relays] (pictures/IMG_2743_SMALL.PNG" "30A automotive relays")
 
 The power switching itself is done by a 30A automotive changer relay.
 
@@ -146,5 +146,5 @@ The power switching itself is done by a 30A automotive changer relay.
 
 Last in this chapter a summary of the possible hardware connections to the Pi with YAST.
 
-![Hardware connecting summary] (pictures/PINBELEGUNG.GIF" =800 "Hardware connecting summary")
+![Hardware connecting summary] (pictures/PINBELEGUNG.GIF "Hardware connecting summary")
 
