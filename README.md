@@ -168,7 +168,7 @@ For more details on pulse shaping, track power switching and more hardware take 
 
 Last in this chapter a summary of the possible hardware connections to the Pi with YAST.
 
-![Hardware Connection] (https://github.com/TurboB/yast/blob/master/pictures/PINBELEGUNG.GIF" =800 "Possible hardeware connections")
+![Hardware Connection] (pictures/PINBELEGUNG.GIF "Possible hardeware connections")
  
 ## Installation
 
