@@ -18,9 +18,9 @@ Write a raspbian image to the SD-card.
 I prefer no light versions of the raspbian distribution, so at first boot it comes up with desktop.
 So boot to CLI and I2C can be easy configured.
 
-![Raspberry Pi GFX Configuration Screenshot](pictures/RPI_CONF_1280x1024_01.PNG =800x600 "Raspberry Pi GFX Configuration Screenshot")
+![Raspberry Pi GFX Configuration Screenshot](pictures/RPI_CONF_1280x1024_01.PNG "Raspberry Pi GFX Configuration Screenshot")
 
-![Raspberry Pi GFX Configuration Screenshot](pictures/RPI_CONF_1280x1024_02.PNG =800x600 "Raspberry Pi GFX Configuration Screenshot")
+![Raspberry Pi GFX Configuration Screenshot](pictures/RPI_CONF_1280x1024_02.PNG "Raspberry Pi GFX Configuration Screenshot")
     
 The desktop can also be used to download the yast package from this page or to connect
 easy an USB-Stick.
