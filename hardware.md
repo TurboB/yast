@@ -111,11 +111,11 @@ There are 20 output lines used for the starting lights, so each lamp is driven b
 Five green, five yellow and ten for red. In case of a SN3218 there are five lines for red, one for
 yellow and one for green.
 
-##Output Traffic Light Hardware
+## Output Traffic Light Hardware
 
 ![MCP23017 based TrafficLight](pictures/P1080508S.JPG "MCP23017 based TrafficLight" )
 
-![Schematic TrafficLight](pictures/MCP23017_Ampel.GIF "Schematic TrafficLight" )
+![Schematic TrafficLight](pictures/MCP23017_Ampel.gif "Schematic TrafficLight" )
 
 On the picture you can see my own hardware, but also these "Ready to Run" solutions from many
 RPi hardware toolkits should run also. For the I2C setup please ask a search engine.
@@ -134,11 +134,11 @@ For each track I use such schematic for power switching with an automotive relay
 A changer relays is used to change between power and brake.  
 This is used seperate for each tracks.
 
-![four canal 3,3V to relays board"] (pictures/IMG_2740_SMALL.PNG "four canal 3,3V to relays board"")
+![four canal 3,3V to relays board"](pictures/IMG_2740_SMALL.PNG "four canal 3,3V to relays board"")
 
 To switch all track relays together witc one gpio chanel i use such a standard relay bank.
 
-![30A automotive relays] (pictures/IMG_2743_SMALL.PNG" "30A automotive relays")
+![30A automotive relays](pictures/IMG_2743_SMALL.PNG" "30A automotive relays")
 
 The power switching itself is done by a 30A automotive changer relay.
 
@@ -146,5 +146,6 @@ The power switching itself is done by a 30A automotive changer relay.
 
 Last in this chapter a summary of the possible hardware connections to the Pi with YAST.
 
-![Hardware connecting summary] (pictures/PINBELEGUNG.GIF "Hardware connecting summary")
+![Hardware connecting summary](pictures/PINBELEGUNG.GIF "Hardware connecting summary")
+
 
