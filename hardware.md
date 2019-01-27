@@ -7,7 +7,7 @@ Don't connect any 5V systems direct to the I/O pins.
 
 ## Input Track Pulse Shaping
 
-![Raspberry Pi Type B](pictures/P1080109S.JPG" ALT="Raspberry Pi Type B" )
+![Raspberry Pi Type B](pictures/P1080109S.JPG "Raspberry Pi Type B")
 
 I use a Raspberry Pi Type B, B+ is also tested. But also Type A, A+, B2 and later are usable (I think so).
 On the picture it has an additional breakout PCB mounted. So is development soldering more easy.

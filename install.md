@@ -109,9 +109,7 @@ And also started ath the end op yast.
 Jessie was never full scale tested from my side.
 But the main program works on it.
 
-## Scratch
-
-### Distribution specials on Raspbian Scratch
+## Scratch - Distribution specials on Raspbian Scratch
     
 The screen blanking on Raspberry Pi console should be disabled.
 To see the actual state of the kernel consoleblank type:
@@ -135,12 +133,12 @@ a console font of 28x16 it will fit to full screen.
 Here are some Consolefonts, usable with yast. They came with Raspbian Scratch.
 
 <cite>
-CyrKoi-TerminusBold32x16
-Uni2-VGA28x16
-CyrKoi-VGA28x16
-CyrKoi-TerminusBold28x14
-CyrKoi-TerminusBold24x12
-CyrKoi-VGA16
+CyrKoi-TerminusBold32x16<br>
+Uni2-VGA28x16<br>
+CyrKoi-VGA28x16<br>
+CyrKoi-TerminusBold28x14<br>
+CyrKoi-TerminusBold24x12<br>
+CyrKoi-VGA16<br>
 </cite>
 
 ## Sound activation 
