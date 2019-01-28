@@ -1,6 +1,6 @@
 #
 # This is the YAST Makefile
-# Date: 2018-01-26
+# Date: 2018-01-28
 #
 
 VERSION := 0.4.7
@@ -58,5 +58,5 @@ clean:
 	rm -f $(DATADIR)timing_*
 	
 rasptar: 
-	tar -cvzf yast_$(VERSION).tgz src script obj result docs Makefile README.txt COPYING.txt yast.conf
+	tar -cvzf yast_$(VERSION).tgz src script obj result docs Makefile README.md hardware.md install.md LICENSE yast.conf
 
