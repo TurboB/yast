@@ -1,6 +1,6 @@
 #
 # This is the YAST Makefile
-# Date: 2018-01-19
+# Date: 2018-01-26
 #
 
 VERSION := 0.4.7
@@ -27,6 +27,7 @@ MYFLAGS := -lasound -DALSA_SOUND -DMCP23017=1
 SRCDIR  := src/
 OBJDIR  := obj/
 DATADIR := result/
+DOCS := docs/
 OUTNAME := yast
 
 C_FILES := $(wildcard $(SRCDIR)*.c)
@@ -52,9 +53,10 @@ clean:
 	rm -f $(SRCDIR)*.bak
 	rm -f $(OBJDIR)*.o
 	rm -f script/*~
+	rm -f $(DOCS)/*~
 	rm -f $(OUTNAME)
 	rm -f $(DATADIR)timing_*
 	
 rasptar: 
-	tar -cvzf yast_$(VERSION).tgz src script obj result Makefile README.txt HISTORY.txt COPYING.txt yast.conf
+	tar -cvzf yast_$(VERSION).tgz src script obj result docs Makefile README.txt COPYING.txt yast.conf
 
