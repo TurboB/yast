@@ -1,6 +1,8 @@
 	yast - yet another slotcar timer
 	Changes
 
+0.4.8: 2019-03-21
+	- print last three lap numbers instead of -1,-2,-3 for last lap timings
 0.4.7: 2019-01-19
 	- in result file: track related starts now with Track X
 	- fastest lap in result file

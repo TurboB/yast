@@ -1,4 +1,4 @@
-/*  2019-01-19 20:00  */
+/*  2019-03-21 22:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
@@ -467,19 +467,19 @@ void view_last(int nout)
 	case 2:
 		for(j=1;j<=1;j++) {
 			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("-%d: %.3f    ",j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
+			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
 		}		
 		break;
 	case 3:
 		for(j=1;j<=2;j++) {
 			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("-%d: %.3f    ",j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
+			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
 		}
 		break;
 	default:
 		for(j=1;j<=3;j++) {
 			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("-%d: %.3f    ",j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
+			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
 		}
 		break;		
 	}
