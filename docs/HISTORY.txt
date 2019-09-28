@@ -1,8 +1,10 @@
 	yast - yet another slotcar timer
 	Changes
 
+0.4.9: 2019-10-28
+	- the last three timings will now be cleared after pressing F1/F2/F3/F4
 0.4.8: 2019-03-21
-	- print last three lap numbers instead of -1,-2,-3 for last lap timings
+	- print last three lap numbers instead of -1,-2,-3 for last timings
 0.4.7: 2019-01-19
 	- in result file: track related starts now with Track X
 	- fastest lap in result file

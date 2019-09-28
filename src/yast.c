@@ -1,4 +1,4 @@
-/*  2019-03-21 22:00  */
+/*  2019-10-28 22:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
@@ -487,6 +487,23 @@ void view_last(int nout)
 	} /* for(i) */	
 }
 
+/* -------------------------------------------
+ncurses clear the last three track times 
+input:  nout Number of track to clear
+---------------------------------------------- */
+void clear_last(int nout)
+{
+	int j;
+
+	if( (nout >= 0) && (nout <=3) ) {
+
+		for(j=1;j<=3;j++) {
+			move((nout*FONTHEIGHT)+j+1, CUR_PLACE_X );
+			printw("          ");
+		}
+	}
+
+}
 /* ---------------------------------------------
 printout driver names with respect to the tracks
  - max. 13 chars, please check in config at start
@@ -2469,6 +2486,7 @@ int main(int argc, char *argv[])
 				overalltime[0]= 0;
 				reactiontime[0] = 0;
 			}
+			clear_last(0);
 			screenupdate = 1; 				/* and bring the differences to the outer world */
 			printmessage("RESET Lapcounter Track 1");
 			break;
@@ -2487,6 +2505,7 @@ int main(int argc, char *argv[])
 				overalltime[1]= 0;
 				reactiontime[1] = 0;
 			}
+			clear_last(1);
 			screenupdate = 1; 				/* and bring the differences to the outer world */
 			printmessage("RESET Lapcounter Track 2");
 			break;
@@ -2506,6 +2525,7 @@ int main(int argc, char *argv[])
 				reactiontime[2] = 0;
 
 			}
+			clear_last(2);
 			screenupdate = 1; 				/* and bring the differences to the outer world */
 			printmessage("RESET Lapcounter Track 3");
 			break;
@@ -2524,6 +2544,7 @@ int main(int argc, char *argv[])
 				overalltime[3]= 0;
 				reactiontime[3] = 0;
 			}
+			clear_last(3);			
 			screenupdate = 1; 				/* and bring the differences to the outer world */
 			printmessage("RESET Lapcounter Track 4");
 			break;
