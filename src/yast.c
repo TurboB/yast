@@ -1,4 +1,4 @@
-/*  2019-10-28 22:00  */
+/*  2019-09-28 22:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
