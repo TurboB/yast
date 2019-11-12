@@ -85,6 +85,7 @@ To check the installation and list the i2c-busses just type:
 i2c-1	i2c       	bcm2835 I2C adapter             	I2C adapter
 ```
 (This is the answer of my Pi4)
+
 and also
 
 ```markdown
