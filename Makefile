@@ -1,9 +1,9 @@
 #
 # This is the YAST Makefile
-# Date: 2019-09-28
+# Date: 2019-11-05
 #
 
-VERSION := 0.4.9
+VERSION := 0.4.10
 
 # HARDWARE := -DSN3218=1
 # HARDWARE := -DMCP23017=1
@@ -53,7 +53,7 @@ clean:
 	rm -f $(SRCDIR)*.bak
 	rm -f $(OBJDIR)*.o
 	rm -f script/*~
-	rm -f $(DOCS)/*~
+	rm -f $(DOCS)*~
 	rm -f $(OUTNAME)
 	rm -f $(DATADIR)timing_*
 	

@@ -1,9 +1,9 @@
-/*  2016-11-07 21:00  */
+/*  2019-11-01 14:00  */
 /*
     yast - yet another slotcar timer
 	File: files.c -> some file routines of the project
 
-    Copyright (C)  2016 Martin Berentsen
+    Copyright (C)  2016,2019 Martin Berentsen
 
 
     This file is part of yast.
@@ -157,3 +157,39 @@ int DeleteLock( char *filename)
 {
   return remove(filename);
 }
+
+/**********************************************************************	
+  RaspberryPiVersion - returns the hardware version string
+  in: nothing
+  return: string
+
+lockfile contains: PID executablename user
+***********************************************************************/ 
+int RaspberryPiVersion(void)
+{
+  FILE *ver_fd;
+  int i_ret = 0;
+  int ch;
+  
+  if( (ver_fd = fopen("/sys/firmware/devicetree/base/model","r")) != NULL )
+    {
+      printf("Raspberry Pi Version: ");
+    ch = getc(ver_fd);
+    while( ch != EOF)
+      {
+        /* display contents of file on screen */ 
+        putchar(ch);  
+        ch = getc(ver_fd); 
+      }
+      fclose(ver_fd);
+      printf("\n");
+    }
+  else 
+    {
+      printd("file /sys/firmware/devicetree/base/model does not exists\n");
+      i_ret = -1;	
+    }
+    
+  return i_ret;
+}
+

@@ -71,16 +71,20 @@ Currently panic can be used only with a keyboard.
 
 ## I2C bus - Installation and usage
 
-For output an I2C MCP23017 or I2C SN3218 output for Traffic Lights are supported.
+For output an I2C MCP23008, MCP23017 or I2C SN3218 output for Traffic Lights are supported.
 
 The I2C interface of the IO expander is connected to I2C Nr. 1 of my Raspberry Pi B (Rev. 2).
 
 I2C installation:
-<cite>gpio load i2c</cite><br>
-<cite>sudo apt-get install i2c-tools</cite><br>
-To check the installation and list the i2c-busses just type:  
 
-<cite>#> i2cdetect -l</cite><br>  
+<cite>sudo apt-get install i2c-tools</cite><br>
+To check the installation and list the i2c-busses just type:
+  
+```markdown
+#> i2cdetect -l
+i2c-1	i2c       	bcm2835 I2C adapter             	I2C adapter
+```
+(This is the answer of my Pi4)
 and also
 
 ```markdown

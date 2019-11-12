@@ -1,5 +1,5 @@
 # install script for yast
-# 2018-07-07
+# 2019-11-12
 # should be started from /home/pi/yast
 
 # wiring Pi
@@ -7,11 +7,19 @@ echo "********************************"
 echo " Installing WiringPi"
 echo "********************************"
 
-cd ..
-git clone git://git.drogon.net/wiringPi 
-cd wiringPi 
-./build
-cd ..
+#cd ..
+#git clone git://git.drogon.net/wiringPi 
+#cd wiringPi 
+#./build
+#cd ..
+
+if [ -f /usr/bin/gpio ]
+then
+	echo "wiringpi already exists....."
+	/usr/bin/gpio -v
+else
+	sudo apt-get install wiringpi
+fi
 
 # libcurses
 echo "********************************"
@@ -31,7 +39,7 @@ sudo apt-get install -y gcc libasound2 libasound2-dev
 
 
 # CodePgae 437 
-# check for codepage allready installed
+# check for codepage already installed
 
 echo "********************************"
 echo " Installing CpdePage 437"
@@ -39,7 +47,7 @@ echo "********************************"
 
 if [ -f /usr/share/consoletrans/cp437.acm.gz ]
 then
-	echo "Codepage file allready exists ....."
+	echo "Codepage file already exists ....."
 else
 	wget ftp://ftp4.gwdg.de/pub/linux/handhelds/distributions/intimate/beta/usr/share/consoletrans/cp437.acm.gz
 	sudo mv -v cp437.acm.gz /usr/share/consoletrans

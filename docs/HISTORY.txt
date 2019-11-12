@@ -1,6 +1,12 @@
 	yast - yet another slotcar timer
 	Changes
 
+
+0.4.10: 2019-11-12
+	- on time now repeats at 100h, not at 60h
+	- Raspberry Pi Version printout at startup
+	- timing for led hardware check changed
+	- wiringpi now in install script checked
 0.4.9: 2019-09-28
 	- the last three timings will now be cleared after pressing F1/F2/F3/F4
 0.4.8: 2019-03-21

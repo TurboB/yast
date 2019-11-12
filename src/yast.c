@@ -1,4 +1,4 @@
-/*  2019-09-28 22:00  */
+/*  2019-11-05 21:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
@@ -112,7 +112,7 @@ unsigned long ISR_Signal_Falgs = 0;				/* bring out some messages out of the ISR
 unsigned long firsttime[TRACKLIM];  			/* track start time stamp (for a single round ) */
 unsigned long secondtime[TRACKLIM]; 			/* track end time stamp  (for a single round )*/
 
-unsigned char trackcurrent = 0;					/*  Track supply on (1) and off (0) (yast a marker */
+unsigned char trackcurrent = 0;					/*  Track supply on (1) and off (0) (just a marker) */
 unsigned char timingactive[TRACKLIM] = {0,0,0,0};			/*  Timing on (1) and off (0) */
 int stop = 0;									/* used to exit the core, it's the only way */
 int soundactive = 0;							/* Is the sound already active =1 or not =0; */
@@ -1297,7 +1297,9 @@ int main(int argc, char *argv[])
 		}
 		if ( argc >= 2 && strcmp( argv[1], "-v" ) == 0 ) {
 			printcopyright();
-			printf("Version: %s\ncompiled at %s on %s\n",VERSION,__TIME__,__DATE__);
+			printf("yast Version: %s\ncompiled at %s on %s\n",VERSION,__TIME__,__DATE__);
+			if(RaspberryPiVersion() != 0)
+				printf("no Pi hardware descriptor found\n");
 			exit(0);
 			continue;
 		}
@@ -1408,6 +1410,8 @@ int main(int argc, char *argv[])
 	printcopyright();
 	printf("YAST information....\n");
 	printf("Version: %s compiled at: %s %s\n",VERSION,__DATE__,__TIME__);
+	if(RaspberryPiVersion() != 0)
+		printf("no Pi hardware descriptor found\n");
 	printf("Reserved lap memory is: %d laps x %d tracks x %d Bytes = %.2f kBytes\n",LAPLIM,TRACKLIM,sizeof(long),(float)(LAPLIM*TRACKLIM*sizeof(long))/1024.0);
 	printf("Race lap counter set to %d laps\n",endlap);
 	printf("Race time counter set to %d seconds\n",endtime);
@@ -1509,10 +1513,10 @@ int main(int argc, char *argv[])
 
 	mcp23017Setup(MCP23017_pinBase + 0  , MC23008_ADDR_IC00);  	/* first MCP23017 with 0x00 address */
 
-	for (i = 0 ; i <= 7 ; i++)					/* setup for 20 LED's inside and one on the backside */
+	for (i = 0 ; i <= 7 ; i++)					/* setup for 8 LED's inside */
 		pinMode(MCP23017_pinBase + i, OUTPUT) ;
 
-	for (i = 0 ; i <= 7 ; i++)					/* setup for 20 LED's inside and one on the backside */
+	for (i = 0 ; i <= 7 ; i++)					/* setup for 8 LED's inside */
 		digitalWrite(MCP23017_pinBase + i,MCP23017_OFF);
 
 	#endif /* #ifdef MCP23017EASY */
@@ -1521,12 +1525,12 @@ int main(int argc, char *argv[])
 	printf("Starting traffic light hardware ....\n");
 	printf("Setting up MCP23008 GPIO's ....\n");
 
-	mcp23008Setup(MCP23017_pinBase + 0  , MC23008_ADDR_IC00);  	/* first MCP23017 with 0x00 address */
+	mcp23008Setup(MCP23017_pinBase + 0  , MC23008_ADDR_IC00);  	/* first MCP23008 with 0x00 address */
 
-	for (i = 0 ; i <= 7 ; i++)					/* setup for 20 LED's inside and one on the backside */
+	for (i = 0 ; i <= 7 ; i++)					/* setup for 8 LED's inside */
 		pinMode(MCP23017_pinBase + i, OUTPUT) ;
 
-	for (i = 0 ; i <= 7 ; i++)					/* setup for 20 LED's inside and one on the backside */
+	for (i = 0 ; i <= 7 ; i++)					/* setup for 8 LED's inside */
 		digitalWrite(MCP23017_pinBase + i,MCP23017_OFF);
 
 	#endif /* #ifdef MCP23008 */
@@ -1619,11 +1623,11 @@ int main(int argc, char *argv[])
 
 	for(j=0;j<32;j++) {
 			digitalWrite(MCP23017_pinBase + j ,MCP23017_ON);
-			delay(150);
+			delay(50);
 			digitalWrite(MCP23017_pinBase + j ,MCP23017_OFF);			
-			delay(150);
+			delay(50);
 			digitalWrite(MCP23017_pinBase + j ,MCP23017_ON);
-			delay(550);
+			delay(150);
 			digitalWrite(MCP23017_pinBase + j ,MCP23017_OFF);			
 			delay(20);
 			if (stop != 0) /* just for a quicker exit */
@@ -1865,7 +1869,7 @@ int main(int argc, char *argv[])
 
 		/* Print out the time */
 		acttime = GetTime() - starttime;
-		mvprintw(CUR_CLOCK_Y,CUR_CLOCK_X,"%.2d:%.2d:%.2d:%.3d",(acttime/(1000*60*60))%60,(acttime/(1000*60))%60,(acttime/1000)%60,acttime%1000);
+		mvprintw(CUR_CLOCK_Y,CUR_CLOCK_X,"%.2d:%.2d:%.2d:%.3d",(acttime/(1000*60*60))%100,(acttime/(1000*60))%60,(acttime/1000)%60,acttime%1000);
 
 		/* make some times a fully screen painting update -> required for RTC, nice to have else */
 		/* was %1000, now %250 for slow pi1, because the 1000 is just 60 times a second possible */

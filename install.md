@@ -3,9 +3,9 @@
 ## YAST System Requirement
     
 The basic system requirements are:
-- a Raspberry Pi1/2/3/a/b/+ 
+- a Raspberry Pi1/2/3/4/a/b/+ 
 - track signal input hardware
-- a running Raspbian image (Wheezy, Jessie, Stretch)
+- a running Raspbian image (Wheezy, Jessie, Stretch, Buster)
 - a working Internet connection (to make installing easy, can also be done without )
 - wiringPi package
 - libncurses5-dev package
