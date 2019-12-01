@@ -1,9 +1,9 @@
-/*  2018-02-17 22:00  */
+/*  2019-11-21 20:00  */
 /*
     yast - yet another slotcar timer
 	File: config.c -> all run time settings of the project
 
-    Copyright (C)  2015,2016,2017,2018 Martin Berentsen
+    Copyright (C)  2015,2016,2017,2018,2019 Martin Berentsen
 
 
     This file is part of yast.
@@ -54,6 +54,7 @@ void strtoupper(char *string)
 /* --------------------------------------------------------------------------
 CONFIG read_yastrc(char *filename)
 translate the config file into the program vars
+Parser did not stop at unknown TOKEN
 input: filename
 return: scruct CONFIG
 ------------------------------------------------------------------------*/
@@ -742,10 +743,52 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackpoweractive = atoi(token);
-					if((config.trackpoweractive == 0) || (config.trackpoweractive ==1))
+					if((config.trackpoweractive == 0) || (config.trackpoweractive == 1))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong trackpoweractive level (0 or 1) given %d\n",config.trackpoweractive);
+						exit(0);
+						}
+				}		
+
+			/* Parsing SoundActive */
+				if(strcmp(token,"SOUNDACTIVE:") == 0)
+				{
+					start = strstr(str_copy,token) - str_copy;	/* start of token inside the string */
+					len = strlen(token);						/* length of tokens */
+					memmove(str_copy,&str_rc[len+start],strlen(str_rc));
+					token = strtok(str_copy," \t\n");        	/* isolate second part */
+
+					#ifdef PARSERC
+					printf("Token found: SOUNDACTIVE: -%s-\n",token);
+					#endif
+
+					config.soundactive = atoi(token);
+					if((config.soundactive == 0) || (config.soundactive == 1))
+						icount ++;
+					else {
+						fprintf(stderr, "read_yastrc: Wrong soundactive level (0 or 1) given %d\n",config.soundactive);
+						exit(0);
+						}
+				}		
+
+			/* Parsing RTCActive */
+				if(strcmp(token,"RTCACTIVE:") == 0)
+				{
+					start = strstr(str_copy,token) - str_copy;	/* start of token inside the string */
+					len = strlen(token);						/* length of tokens */
+					memmove(str_copy,&str_rc[len+start],strlen(str_rc));
+					token = strtok(str_copy," \t\n");        	/* isolate second part */
+
+					#ifdef PARSERC
+					printf("Token found: RTCACTIVE: -%s-\n",token);
+					#endif
+
+					config.rtc_view = atoi(token);
+					if((config.rtc_view == 0) || (config.rtc_view == 1))
+						icount ++;
+					else {
+						fprintf(stderr, "read_yastrc: Wrong rtcactive level (0 or 1) given %d\n",config.rtc_view);
 						exit(0);
 						}
 				}		
@@ -805,7 +848,7 @@ int read_yastrc(char *filename)
 							exit(-1);
 						}
 						
-						if(strlen(config.resultfile_path) >=2 )
+						if(strlen(config.resultfile_path) >= 2 )
 						{
 							char *tmp;
 							tmp = strrchr(config.resultfile_path,'/');
@@ -887,7 +930,6 @@ int read_yastrc(char *filename)
 						}
 				}		
 
-				
 			}
 		}
 		fclose (fp);

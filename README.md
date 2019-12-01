@@ -289,6 +289,7 @@ See this example:
  # TrackCurrentOutput defines a WiringPi GPIO for switching the Track
  # Power while panic/error and end of race
  TrackPowerOutput: 4
+
  # TrackCurrentActive defines track power switching enabled = 1, disabled =0.
  # default is 0
  TrackPowerActive: 1
@@ -320,6 +321,17 @@ See this example:
  # default is 800 ms
  # this will be set to 0 ms if no track current switching is enabled
  TIMERACEENDDELAYTIME: 1000
+ 
+ # do it with sound or not
+ # 1 = ON
+ # 0 = OFF (default)
+ SoundActive: 0
+
+ # show the RealTimeClock at the training display
+ # 1 = ON
+ # 0 = OFF (default off, because I'm a slot junkie wasting much time on it)
+ RTCActive: 0
+
 ```
 
 The next is the command line interface.

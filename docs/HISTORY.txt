@@ -2,6 +2,10 @@
 	Changes
 
 
+0.4.11: 2019-11-21
+	- new config file parameter: SOUNDACTIVE
+	- new config file parameter: RTCACTIVE
+	- some more talking on -vv option
 0.4.10: 2019-11-12
 	- on time now repeats at 100h, not at 60h
 	- Raspberry Pi Version printout at startup

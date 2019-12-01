@@ -40,8 +40,13 @@ sync
 #
 # modify here for your own start conditions
 #
+# sudo is not longer required since user-level GPIO is supported.
+# With "Raspberry Pi 4 Model B V 1.1" sudo and wiringpi did not 
+# set output on GPIO 4 (TrackCurrent) correct.
+# 
+#sudo ./yast -s -o -r -a -t 300 -N1 Martin -N2 Martin 2> yast_error.log
 
-sudo ./yast -s -o -r -t 300 -N1 Martin -N2 Martin 2> yast_error.log
+./yast -o -t 300 -N1 Martin -N2 Martin 2> yast_error.log
 
 echo "unicode on ......"
 unicode_start

@@ -1,9 +1,9 @@
-/*  2018-02-17 19:00  */
+/*  2019-11-21 19:00  */
 /*
     yast - yet another slotcar timer
 	File: config.h -> all run time settings of the project
 
-    Copyright (C)  2015,2016,2017,2018 Martin Berentsen
+    Copyright (C)  2015-2019 Martin Berentsen
 
 
     This file is part of yast.
@@ -42,6 +42,7 @@
 		int trackinputevent[TRACKLIM];	/* set the wiringPi input pin event type */
 		int trackinputpud[TRACKLIM];	/* set the wiringPi input pin pull up/down */
 		int random_light_startup;		/* if 1, random start time at christmas tree , 0 else */
+		int soundactive;			/* Is the sound already active =1 or not =0; */
 		char *resultfile_name;			/* name pointer for result files */
 		char *resultfile_path;			/* name pointer for result files path */
 		char resultfile_format;			/* format of the data storage file*/

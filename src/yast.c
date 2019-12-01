@@ -1,4 +1,4 @@
-/*  2019-11-05 21:00  */
+/*  2019-11-21 21:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
@@ -115,7 +115,6 @@ unsigned long secondtime[TRACKLIM]; 			/* track end time stamp  (for a single ro
 unsigned char trackcurrent = 0;					/*  Track supply on (1) and off (0) (just a marker) */
 unsigned char timingactive[TRACKLIM] = {0,0,0,0};			/*  Timing on (1) and off (0) */
 int stop = 0;									/* used to exit the core, it's the only way */
-int soundactive = 0;							/* Is the sound already active =1 or not =0; */
 short snd_buffer[SND_NUMBER_OF_TONES] [SND_BUFFER_SIZE];	/* define default the tone arrays */
 unsigned int snd_buffer_len[SND_NUMBER_OF_TONES]; 			/* define length inside tones */
 struct tm *timeinfo;	/* timeinfo and rawtime used for RTC view and file output */
@@ -926,7 +925,7 @@ void set_trackcurrent(int onoff, int active)
 			digitalWrite(MCP23017_pinBase + MCP23017_BACKSIDE,MCP23017_ON);		/* set alive LED to ON */
 			#endif /* MCP23017 */
 			#endif /* OFFLINE */
-			if(soundactive == 1) { /* make some noise, it track power is switched off */
+			if(config.soundactive == 1) { /* make some noise, it track power is switched off */
 #ifdef ALSA_SOUND
 			SND_play(1);
 #endif /* ALSA_SOUND */
@@ -944,7 +943,7 @@ void set_trackcurrent(int onoff, int active)
 			digitalWrite(MCP23017_pinBase + MCP23017_BACKSIDE,MCP23017_OFF);		/* set alive LED to OFF */
 			#endif /* MCP23017 */
 			#endif /* OFFLINE */
-			if(soundactive == 1) { /* make some noise, it track power is switched off */
+			if(config.soundactive == 1) { /* make some noise, it track power is switched off */
 #ifdef ALSA_SOUND
 			SND_play(2);
 #endif /* ALSA_SOUND */
@@ -994,6 +993,8 @@ int main(int argc, char *argv[])
 	config.trackcolor[1] = COLOR_GREEN;
 	config.trackcolor[2] = COLOR_BLUE;
 	config.trackcolor[3] = COLOR_YELLOW;
+	config.soundactive = 0;			/* predefine the sound already active =1 or not =0; */
+
 	#ifndef OFFLINE
 	config.trackinputpin[0] = PIN_IN_TRACK_1;	/* set the wiringPi input pin to track number */
 	config.trackinputpin[1] = PIN_IN_TRACK_2;
@@ -1140,7 +1141,7 @@ int main(int argc, char *argv[])
 
 		if ( argc >= 2 && strcmp( argv[1], "-s" ) == 0 ) {
 			++argv; --argc;
-			soundactive = 1;
+			config.soundactive = 1;
 			continue;
 		}
 		if ( argc >= 2 && strcmp( argv[1], "-t" ) == 0 ) {
@@ -1329,11 +1330,11 @@ int main(int argc, char *argv[])
 #ifdef OFFLINE
 			printf(" #define OFFLINE\n");
 #endif /* OFFLINE */
-			printf("Config options :\n");
 			printf(" Reserved lap memory is : %d laps x %d tracks x %d Bytes = %.2f kBytes\n",LAPLIM,TRACKLIM,sizeof(long),(float)(LAPLIM*TRACKLIM*sizeof(long))/1024.0);
+			printf("Config options :\n");
 			printf(" Number of tracks : %d\n",config.numberoftracks);
 			printf(" Minimum lap time : %ld ms\n",config.minlaptime);
-			printf(" Input Pins configured to : ");
+			printf(" Input Pins configured to (GPIO): ");
 			for(i=0;i<TRACKLIM;i++) {
 				printf("[Tr%.2d = In%.2d]",i,config.trackinputpin[i]);
 			}
@@ -1373,18 +1374,15 @@ int main(int argc, char *argv[])
 			printf(" Writing timing output in format : %d\n",config.resultfile_format);
 			printf(" Writing storage data to file : \"%s\"\n",config.storagefile_name);
 
-			printf(" RTC (Real Time Clock viewing) is : ");
-			if(config.rtc_view > 0)
-				printf("on\n");
-			else
-				printf("off\n");
+			printf(" Track power output port (GPIO): %d\n",config.trackcurrentoutput);
 
 			printf(" Track power switching is : ");
 				if(config.trackpoweractive == 1)
 					printf("active\n");
 				else
 					printf("passive\n");
-			printf("Driver's names:");
+
+			printf(" Driver's names:");
 			for(i=0;i<TRACKLIM ;i++) {
 			if(trackdriversname[i] != NULL) 
 				printf(" Track %d - \"%s\"",i+1,trackdriversname[i]);
@@ -1395,10 +1393,23 @@ int main(int argc, char *argv[])
 			printf("\n");
 			printf(" PANICDELAYTIME : %d ms\n",config.panicdelaytime );
 			printf(" TIMERACEENDDELAYTIME : %d ms\n",config.timeraceenddelaytime );
+
+			printf(" Sound is : ");
+				if(config.soundactive == 1)
+					printf("on\n");
+				else
+					printf("off\n");
+
+			printf(" RTC (Real Time Clock viewing) is : ");
+			if(config.rtc_view > 0)
+				printf("on\n");
+			else
+				printf("off\n");
+			
 			printf("------------------------------------------------------------------\n");
 			printf("!-!-!-!-! now standard startup without main loop follows !-!-!-!-!\n");
 			printf("------------------------------------------------------------------\n");
-			stop = 1; 		/* don't do into main loop */
+			stop = 1; 		/* don't do the main loop */
 			continue;
 		}
 
@@ -1557,7 +1568,7 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
 
-			if(soundactive == 1) { /* make some noise, it track power is switched off */
+			if(config.soundactive == 1) { /* make some noise, it track power is switched off */
 #ifdef ALSA_SOUND
 			printf("Setting up ALSA sound system for some noise\n");
 			SND_setup();
@@ -1579,7 +1590,7 @@ int main(int argc, char *argv[])
 			digitalWrite(config.trackcurrentoutput,HIGH); /* switching power on */
 		}
 
-		if(soundactive == 1){
+		if(config.soundactive == 1){
 			printf("HEY,  - Check this sound - if compiled in.....\n");
 			for(j=0;j < SND_NUMBER_OF_TONES ; j++) {
 			printf(" sound %d ",j+1);
@@ -1928,7 +1939,7 @@ int main(int argc, char *argv[])
 					printmessage("Trackevent Track 1 too fast (%ld ms)",secondtime[0] - firsttime[0]);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_1_TOO_FAST);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_1);
-					if(soundactive == 1) {
+					if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(4);  /* not valid */
 					#endif /* ALSA_SOUND */
@@ -1945,7 +1956,7 @@ int main(int argc, char *argv[])
 					printmessage("Trackevent Track 2 too fast (%ld ms)",secondtime[1] - firsttime[1]);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_2_TOO_FAST);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_2);
-					if(soundactive == 1) {
+					if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(4);  /* not valid */
 					#endif /* ALSA_SOUND */
@@ -1961,7 +1972,7 @@ int main(int argc, char *argv[])
 					printmessage("Trackevent Track 3 too fast (%ld ms)",secondtime[2] - firsttime[2]);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_3_TOO_FAST);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_3);
-					if(soundactive == 1) {
+					if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(4);  /* not valid */
 					#endif /* ALSA_SOUND */
@@ -1977,7 +1988,7 @@ int main(int argc, char *argv[])
 					printmessage("Trackevent Track 4 too fast (%ld ms)",secondtime[3] - firsttime[3]);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_4_TOO_FAST);
 					ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_4);
-					if(soundactive == 1) {
+					if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(4);  /* not valid */
 					#endif /* ALSA_SOUND */
@@ -1991,7 +2002,7 @@ int main(int argc, char *argv[])
 
 				if ( (ISR_Signal_Falgs & TRACKEVENT_1) == TRACKEVENT_1) {
 				ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_1);
-				if(soundactive == 1) {
+				if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(3);  /* valid */
 					#endif /* ALSA_SOUND */
@@ -2000,7 +2011,7 @@ int main(int argc, char *argv[])
 
 				if ( (ISR_Signal_Falgs & TRACKEVENT_2) == TRACKEVENT_2) {
 				ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_2);
-				if(soundactive == 1) {
+				if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(3);
 					#endif /* ALSA_SOUND */
@@ -2009,7 +2020,7 @@ int main(int argc, char *argv[])
 
 				if ( (ISR_Signal_Falgs & TRACKEVENT_3) == TRACKEVENT_3) {
 				ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_3);
-				if(soundactive == 1) {
+				if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(3);
 					#endif /* ALSA_SOUND */
@@ -2018,7 +2029,7 @@ int main(int argc, char *argv[])
 
 				if ( (ISR_Signal_Falgs & TRACKEVENT_4) == TRACKEVENT_4) {
 				ISR_Signal_Falgs = ISR_Signal_Falgs & ~(TRACKEVENT_4);
-				if(soundactive == 1) {
+				if(config.soundactive == 1) {
 					#ifdef ALSA_SOUND
 					SND_play(3);
 					#endif /* ALSA_SOUND */
@@ -2365,7 +2376,7 @@ int main(int argc, char *argv[])
 					printw("- finished -");
 				}
 
-				if( soundactive == 1 ) {
+				if( config.soundactive == 1 ) {
 					#ifdef ALSA_SOUND
 					SND_play(5); /* make some noise */
 					#endif /* ALSA_SOUND */
@@ -2849,7 +2860,7 @@ int main(int argc, char *argv[])
 		DeleteLock(GPIOLOCKFILENAME);
 	#endif /* OFFLINE */
 
-	if(soundactive == 1) {
+	if(config.soundactive == 1) {
 	#ifdef ALSA_SOUND
 		delay(450);  /* wait for sound ready, can be done better */
 		SND_close();
