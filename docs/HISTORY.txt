@@ -1,7 +1,10 @@
 	yast - yet another slotcar timer
 	Changes
 
-
+0.4.12: 2020-11-03
+	- more than 8 colors are also working
+	- some error output corrections
+	- small changes on -c option
 0.4.11: 2019-11-21
 	- new config file parameter: SOUNDACTIVE
 	- new config file parameter: RTCACTIVE

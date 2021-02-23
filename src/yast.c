@@ -3,7 +3,7 @@
 yast - yet another slotcar timer
 File: yast.c -> main c source
 
-Copyright (C)  2015,2016,2017,2018,2019 Martin Berentsen
+Copyright (C)  2015,2016,2017,2018,2019,2020 Martin Berentsen
 
 
 This file is part of yast.
@@ -1454,8 +1454,8 @@ int main(int argc, char *argv[])
 	pullUpDnControl(config.trackinputpin[2],config.trackinputpud[2]);
 	pullUpDnControl(config.trackinputpin[3],config.trackinputpud[3]);
 
-	printf("Input Port  Track_1: %d Track_2: %d Track_3: %d Track4: %d\n",config.trackinputpin[0], config.trackinputpin[1], config.trackinputpin[2], config.trackinputpin[3]);
-	printf("Input State Track_1: %d Track_2: %d Track_3: %d Track4: %d\n",digitalRead(0), digitalRead(1), digitalRead(2), digitalRead(3));
+	printf("Input Port  Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",config.trackinputpin[0], config.trackinputpin[1], config.trackinputpin[2], config.trackinputpin[3]);
+	printf("Input State Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",digitalRead(0), digitalRead(1), digitalRead(2), digitalRead(3));
 
 	/* implement the IRS for all tracks  */
 	if(hardwarecheck == 0) {
@@ -1588,7 +1588,10 @@ int main(int argc, char *argv[])
 		if( (config.trackcurrentoutput >=0) && (config.trackpoweractive == 1) )
 		{
 			digitalWrite(config.trackcurrentoutput,HIGH); /* switching power on */
+			printf("Track Power on\n");
 		}
+
+		delay(500);  /* delay between power and sound */
 
 		if(config.soundactive == 1){
 			printf("HEY,  - Check this sound - if compiled in.....\n");
@@ -1624,7 +1627,7 @@ int main(int argc, char *argv[])
 
 		}
 
-		printf("starting (nearly) endless hardware check modus,\nend with CTRL-C\n");
+		printf("starting (nearly) endless hardware check modus,\nend with CTRL-C\nand wait......\n");
 
 		while( stop == 0) { /* the hardware test core starts here */
 
@@ -1700,16 +1703,19 @@ int main(int argc, char *argv[])
 
 		/******************************************************************************************/
 
-		if( (config.trackcurrentoutput >=0) && (config.trackpoweractive == 1) )
-		{
-			digitalWrite(config.trackcurrentoutput,LOW); /* switching power off */
-		}
 
 	#endif /* offline */
 
 		}
 
-		printf("CTRL-C exit from yast hardware check .....\n");
+		printf("CTRL-C exit from yast hardware check.....\n");
+
+		if( (config.trackcurrentoutput >=0) && (config.trackpoweractive == 1) )
+		{
+			digitalWrite(config.trackcurrentoutput,LOW); /* switching power off */
+			printf("Track Power off\n");
+		}
+
 		exit(0);
 
 	}
@@ -1721,7 +1727,7 @@ int main(int argc, char *argv[])
 //		}
 
 	/* Reset all variables inside Array at the beginning*/
-	printf("starting yast environment and display ......\n");
+	printf("starting yast environment and display.....\n");
 
 	RESETALLTRACKS
 
@@ -1748,7 +1754,7 @@ int main(int argc, char *argv[])
 	if (has_colors())
 	{
 		start_color();
-		if ( (COLORS == 8) && (COLOR_PAIRS >= 16) ) {
+		if ( (COLORS >= 8) && (COLOR_PAIRS >= 16) ) {
 			init_pair(COLOR_PAIR_BASIC  , COLOR_WHITE         , COLOR_BLACK); /* BASIC WHITE */
 			init_pair(COLOR_PAIR_TRACK_1, config.trackcolor[0], COLOR_BLACK); /* Track 1 */
 			init_pair(COLOR_PAIR_TRACK_2, config.trackcolor[1], COLOR_BLACK); /* Track 2 */
@@ -1766,7 +1772,7 @@ int main(int argc, char *argv[])
 		}
 		else {  /* no colors found */
 		endwin();
-		printf("ncurses fails, COLORS=%d (<>8), COLOR_PAIRS=%d (>=16)\n",COLORS,COLOR_PAIRS); 
+		printf("ncurses fails, COLORS=%d (>=8), COLOR_PAIRS=%d (>=16)\n",COLORS,COLOR_PAIRS); 
 		exit(0);
 		}
 	}

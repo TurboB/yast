@@ -1,9 +1,9 @@
-/*  2019-11-01 14:00  */
+/*  2020-10-28 21:00  */
 /*
     yast - yet another slotcar timer
 	File: files.c -> some file routines of the project
 
-    Copyright (C)  2016,2019 Martin Berentsen
+    Copyright (C)  2016,2019,2020 Martin Berentsen
 
 
     This file is part of yast.
@@ -89,14 +89,14 @@ int CreateLock(char *name, char *progname)
   pid = getpid();
   user = (char *)getenv("LOGNAME");
 
-  printf("writing %s lockfile\n",name);
+  printf("writing new LOCKFILE %s \n",name);
   if( (lock_fd = fopen(name,"w")) != NULL )
     {
       fprintf(lock_fd,"%.5d %s %s", pid,progname,user);
       fclose(lock_fd);
       retu = 0;
     }
-  else fprintf(stderr,"Can't write LOCK-File %s\n",name);
+  else fprintf(stderr,"Can't write LOCKFILE %s\n",name);
   return retu;
 }
 
@@ -118,13 +118,15 @@ int CheckLock(char *name)
   
   if( (lock_fd = fopen(name,"r")) != NULL )
     {
-      printf("%s exists\n",name);
+      printf("LOCKFILE %s exists\n",name);
       fscanf(lock_fd,"%08s %18s %18s",buff1,buff2,buff3);
       pid = atoi(buff1);
       if(pid > 0) {  /* print only if something exists */
-      fprintf(stderr,"file carries: %s %s %s\n",buff1,buff2,buff3);
+      /* fprintf(stderr,"file carries: %s %s %s\n",buff1,buff2,buff3); */ /* not an error */
+      printf("  file carries: %s %s %s\n",buff1,buff2,buff3);
       sprintf(buff,"/proc/%d/comm",pid);
-      fprintf(stderr,"searching inside of /proc for: %s\n",buff);
+      /* fprintf(stderr,"searching inside of /proc for: %s\n",buff); */ /* not an error */
+      printf("  searching inside of /proc for: %s\n",buff);
       }
       if( (proc_fd = fopen(buff,"r")) != NULL)
 	{
@@ -133,13 +135,13 @@ int CheckLock(char *name)
 	}
       else
 	{
-	  printf("PID:%d does not exist, LOCK can be deleted\n",pid);
+	  printf("  PID:%d does not exist, LOCKFILE can be deleted\n",pid);
 	  retu = 0;
 	}
     }
   else 
     {
-      printd("lockfile [%s] does not exists\n",name);
+      printd("LOCKFILE [%s] does not exists\n",name);
       retu = 0;	
     }
     
