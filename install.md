@@ -44,9 +44,7 @@ use a Type A or A+. For this installation example the user "pi" is used, because
 First the WiringPi package must be downloaded and installed.
 Please check first an existing installatin by
 
-<cite>
-gpio -v<br>
-</cite>
+<cite>gpio -v<br></cite>
 
 On my Raspian Buster a 2.50 was already installed.
 Please use wiringPi Version 2.36 or later, because there is fix inside for first time ISR event usage.
