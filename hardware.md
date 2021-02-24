@@ -151,6 +151,6 @@ The power switching itself is done by a 30A automotive changer relay.
 
 Last in this chapter a summary of the possible hardware connections to the Pi with YAST.
 
-![Hardware connecting summary](pictures/PINBELEGUNG.GIF "Hardware connecting summary")
+![Hardware connecting summary](pictures/PINBELEGUNG_40.GIF "Hardware connecting summary")
 
 
