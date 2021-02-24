@@ -40,8 +40,18 @@ I always desktop versions, but light also may possible.
 A network connection is required only for installation of the packages, later on the RaspberryPi
 can be used offline. Or the Memory Card can be used in a different Pi. In this way it's easy to
 use a Type A or A+. For this installation example the user "pi" is used, because it's the standard.
+
 First the WiringPi package must be downloaded and installed.
+Please check first an existing installatin by
+
+<cite>
+gpio -v
+</cite>
+
+On my Raspian Buster a 2.50 was already installed.
 Please use wiringPi Version 2.36 or later, because there is fix inside for first time ISR event usage.
+For a Raspberry Pi >3 please update to Version 2.52, because of correct Pi
+version handling. How to do this is shown on wiringPi website.
 
 <cite>git clone git://git.drogon.net/wiringPi<br>
 cd wiringPi<br>
