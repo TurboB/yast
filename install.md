@@ -45,7 +45,7 @@ First the WiringPi package must be downloaded and installed.
 Please check first an existing installatin by
 
 <cite>
-gpio -v
+gpio -v<br>
 </cite>
 
 On my Raspian Buster a 2.50 was already installed.
