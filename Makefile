@@ -1,9 +1,9 @@
 #
 # This is the YAST Makefile
-# Date: 2010-11-03
+# Date: 2022-01-31
 #
 
-VERSION := 0.4.12
+VERSION := 0.4.13
 
 # HARDWARE := -DSN3218=1
 # HARDWARE := -DMCP23017=1

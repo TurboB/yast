@@ -288,7 +288,12 @@ See this example:
  
  # TrackCurrentOutput defines a WiringPi GPIO for switching the Track
  # Power while panic/error and end of race
- TrackPowerOutput: 4
+ # -1 means not used 
+ # also only one for all is possible by usage of the first
+ TrackPowerOutput1: 4
+ TrackPowerOutput1: 5
+ TrackPowerOutput1: -1
+ TrackPowerOutput1: -1
 
  # TrackCurrentActive defines track power switching enabled = 1, disabled =0.
  # default is 0

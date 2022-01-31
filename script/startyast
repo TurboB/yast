@@ -46,7 +46,8 @@ sync
 # 
 #sudo ./yast -s -o -r -a -t 300 -N1 Martin -N2 Martin 2> yast_error.log
 
-./yast -o -t 300 -N1 Martin -N2 Martin 2> yast_error.log
+date >> yast_error.log
+./yast -o -t 300 -N1 Martin -N2 Martin 2>> yast_error.log
 
 echo "unicode on ......"
 unicode_start

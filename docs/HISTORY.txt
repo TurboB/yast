@@ -1,6 +1,8 @@
 	yast - yet another slotcar timer
 	Changes
 
+0.4.13: 2022-01-31
+	- going forward to 4 chan track current output switching
 0.4.12: 2020-11-03
 	- more than 8 colors are also working
 	- some error output corrections

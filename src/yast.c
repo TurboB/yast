@@ -1,9 +1,9 @@
-/*  2019-11-21 21:00  */
+/*  2022-01-31 17:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
 
-Copyright (C)  2015,2016,2017,2018,2019,2020 Martin Berentsen
+Copyright (C)  2015 -2022 Martin Berentsen
 
 
 This file is part of yast.
@@ -113,6 +113,7 @@ unsigned long firsttime[TRACKLIM];  			/* track start time stamp (for a single r
 unsigned long secondtime[TRACKLIM]; 			/* track end time stamp  (for a single round )*/
 
 unsigned char trackcurrent = 0;					/*  Track supply on (1) and off (0) (just a marker) */
+unsigned long supplyofftime[TRACKLIM] = {0,0,0,0};		/*  Track supply on (0) or off > 0 in timestamp */
 unsigned char timingactive[TRACKLIM] = {0,0,0,0};			/*  Timing on (1) and off (0) */
 int stop = 0;									/* used to exit the core, it's the only way */
 short snd_buffer[SND_NUMBER_OF_TONES] [SND_BUFFER_SIZE];	/* define default the tone arrays */
@@ -421,7 +422,7 @@ printout the Copyright information on console
 void printcopyright(void)
 {
 	printf("YAST - Yet Another Slotcar Timer\n");
-	printf("Copyright (C)  2015-2019  Martin Berentsen\n\n\n");
+	printf("Copyright (C)  2015-2022  Martin Berentsen\n\n\n");
 	printf("This program is free software: you can redistribute it and/or modify\n");
 	printf("it under the terms of the GNU General Public License as published by\n");
 	printf("the Free Software Foundation, either version 3 of the License, or\n");
@@ -907,7 +908,7 @@ SCR must be open -> move and printw must be possible
 ------------------------------------------------------------------------*/
 void set_trackcurrent(int onoff, int active)
 {
-	if( (config.trackcurrentoutput >=0) && (active == 1) )
+	if( (config.trackcurrentoutput[0] >=0) && (active == 1) )
 	{
 
 		switch(onoff)
@@ -920,7 +921,7 @@ void set_trackcurrent(int onoff, int active)
 			move(CUR_POWER_LINE_Y,CUR_POWER_LINE_X);  /* (y,x) */
 			printw("On");
 			#ifndef OFFLINE
-			digitalWrite(config.trackcurrentoutput,HIGH);
+			digitalWrite(config.trackcurrentoutput[0],HIGH);
 			#ifdef MCP23017
 			digitalWrite(MCP23017_pinBase + MCP23017_BACKSIDE,MCP23017_ON);		/* set alive LED to ON */
 			#endif /* MCP23017 */
@@ -938,7 +939,7 @@ void set_trackcurrent(int onoff, int active)
 			move(CUR_POWER_LINE_Y,CUR_POWER_LINE_X);  /* (y,x) */
 			printw("--");
 			#ifndef OFFLINE
-			digitalWrite(config.trackcurrentoutput,LOW);
+			digitalWrite(config.trackcurrentoutput[0],LOW);
 			#ifdef MCP23017
 			digitalWrite(MCP23017_pinBase + MCP23017_BACKSIDE,MCP23017_OFF);		/* set alive LED to OFF */
 			#endif /* MCP23017 */
@@ -951,7 +952,65 @@ void set_trackcurrent(int onoff, int active)
 			break;
 		}
 	}
-}
+
+	if( (config.trackcurrentoutput[1] >=0) && (active == 1) )
+	{
+
+		switch(onoff)
+		{
+			case 1:
+			#ifndef OFFLINE
+			digitalWrite(config.trackcurrentoutput[1],HIGH);
+			#endif /* OFFLINE */
+			break;
+
+			default:
+			#ifndef OFFLINE
+			digitalWrite(config.trackcurrentoutput[1],LOW);
+			#endif /* OFFLINE */
+			break;
+		}
+	}
+
+	if( (config.trackcurrentoutput[2] >=0) && (active == 1) )
+	{
+
+		switch(onoff)
+		{
+			case 1:
+			#ifndef OFFLINE
+			digitalWrite(config.trackcurrentoutput[2],HIGH);
+			#endif /* OFFLINE */
+			break;
+
+			default:
+			#ifndef OFFLINE
+			digitalWrite(config.trackcurrentoutput[2],LOW);
+			#endif /* OFFLINE */
+			break;
+		}
+	}
+
+	if( (config.trackcurrentoutput[3] >=0) && (active == 1) )
+	{
+
+		switch(onoff)
+		{
+			case 1:
+			#ifndef OFFLINE
+			digitalWrite(config.trackcurrentoutput[3],HIGH);
+			#endif /* OFFLINE */
+			break;
+
+			default:
+			#ifndef OFFLINE
+			digitalWrite(config.trackcurrentoutput[3],LOW);
+			#endif /* OFFLINE */
+			break;
+		}
+	}
+
+} /* set_trackcurrent  */
 
 /* ----------------------------------------------------------------------
 MAIN Program goes from this point
@@ -983,7 +1042,10 @@ int main(int argc, char *argv[])
 	config.numberoftracks = 4;		/* number of tracks used for calculating and race mode, min 1 max 8 */
 	config.outfile = 0;			/* a logfile has to be written 0=none, 1 = counted, 2 = forced */
 	config.rtc_view = 0;			/* do not view RTC by default */
-	config.trackcurrentoutput = -1;		/* default output GPIO port for track current switching */
+	config.trackcurrentoutput[0] = -1;	/* default output GPIO port for track current switching Track 1 */
+	config.trackcurrentoutput[1] = -1;	/* default output GPIO port for track current switching Track 2 */
+	config.trackcurrentoutput[2] = -1;	/* default output GPIO port for track current switching Teack 3 */
+	config.trackcurrentoutput[3] = -1;	/* default output GPIO port for track current switching Track 4 */
 	config.trackpoweractive = 0;		/* track power can be activated/deactivated */
 	config.debuglevel = 0;			/* set debug level, default = 0 */
 	config.random_light_startup = 1;	/* if 1, random start time at Christmas tree , 0 else */
@@ -1350,6 +1412,12 @@ int main(int argc, char *argv[])
 			}
 			printf("\n");
 
+			printf(" Output Pins configured to (GPIO): ");
+			for(i=0;i<TRACKLIM;i++) {
+				printf("[Tr%.2d = out %.2d]",i,config.trackcurrentoutput[i]);
+			}
+			printf("\n");
+
 			printf(" Race lap counter : %d laps\n",endlap);
 			printf(" Race time counter : %d seconds\n",endtime);
 			printf(" Timing file writing is : ");
@@ -1374,7 +1442,10 @@ int main(int argc, char *argv[])
 			printf(" Writing timing output in format : %d\n",config.resultfile_format);
 			printf(" Writing storage data to file : \"%s\"\n",config.storagefile_name);
 
-			printf(" Track power output port (GPIO): %d\n",config.trackcurrentoutput);
+			printf(" Track power 1 output port (GPIO): %d\n",config.trackcurrentoutput[0]);
+			printf(" Track power 2 output port (GPIO): %d\n",config.trackcurrentoutput[1]);
+			printf(" Track power 3 output port (GPIO): %d\n",config.trackcurrentoutput[2]);
+			printf(" Track power 4 output port (GPIO): %d\n",config.trackcurrentoutput[3]);
 
 			printf(" Track power switching is : ");
 				if(config.trackpoweractive == 1)
@@ -1457,6 +1528,8 @@ int main(int argc, char *argv[])
 	printf("Input Port  Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",config.trackinputpin[0], config.trackinputpin[1], config.trackinputpin[2], config.trackinputpin[3]);
 	printf("Input State Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",digitalRead(0), digitalRead(1), digitalRead(2), digitalRead(3));
 
+	printf("Output Port Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",config.trackcurrentoutput[0], config.trackcurrentoutput[1], config.trackcurrentoutput[2], config.trackcurrentoutput[3]);
+
 	/* implement the IRS for all tracks  */
 	if(hardwarecheck == 0) {
 		wiringPiISR(config.trackinputpin[0], config.trackinputevent[0], &Track_1_ISR);
@@ -1472,22 +1545,70 @@ int main(int argc, char *argv[])
 	}
 	printf("Setting up GPIO's for output lines ....\n");
 
-	if( config.trackcurrentoutput >=0)
+	if( config.trackcurrentoutput[0] >=0)
 	{
 		for(i=0;i<TRACKLIM;i++)
 		{
-			if(config.trackcurrentoutput == config.trackinputpin[i])
+			if(config.trackcurrentoutput[0] == config.trackinputpin[i])
 			{
-				printf("TrackCurrentOutput %d is already an input\n",config.trackcurrentoutput);
+				printf("TrackCurrentOutput 1 is already an input (%d)\n",config.trackcurrentoutput[0]);
 				exit(-1);
 			}
 		}
 
-		pinMode(config.trackcurrentoutput, OUTPUT);
-		printf("TrackCurrentOutput set to GPIO Pin %d\n",config.trackcurrentoutput);
+		pinMode(config.trackcurrentoutput[0], OUTPUT);
+		printf("TrackCurrentOutput 1 set to GPIO Pin %d\n",config.trackcurrentoutput[0]);
 
 		if(config.trackpoweractive == 1)
 			printf("Track power switching activated!\n");
+
+	}
+
+	if( config.trackcurrentoutput[1] >=0)
+	{
+		for(i=0;i<TRACKLIM;i++)
+		{
+			if(config.trackcurrentoutput[1] == config.trackinputpin[i])
+			{
+				printf("TrackCurrentOutput 2 is already an input (%d)\n",config.trackcurrentoutput[1]);
+				exit(-1);
+			}
+		}
+
+		pinMode(config.trackcurrentoutput[1], OUTPUT);
+		printf("TrackCurrentOutput 2 set to GPIO Pin %d\n",config.trackcurrentoutput[1]);
+
+	}
+
+	if( config.trackcurrentoutput[2] >=0)
+	{
+		for(i=0;i<TRACKLIM;i++)
+		{
+			if(config.trackcurrentoutput[2] == config.trackinputpin[i])
+			{
+				printf("TrackCurrentOutput 3 is already an input (%d)\n",config.trackcurrentoutput[2]);
+				exit(-1);
+			}
+		}
+
+		pinMode(config.trackcurrentoutput[2], OUTPUT);
+		printf("TrackCurrentOutput 3 set to GPIO Pin %d\n",config.trackcurrentoutput[2]);
+
+	}
+
+	if( config.trackcurrentoutput[3] >=0)
+	{
+		for(i=0;i<TRACKLIM;i++)
+		{
+			if(config.trackcurrentoutput[3] == config.trackinputpin[i])
+			{
+				printf("TrackCurrentOutput 4 is already an input (%d)\n",config.trackcurrentoutput[3]);
+				exit(-1);
+			}
+		}
+
+		pinMode(config.trackcurrentoutput[3], OUTPUT);
+		printf("TrackCurrentOutput 4 set to GPIO Pin %d\n",config.trackcurrentoutput[3]);
 
 	}
 
@@ -1585,9 +1706,9 @@ int main(int argc, char *argv[])
 	if(hardwarecheck == 1) {
 
 
-		if( (config.trackcurrentoutput >=0) && (config.trackpoweractive == 1) )
+		if( (config.trackcurrentoutput[0] >=0) && (config.trackpoweractive == 1) )
 		{
-			digitalWrite(config.trackcurrentoutput,HIGH); /* switching power on */
+			digitalWrite(config.trackcurrentoutput[0],HIGH); /* switching power on */
 			printf("Track Power on\n");
 		}
 
@@ -1710,9 +1831,9 @@ int main(int argc, char *argv[])
 
 		printf("CTRL-C exit from yast hardware check.....\n");
 
-		if( (config.trackcurrentoutput >=0) && (config.trackpoweractive == 1) )
+		if( (config.trackcurrentoutput[0] >=0) && (config.trackpoweractive == 1) )
 		{
-			digitalWrite(config.trackcurrentoutput,LOW); /* switching power off */
+			digitalWrite(config.trackcurrentoutput[0],LOW); /* switching power off */
 			printf("Track Power off\n");
 		}
 
@@ -1743,6 +1864,8 @@ int main(int argc, char *argv[])
 //		exit(0);			/* don't go into main loop, because -vv */
 
 	/* set up the screen, from here no longer printf()'s */
+//	exit(0);
+
 	initscr();
 	nodelay(stdscr, TRUE);
 	noecho();

@@ -47,7 +47,7 @@ Please check first an existing installatin by
 <cite>gpio -v<br></cite>
 
 On my Raspian Buster a 2.50 was already installed.
-Please use wiringPi Version 2.36 or later, because there is fix inside for first time ISR event usage.
+Please use wiringPi Version 2.36 or later, because there is a fix inside for first time ISR event usage.
 For a Raspberry Pi >3 please update to Version 2.52, because of correct Pi
 version handling. How to do this is shown on wiringPi website.
 

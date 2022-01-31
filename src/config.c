@@ -1,9 +1,9 @@
-/*  2019-11-21 20:00  */
+/*  2022-01-31 20:00  */
 /*
     yast - yet another slotcar timer
 	File: config.c -> all run time settings of the project
 
-    Copyright (C)  2015,2016,2017,2018,2019 Martin Berentsen
+    Copyright (C)  2015-2022 Martin Berentsen
 
 
     This file is part of yast.
@@ -709,8 +709,8 @@ int read_yastrc(char *filename)
 						}
 				}		
 
-			/* Parsing TrackCurrentOutput */
-				if(strcmp(token,"TRACKCURRENTOUTPUT:") == 0)
+			/* Parsing TrackCurrentOutput 1 */
+				if(strcmp(token,"TRACKCURRENTOUTPUT1:") == 0)
 				{
 					start = strstr(str_copy,token) - str_copy;	/* start of token inside the string */
 					len = strlen(token);						/* length of tokens */
@@ -718,14 +718,77 @@ int read_yastrc(char *filename)
 					token = strtok(str_copy," \t\n");        	/* isolate second part */
 
 					#ifdef PARSERC
-					printf("Token found: TRACKCURRENTOUTPUT: -%s-\n",token);
+					printf("Token found: TRACKCURRENTOUTPUT1: -%s-\n",token);
 					#endif
 
-					config.trackcurrentoutput = atoi(token);
-					if((config.trackcurrentoutput >= 0) && (config.trackcurrentoutput<= MAXWIRINGPIINPUTPINS))
+					config.trackcurrentoutput[0] = atoi(token);
+					if((config.trackcurrentoutput[0] >= -1) && (config.trackcurrentoutput[0] <= MAXWIRINGPIINPUTPINS))
 						icount ++;
 					else {
-						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput pin given %d\n",config.trackcurrentoutput);
+						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput1 pin given %d\n",config.trackcurrentoutput[0]);
+						exit(0);
+						}
+				}		
+
+			/* Parsing TrackCurrentOutput 2 */
+				if(strcmp(token,"TRACKCURRENTOUTPUT2:") == 0)
+				{
+					start = strstr(str_copy,token) - str_copy;	/* start of token inside the string */
+					len = strlen(token);						/* length of tokens */
+					memmove(str_copy,&str_rc[len+start],strlen(str_rc));
+					token = strtok(str_copy," \t\n");        	/* isolate second part */
+
+					#ifdef PARSERC
+					printf("Token found: TRACKCURRENTOUTPUT2: -%s-\n",token);
+					#endif
+
+					config.trackcurrentoutput[1] = atoi(token);
+					if((config.trackcurrentoutput[1] >= -1) && (config.trackcurrentoutput[1] <= MAXWIRINGPIINPUTPINS))
+						icount ++;
+					else {
+						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput2 pin given %d\n",config.trackcurrentoutput[1]);
+						exit(0);
+						}
+				}		
+
+			/* Parsing TrackCurrentOutput 3 */
+				if(strcmp(token,"TRACKCURRENTOUTPUT3:") == 0)
+				{
+					start = strstr(str_copy,token) - str_copy;	/* start of token inside the string */
+					len = strlen(token);						/* length of tokens */
+					memmove(str_copy,&str_rc[len+start],strlen(str_rc));
+					token = strtok(str_copy," \t\n");        	/* isolate second part */
+
+					#ifdef PARSERC
+					printf("Token found: TRACKCURRENTOUTPUT3: -%s-\n",token);
+					#endif
+
+					config.trackcurrentoutput[2] = atoi(token);
+					if((config.trackcurrentoutput[2] >= -1) && (config.trackcurrentoutput[2] <= MAXWIRINGPIINPUTPINS))
+						icount ++;
+					else {
+						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput3 pin given %d\n",config.trackcurrentoutput[2]);
+						exit(0);
+						}
+				}		
+
+			/* Parsing TrackCurrentOutput 4 */
+				if(strcmp(token,"TRACKCURRENTOUTPUT4:") == 0)
+				{
+					start = strstr(str_copy,token) - str_copy;	/* start of token inside the string */
+					len = strlen(token);						/* length of tokens */
+					memmove(str_copy,&str_rc[len+start],strlen(str_rc));
+					token = strtok(str_copy," \t\n");        	/* isolate second part */
+
+					#ifdef PARSERC
+					printf("Token found: TRACKCURRENTOUTPUT4: -%s-\n",token);
+					#endif
+
+					config.trackcurrentoutput[3] = atoi(token);
+					if((config.trackcurrentoutput[3] >= -1) && (config.trackcurrentoutput[3] <= MAXWIRINGPIINPUTPINS))
+						icount ++;
+					else {
+						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput4 pin given %d\n",config.trackcurrentoutput[3]);
 						exit(0);
 						}
 				}		
