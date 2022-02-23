@@ -2,7 +2,7 @@
 	Changes
 
 0.4.13: 2022-01-31
-	- going forward to 4 chan track current output switching
+	- going forward to 4 chan track current output switching, setup works
 0.4.12: 2020-11-03
 	- more than 8 colors are also working
 	- some error output corrections
@@ -23,6 +23,7 @@
 0.4.7: 2019-01-19
 	- in result file: track related starts now with Track X
 	- fastest lap in result file
+	- upload to GitHub
 0.4.6: 2018-12-31
 	- rework of result string algo, algo rework required
 	- -vv option now shows also ncurses parameters

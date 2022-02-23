@@ -56,6 +56,7 @@ clean:
 	rm -f $(DOCS)*~
 	rm -f $(OUTNAME)
 	rm -f $(DATADIR)timing_*
+	rm -f yastdata.txt
 	
 rasptar: 
 	tar -cvzf yast_$(VERSION).tgz src script obj result docs Makefile README.md hardware.md install.md LICENSE yast.conf

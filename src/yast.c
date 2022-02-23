@@ -1841,12 +1841,6 @@ int main(int argc, char *argv[])
 
 	}
 
-//	/* out, because old */
-//	if(stop == 1) {
-//		printf("exiting while option -vv ..................\n");
-//		exit(0);			/* don't go into main loop, because -vv */
-//		}
-
 	/* Reset all variables inside Array at the beginning*/
 	printf("starting yast environment and display.....\n");
 
@@ -1858,10 +1852,6 @@ int main(int argc, char *argv[])
 	readback_environment(config.storagefile_name, config.minlaptime);
 
 	srandom(GetTime());  /* set a new random sequence */
-
-//	/* out, because old */
-//	if(stop == 1)
-//		exit(0);			/* don't go into main loop, because -vv */
 
 	/* set up the screen, from here no longer printf()'s */
 //	exit(0);
