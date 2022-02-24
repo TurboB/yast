@@ -7,12 +7,15 @@ echo "********************************"
 echo " Installing WiringPi"
 echo "********************************"
 
+# old and latest 2.52 from Gordon
 #cd ..
 #git clone git://git.drogon.net/wiringPi 
 #cd wiringPi 
 #./build
 #cd ..
-# wget https://github.com/WiringPi/WiringPi/archive/refs/tags/2.61-1.tar.gz
+#
+# newer versions from new team, seems to be future standard 
+#wget https://github.com/WiringPi/WiringPi/archive/refs/tags/2.61-1.tar.gz
 #
 
 if [ -f /usr/bin/gpio ]
