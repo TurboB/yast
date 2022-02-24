@@ -46,7 +46,7 @@ Please check first an existing installatin by
 
 <cite>gpio -v<br></cite>
 
-On my Raspian Buster a 2.50 was already installed.
+On my Raspian Buster a 2.50 was already installed, an update to 2.52 as Gordons latest version works.
 Please use wiringPi Version 2.36 or later, because there is a fix inside for first time ISR event usage.
 For a Raspberry Pi >3 please update to Version 2.52, because of correct Pi
 version handling. How to do this is shown on wiringPi website.
@@ -54,6 +54,9 @@ version handling. How to do this is shown on wiringPi website.
 <cite>git clone git://git.drogon.net/wiringPi<br>
 cd wiringPi<br>
 ./build<br></cite>
+
+Newer version from https://github.com/WiringPi/WiringPi was tested with
+version 2.61. 
 
 Than the Curses package must be downloaded and installed
 <cite>sudo apt-get install libncurses5-dev</cite><br>
