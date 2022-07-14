@@ -1,6 +1,6 @@
 #
 # This is the YAST Makefile
-# Date: 2022-01-31
+# Date: 2022-07-14
 #
 
 VERSION := 0.4.13
@@ -19,11 +19,15 @@ FONTSIZE := -DFONT3X5
 # ------- don't edit from here --------
 
 CC	:= gcc
+
 # CP437 version
-CFLAGS  := -Wall -lncurses -lm -lwiringPi $(ALSA_SOUND_LIB) $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE)
+CFLAGS  := -Wall $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE)
 # UNICODE version
 # CFLAGS  := -Wall -lncursesw -lm -lwiringPi $(ALSA_SOUND_LIB) $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE) -DUNICODE
-MYFLAGS := -lasound -DALSA_SOUND -DMCP23017=1 
+
+LDLIBS  = -lwiringPi -lncurses -lm $(ALSA_SOUND_LIB)
+
+MYFLAGS := -DALSA_SOUND -DMCP23017=1 -lasound 
 SRCDIR  := src/
 OBJDIR  := obj/
 DATADIR := result/
@@ -34,7 +38,7 @@ C_FILES := $(wildcard $(SRCDIR)*.c)
 OBJ_FILES := $(addprefix $(OBJDIR),$(notdir $(C_FILES:.c=.o)))
 
 yast:	$(OBJ_FILES)
-	$(CC) $(CFLAGS) -o $(OUTNAME) $^
+	$(CC)  -o $(OUTNAME) $^ $(CFLAGS) $(LDLIBS)
 
 test: CFLAGS += $(MYFLAGS)
 
