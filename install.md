@@ -99,7 +99,7 @@ or place the yastfile.tgz in your local directory and untar it:
 Run in yast directory the install script, and after your configuration
 the make
 
-      <cite> ./script/install
+<cite> ./script/install
       <br> make
       <br> </cite><br>
 	  
