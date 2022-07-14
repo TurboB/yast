@@ -86,16 +86,25 @@ A script for switching on and of the screen and fontmode is included and called
 
 ## Automatic - Installation with installation script
 
-After placing the yastfile.tgz in your local directory 
+Use git to clone a copy with: 
+
+<cite> git clone https://github.com/TurboB/yast.git </cite>
+
+or place the yastfile.tgz in your local directory and untar it:
 
 <cite> mkdir yast
       <br> cd yast
-      <br> tar -xvzf ../yastfile.tgz
-      <br> ./script/install
+      <br> tar -xvzf ../yastfile.tgz <br> </cite>
+
+Run in yast directory the install script, and after your configuration
+the make
+
+      <cite> ./script/install
       <br> make
       <br> </cite><br>
 	  
 This install script tries to install wiringPi, libncurses5-dev, cp437.acm and ntpdate.
+
 
 ## Wheezy - Distribution specials on Raspbian Wheezy
 
