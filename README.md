@@ -466,8 +466,8 @@ For more details see [TODO](docs/ToDo.txt).
 
 ## References
 http://wiringpi.com/ (io)  
-https://github.com/WiringPi/WiringPi (io)
-https://pinout.xyz/ (io)
+https://github.com/WiringPi/WiringPi (io)\
+https://pinout.xyz/ (io)\
 http://codeandlife.com/2012/07/03/benchmarking-raspberry-pi-gpio-speed/ (io)  
 http://elinux.org/Rpi_Low-level_peripherals#cite_note-20 (io)  
 http://hobbyelektronik.org/w/index.php/Raspberry_Pi_IO (io)  
