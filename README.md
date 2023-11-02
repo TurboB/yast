@@ -123,7 +123,7 @@ However, for me it works as a first timing solution.
 
 I use a Raspberry Pi Type 1 Mod. B, a 3 Mod B and a 4 Mod. B. A 1 Mod B+ is also tested. But also Type A, A+,
 B2 and all others up to Mod.4 are usable (I think so).\
-$${\color{red}Raspberry Pi 5 cannot be used at the moment. WiringPi does not support it yet. }$$ 
+$${\color{red}Raspberry \space Pi \space 5 \space cannot \space be \space used \space at \space the \space moment. \space WiringPi \space does \space not \space support \space it \space yet. }$$ 
 To prevent confusion on the GPIO pin enumeration I try to disentangle these informations
 about RaspberryPi hardware and WiringPi software.
 Inside the yast I use the wiringPi numbering.
