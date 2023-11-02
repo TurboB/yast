@@ -122,8 +122,8 @@ However, for me it works as a first timing solution.
 ## Hardware
 
 I use a Raspberry Pi Type 1 Mod. B, a 3 Mod B and a 4 Mod. B. A 1 Mod B+ is also tested. But also Type A, A+,
-B2 and all others up to Mod.4 are usable (I think so).
-Rapberry Pi 5 cannot be used at the moment. WiringPi does not support it yet.
+B2 and all others up to Mod.4 are usable (I think so).\
+<span style="color:red">Rapberry Pi 5 cannot be used at the moment. WiringPi does not support it yet.</span> \
 To prevent confusion on the GPIO pin enumeration I try to disentangle these informations
 about RaspberryPi hardware and WiringPi software.
 Inside the yast I use the wiringPi numbering.
