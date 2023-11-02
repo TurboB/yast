@@ -1,0 +1,101 @@
+yast - yet another slotcar timer
+
+Todo (without priority and/or only ideas):
+
+	- view laps behind	
+	- make another sound for "new best lap" on a track
+	- CSV format seperator as config
+	- make a reset all in one key
+	- time in Race is not correct in the right side while panic -> A question of the definition of "Time in race........"
+	- make the graphic skale from 1 to 8 tracks inside the window
+	- no hardcoding of messages and error strings, so be clean for future use
+	- later on a overwrite parameter for these cyclic file writing (timingfile) is required
+	- PANIC button on I/O input 
+	- view race mode information somewhere on screen while race
+	- take name generation out of file writing
+	- don't write a data file if all lap counters are zero ( nothing done on track )
+	- yellow state as panic is without timing, yellow flag F10 is with timing, -> try to solve this theoretical problem
+	- IPC for remote control: Start of a race on SIGNAL USR1, END of a race on SIGNAL USR2 or HUP
+	- What's next after writing a timing data file after Pressing "W" ? 
+	- rasptar im Makefile must have an leading yast/ directory
+	- make each track switching possible, example: 1,3 -> maybe possible by internaly counting 1-3, but just view 1,3
+	- sound for each action on option -s as sound_XX in config file
+	- logitech presenter as input device
+
+On Work:
+
+Done: 	
+
+	+ What is about rolling over start while finished time: -> see panic 1 second
+	+ combine source of CSV and old file format	
+	+ -a and -c options do not work together, please check 
+	+ make some times a compleate screen update to clear unwanted messages not piped to an error file
+	+ View REAL-Time-Clock in the lower part of the screen. Like race time or race counter
+	+ make a Makefile without any usage of "nonPi" hardware as default
+	+ "timeing off" with timeshift on panic, 1000ms by default 
+	+ use a "Random Number" for start delay (1..3 seconds)
+	+ one second blank after red lights is out
+	+ !!! rewrite the comand line parser -> just corrected, works now
+	+ !!! no panic time correction on lap times
+	+ use 16 bit sound samples (S16) and 44100 sample rate
+	+ minimizing of the output rate possible ? No, 48000 seems to be the only one
+	+ on yast exit the complete history was written again to result file -> search for an easy fix 
+	+ don't write a data file if all lap counters are zero ( nothing done on track ) file is only written after race or by force write 
+	+ view time to go on display while timed race (lap to go also)
+	+ clean up everything correct for next file writing
+	+ write a ERROR / MESSAGE printout_routine(), so it can be used for a clean logging
+ 	+ check up for another instance of yast running on this machine to prevent log and data file trouble
+	+ panic seems not to work correct on tome race, check this -> fixed
+	+ add a path parameter for timing data file with more error details on path / file (check path on start and so on)
+	+ make a subroutine for Timing on/off includung Trackcurrent on/off 
+	+ make compile under windows working again (really required -> no, but it's possible)
+	+ If a Track has not set the first pulse in race, it will only be finished after checkered flag and additional two pulses (fix it)
+	+ make config file for number of used tracks
+	+ MAXLAPIME cutting internally, the output engine did it already
+	+ clear up open hardware unused input lines, example: switch to pullup/down or don' touch in init, just to be clean in hardware -> I think it's stable enough
+	+ write a new fail start modul (depending on racemode) -> NO, fail start is punished by starting the timing later
+	+ view the time between race start and first hit of track, name for this is "start time"
+	+ make pulse up / down adjustable to inputs via configuration file	
+	+ make the colours adjustable via configuration file and/or command line
+	+ make tracks adjustable to inputs via configuration file
+	+ finish in time shows for lines instead of 2 if two tracks are choosen
+	+ change overall timing to overall fastest timing in top of store_data() header
+	+ change store_data to store_environment, readback too.....
+	+ write a date code into the timing file header
+	+ Move the PULL_UP_DOWN into yast_define.h
+	+ set track event simulation as command line flag on function keys, so that F1 to F8 can be used for 
+	  track timing reset inside the 8 lane mode.
+	+ write race mode in header
+	+ panic button only while race
+	+ use timing_0000.txt instead of timing.txt to have the chance to write 1000 files
+	+ don't overwrite an old timing.txt file
+	+ check up files already written and search for a free one
+	+ view next file number inside the main display on Monitor
+	+ block data file writing to race mode
+	+ write data file by pusching a "Write" button, and get the next free file number for next
+	+ finish race by next lap in goal all cars
+	+ set yellow flag to PANIC, and stop timing while race, and continue the race after finisch
+	+ don't stop time race while panic or don't make a time correction
+	+ which type of RACE is standard: all cars in or ending at this round (I think the point two) -> (All cars in in the first full finished lap)
+	+ finish race by next lap in goal all cars
+	+ write total race time to data file header
+	+ use the trafic light backside LED to show the active timing like panic on/off, etc.....
+	+ say the race mode in data file with more details, like training, race started, race time and so on 
+	+ make an additional ALT-1,2,3,4 function for PD-Curses to simulate a pulse
+	+ make a race end 'e' button for races on ENDLAP working, Time race end to from 0.2.0 ......
+	+ put yast_check back into the main code...... (option -c)
+	+ setup the new folder architecture for install and startup
+
+	
+Idea (not really required yet):
+
+	- make overall fastest laps in track color (really required ?)
+	- logfile writing
+	- show the real time inside the main display on Monitor
+	- change EXIT key to ALT_END
+	- an invisible track will be counted in evaluation, normally with no triggering there is no result, but has to be fixed later 
+	
+temp code ideas here:
+	
+	nothing here
+
