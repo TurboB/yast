@@ -1337,7 +1337,7 @@ int main(int argc, char *argv[])
 			printf("  -a   : activate track power switching\n");
 			printf("  -c   : hardware check loop, endless, sound possible (quit with CTRL-C)\n");
 			printf("  -D n : set DEBUG level to n, default = 0, max = %d\n",MAXDEBUGLEVEL);
-			printf("  -d n : n is delay time in ms between two track events\n");
+			printf("  -d n : n is the minimum laptime in ms between two track events (dead time)\n");
 			printf("  -f   : activate false start detection\n");
 			printf("  -h   : this little help, exit\n");
 			printf("  -l n : n is number of laps to run in race\n");
