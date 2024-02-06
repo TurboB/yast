@@ -1,9 +1,9 @@
-/*  2022-01-31 17:00  */
+/*  2024-02-06 17:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
 
-Copyright (C)  2015 -2022 Martin Berentsen
+Copyright (C)  2015 - 2024 Martin Berentsen
 
 
 This file is part of yast.
@@ -422,7 +422,7 @@ printout the Copyright information on console
 void printcopyright(void)
 {
 	printf("YAST - Yet Another Slotcar Timer\n");
-	printf("Copyright (C)  2015-2022  Martin Berentsen\n\n\n");
+	printf("Copyright (C)  2015-2024  Martin Berentsen\n\n\n");
 	printf("This program is free software: you can redistribute it and/or modify\n");
 	printf("it under the terms of the GNU General Public License as published by\n");
 	printf("the Free Software Foundation, either version 3 of the License, or\n");
@@ -1363,6 +1363,8 @@ int main(int argc, char *argv[])
 			printf("yast Version: %s\ncompiled at %s on %s\n",VERSION,__TIME__,__DATE__);
 			if(RaspberryPiVersion() != 0)
 				printf("no Pi hardware descriptor found\n");
+			if(LinuxVersion() != 0)
+				printf("no Linux version descriptor found\n");
 			exit(0);
 			continue;
 		}
@@ -1494,6 +1496,8 @@ int main(int argc, char *argv[])
 	printf("Version: %s compiled at: %s %s\n",VERSION,__DATE__,__TIME__);
 	if(RaspberryPiVersion() != 0)
 		printf("no Pi hardware descriptor found\n");
+	if(LinuxVersion() != 0)
+		printf("no Linux version descriptor found\n");
 	printf("Reserved lap memory is: %d laps x %d tracks x %d Bytes = %.2f kBytes\n",LAPLIM,TRACKLIM,sizeof(long),(float)(LAPLIM*TRACKLIM*sizeof(long))/1024.0);
 	printf("Race lap counter set to %d laps\n",endlap);
 	printf("Race time counter set to %d seconds\n",endtime);

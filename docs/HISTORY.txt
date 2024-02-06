@@ -1,6 +1,9 @@
 	yast - yet another slotcar timer
 	Changes
 
+0.4.14: 2024-02-06
+	- more version infos to look forward to change fom WiringPi to another GPIO
+	  library. Because WiringPi development ends with step to Pi5 and Bookworm
 0.4.13: 2022-02-24, 2022-07-14
 	- going forward to 4 chan track current output switching, setup works
 	- checked against wiringPi from https://github.com/WiringPi/WiringPi, version 2.61

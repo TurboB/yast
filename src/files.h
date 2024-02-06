@@ -1,9 +1,9 @@
-/*  2019-11-01 14:00  */
+/*  2024-02-06 14:00  */
 /*
     yast - yet another slotcar timer
 	File: files.h -> include file for files.c
 
-    Copyright (C)  2016,2019 Martin Berentsen
+    Copyright (C)  2016 - 2024 Martin Berentsen
 
 
     This file is part of yast.
@@ -31,6 +31,7 @@
 	int CheckLock(char *name);
 	int DeleteLock(char *name);
 	int RaspberryPiVersion(void);
+	int LinuxVersion(void);
 		
 #endif
 
