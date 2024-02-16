@@ -52,13 +52,13 @@ However, for me it works as a first timing solution.
   - Free start with power on track before the green light is on.
   - End lap programming with a minimum 1 lap and a maximum of 999 laps.
   - End time programming with minimum of 10 seconds and a maximum of 6 hours
-- PANIC / CHAOS / ERROR button on keyboard
+- PANIC / CHAOS / TERROR button on keyboard
 - Track power switching supported
 - Some sounds are supported on events ( track power on / off, timing valid / non valid, timing off)
 - Drivers name can be shown on every track
 - Delays for time gap between PANIC-Button / timerace end and timing off can be configured
 - Configuration to track, hardware and race type by config file, command line options and compile time options
-
+- Real Time Clock in display supported
   
 ## Usage
 
@@ -121,49 +121,47 @@ However, for me it works as a first timing solution.
 
 ## Hardware
 
-I use a Raspberry Pi Type 1 Mod. B, a 3 Mod B and a 4 Mod. B. A 1 Mod B+ is also tested. But also Type A, A+,
-B2 and all others up to Mod.4 are usable (I think so).\
-$${\color{red}Raspberry \space Pi \space 5 \space and/or \space Bookworm \space cannot \space be \space used \space at \space the \space moment. \space WiringPi \space does \space not \space support \space it \space yet. }$$ 
+I use a Raspberry Pi Mod 4. Also Type 1 Mod. B, a 3 Mod B and a 4 Mod. B. A 1 Mod B+ is tested. But also Type A, A+,
+B2 and all others up to Mod.5 are usable (I think so).\
+
+The track power switching is done by switching a GPIO pin for every track.
+The pin can be chosen by config file.
+
 To prevent confusion on the GPIO pin enumeration I try to disentangle these informations
-about RaspberryPi hardware and WiringPi software.
-Inside the yast I use the wiringPi numbering.
-At the 26 Pin GPIO port of the Raspberry Pi you will find the
-IO Pins on a Model B, Rev. 2, in the following way:
+about RaspberryPi hardware, lgpio  and WiringPi software.
+At the 26 / 40 Pin GPIO port of the Raspberry Pi you will find the
+IO Pins at most Models the following way:
 
-| Schematic Name | Pinheader Number | WiringPi Number | Track Number |
+| Schematic Name | Pinheader Number | lgpio Number | WiringPi Number | Track Number |
 |:---:|:---:|:---:|:---:|
-| GPIO 17 | PIN 11 | 0 | 1 |
-| GPIO 18 |PIN 12 | 1 | 2 |
-| GPIO 27 | PIN 13 | 2 | 3 |
-| GPIO 22 | PIN 15 | 3 | 4 |
-| GND  | PIN 6 | - | - |
-
+| GPIO 17 | PIN 11 | 17 | 0 | 1 |
+| GPIO 18 | PIN 12 | 18 | 1 | 2 |
+| GPIO 27 | PIN 13 | 27 | 2 | 3 |
+| GPIO 22 | PIN 15 | 22 | 3 | 4 |
+| GND  | PIN 6 | - | - | - |
 
 The first 26 Pins of the newer 40 pin header seems to be the same for this.
  
-For further information see the wiringPi project.  
-I use these WiringPi Number 0,1,2,3 for Track 1,2,3,4.
+For further information see the lgpio or wiringPi project.  
+Early I use these WiringPi Number 0,1,2,3 for Track 1,2,3,4, now
+17,18,27,22. But they can configured free via config file.
 Also there is a HEF 4528 monostable multivibrator for a defined pulse shaping used from my side.
 But there is no Input Track Pulse Shaping hardware urgently required to run yast.
-
-The track power switching is done by switching a GPIO pin.
-The pin can be chosen by config file.
-There is no track power switching hardware urgently required to run yast.
-
 
 For Traffic Lights output an I2C MCP23017, MCP23008 or I2C SN3218  are supported.
 The I2C interface of the IO expander is connected to I2C Nr. 1 of my Raspberry Pi B (Rev. 2).
 
-A standard IO Extender based on MCP23017 or MCP230008 with one two IC's can be used. 
+A standard IO Extender based on MCP23017 or MCP230008 with one or two IC's can be used. 
 The MCP23017 / MCP230008 or the SN3218 can be configured in Makefile.
 There is no Traffic Light hardware urgently required to run yast.
 
-
-| Schematic Name | Pinheader Number |
+| Schematic Name | Pinheader Number | 
 |:---:|:---:|
 | I2C SDA | PIN 3 |
 | I2C SDL | PIN 5 |
 | GND | PIN 6 |
+
+This I2C bus apears as i2c-1 at file system. 
 	
 For more details on pulse shaping, track power switching and more hardware take a look at [YAST - Hardware Collection](hardware.md).
 
@@ -249,17 +247,17 @@ See this example:
  Track3Color: BLUE
  Track4Color: YELLOW
  
- # TrackXInput defines the WiringPi input number of the track X
+ # TrackXInput defines the lgpio or WiringPi input number of the track X
  # track 1 to 4 is possible
  # possible values are :
- #  0,1,2,3,4,5,6,10
+ #  0,1,2,3,4,5,6,10, 17,18,22,27
  
- Track1Input: 0
- Track2Input: 1
- Track3Input: 2
- Track4Input: 3
+ Track1Input: 17
+ Track2Input: 18
+ Track3Input: 27
+ Track4Input: 22
  
- # TrackXInputEvent defines the WiringPi input event type for the track X
+ # TrackXInputEvent defines the Pi input event type for the track X
  # track 1 to 4 is possible
  # possible values are :
  #  INT_EDGE_RISING
@@ -270,7 +268,7 @@ See this example:
  Track3InputEvent: INT_EDGE_RISING
  Track4InputEvent: INT_EDGE_RISING
  
- # TrackXInputPUD defines the WiringPi input pull up/down type for the track X
+ # TrackXInputPUD defines the Pi input pull up/down (PUD) type for the track X
  # track 1 to 4 is possible
  # possible values are :
  # PUD_OFF
@@ -288,12 +286,12 @@ See this example:
  # The minimum lap time between two rounds
  MinimumLapTime: 2500
  
- # TrackCurrentOutput defines a WiringPi GPIO for switching the Track
+ # TrackCurrentOutput defines a lgpio or WiringPi GPIO for switching the Track
  # Power while panic/error and end of race
  # -1 means not used 
  # also only one for all is possible by usage of the first
- TrackPowerOutput1: 4
- TrackPowerOutput1: 5
+ TrackPowerOutput1: 23
+ TrackPowerOutput1: 24
  TrackPowerOutput1: -1
  TrackPowerOutput1: -1
 
@@ -447,10 +445,12 @@ You see here the Version 0.1.9. Font is here 3x3 (small).
 
 
 ## History
+Some rough milestones are:
 Startup with first public test release version 0.1.  
 With version 0.2 a more clear build structure and a new font is inside.  
 Track power switching since version 0.3.  
 UNICODE is implemented since 0.4.  
+First step to become independend from WiringPi from 0.5 with lgpio.
 For more details see [HISTORY](docs/HISTORY.txt).
 
 
@@ -468,6 +468,8 @@ For more details see [TODO](docs/ToDo.txt).
 http://wiringpi.com/ (io)  
 https://github.com/WiringPi/WiringPi (io)\
 https://pinout.xyz/ (io)\
+https://abyz.me.uk/lg/index.html (io)
+https://github.com/keriszafir/mcp23017-demo/tree/master (i2c)
 http://codeandlife.com/2012/07/03/benchmarking-raspberry-pi-gpio-speed/ (io)  
 http://elinux.org/Rpi_Low-level_peripherals#cite_note-20 (io)  
 http://hobbyelektronik.org/w/index.php/Raspberry_Pi_IO (io)  

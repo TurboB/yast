@@ -1,9 +1,9 @@
-/*  2022-01-31 20:00  */
+/*  2024-02-10 20:00  */
 /*
     yast - yet another slotcar timer
 	File: config.c -> all run time settings of the project
 
-    Copyright (C)  2015-2022 Martin Berentsen
+    Copyright (C)  2015-2024 Martin Berentsen
 
 
     This file is part of yast.
@@ -28,8 +28,12 @@
 #include <curses.h>
 #include <stdlib.h>
 
-#ifndef OFFLINE
+#ifdef WIRINGPI
 #include <wiringPi.h>
+#endif
+
+#ifdef LGPIO
+#include <lgpio.h>
 #endif
 
 #include "yast_define.h"
@@ -303,7 +307,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackinputpin[0] = atoi(token);
-					if((config.trackinputpin[0] >= 0) && (config.trackinputpin[0]<= MAXWIRINGPIINPUTPINS))
+					if((config.trackinputpin[0] >= MIN_GPIO_INPUTPINS) && (config.trackinputpin[0]<= MAX_GPIO_INPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong track input pin given %d\n",config.trackinputpin[0]);
@@ -324,7 +328,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackinputpin[1] = atoi(token);
-					if((config.trackinputpin[1] >= 0) && (config.trackinputpin[1]<= MAXWIRINGPIINPUTPINS))
+					if((config.trackinputpin[1] >= MIN_GPIO_INPUTPINS) && (config.trackinputpin[1]<= MAX_GPIO_INPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong track input pin given %d\n",config.trackinputpin[1]);
@@ -345,7 +349,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackinputpin[2] = atoi(token);
-					if((config.trackinputpin[2] >= 0) && (config.trackinputpin[2]<= MAXWIRINGPIINPUTPINS))
+					if((config.trackinputpin[2] >= MIN_GPIO_INPUTPINS) && (config.trackinputpin[2]<= MAX_GPIO_INPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong track input pin given %d\n",config.trackinputpin[2]);
@@ -366,7 +370,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackinputpin[3] = atoi(token);
-					if((config.trackinputpin[3] >= 0) && (config.trackinputpin[3]<= MAXWIRINGPIINPUTPINS))
+					if((config.trackinputpin[3] >= MIN_GPIO_INPUTPINS) && (config.trackinputpin[3]<= MAX_GPIO_INPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong track input pin given %d\n",config.trackinputpin[3]);
@@ -388,15 +392,27 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"INT_EDGE_RISING") == 0) {
-						#ifndef OFFLINE
+
+						#ifdef WIRINGPI
 						config.trackinputevent[0] = INT_EDGE_RISING;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputevent[0] = LG_RISING_EDGE;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(strcmp(token,"INT_EDGE_FALLING") == 0) {
-						#ifndef OFFLINE
+
+						#ifdef WIRINGPI
 						config.trackinputevent[0] = INT_EDGE_FALLING;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputevent[0] = LG_FALLING_EDGE;
+						#endif /* LGPIO */
+
 						excount = 1;
 						}
 					if(excount > 0)
@@ -419,15 +435,26 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"INT_EDGE_RISING") == 0) {
-						#ifndef OFFLINE
+
+						#ifdef WIRINGPI
 						config.trackinputevent[1] = INT_EDGE_RISING;
-						#endif
+						#endif /* WIRINGPI */
+						
+						#ifdef WIRINGPI
+						config.trackinputevent[1] = INT_EDGE_RISING;
+						#endif /* WIRINGPI */
+
 						excount = 1;
 						}
 					if(strcmp(token,"INT_EDGE_FALLING") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputevent[1] = INT_EDGE_FALLING;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputevent[1] = LG_FALLING_EDGE;
+						#endif /* LGPIO */
+
 						excount = 1;
 						}
 					if(excount > 0)
@@ -450,15 +477,25 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"INT_EDGE_RISING") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI 
 						config.trackinputevent[2] = INT_EDGE_RISING;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputevent[2] = LG_FALLING_EDGE;
+						#endif /* LGPIO */
+
 						excount = 1;
 						}
 					if(strcmp(token,"INT_EDGE_FALLING") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputevent[2] = INT_EDGE_FALLING;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputevent[2] = LG_FALLING_EDGE;
+						#endif /* LGPIO */
+
 						excount = 1;
 						}
 					if(excount > 0)
@@ -481,15 +518,27 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"INT_EDGE_RISING") == 0) {
-						#ifndef OFFLINE
+
+						#ifdef WIRINGPI
 						config.trackinputevent[3] = INT_EDGE_RISING;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputevent[3] = LG_FALLING_EDGE;
+						#endif /* LGPIO */
+
 						excount = 1;
 						}
 					if(strcmp(token,"INT_EDGE_FALLING") == 0) {
-						#ifndef OFFLINE
+
+						#ifdef WIRINGPI
 						config.trackinputevent[3] = INT_EDGE_FALLING;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputevent[3] = LG_FALLING_EDGE;
+						#endif /* LGPIO */
+
 						excount = 1;
 						}
 					if(excount > 0)
@@ -512,21 +561,36 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"PUD_OFF") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[0] = PUD_OFF;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[0] = LG_SET_PULL_NONE;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_DOWN") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[0] = PUD_DOWN;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[0] = LG_SET_PULL_DOWN;
+						#endif /* LGPIO */
+												
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_UP") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[0] = PUD_UP;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[0] = LG_SET_PULL_UP;
+						#endif /* LGPIO */
+												
 						excount = 1;
 						}
 					if(excount > 0)
@@ -549,21 +613,36 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"PUD_OFF") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[1] = PUD_OFF;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[1] = LG_SET_PULL_NONE;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_DOWN") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[1] = PUD_DOWN;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[1] = LG_SET_PULL_DOWN;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_UP") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[1] = PUD_UP;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[1] = LG_SET_PULL_UP;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(excount > 0)
@@ -586,21 +665,36 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"PUD_OFF") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[2] = PUD_OFF;
-						#endif
+						#endif /* WIRINGPI */
+						
+						#ifdef LGPIO
+						config.trackinputpud[2] = LG_SET_PULL_NONE;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_DOWN") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[2] = PUD_DOWN;
-						#endif
+						#endif /* WIRINGPI */
+						
+						#ifdef LGPIO
+						config.trackinputpud[2] = LG_SET_PULL_DOWN;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_UP") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[2] = PUD_UP;
-						#endif
+						#endif /* WIRINGPI */
+						
+						#ifdef LGPIO
+						config.trackinputpud[2] = LG_SET_PULL_UP;
+						#endif /* LGPIO */
+						
 						excount = 1;
 						}
 					if(excount > 0)
@@ -623,21 +717,36 @@ int read_yastrc(char *filename)
 					
 					excount = 0;
 					if(strcmp(token,"PUD_OFF") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[3] = PUD_OFF;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[3] = LG_SET_PULL_NONE;
+						#endif /* LGPIO */						
+						
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_DOWN") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[3] = PUD_DOWN;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[3] = LG_SET_PULL_DOWN;
+						#endif /* LGPIO */						
+						
 						excount = 1;
 						}
 					if(strcmp(token,"PUD_UP") == 0) {
-						#ifndef OFFLINE
+						#ifdef WIRINGPI
 						config.trackinputpud[3] = PUD_UP;
-						#endif
+						#endif /* WIRINGPI */
+
+						#ifdef LGPIO
+						config.trackinputpud[3] = LG_SET_PULL_UP;
+						#endif /* LGPIO */						
+						
 						excount = 1;
 						}
 					if(excount > 0)
@@ -722,7 +831,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackcurrentoutput[0] = atoi(token);
-					if((config.trackcurrentoutput[0] >= -1) && (config.trackcurrentoutput[0] <= MAXWIRINGPIINPUTPINS))
+					if((config.trackcurrentoutput[0] >= -1) && (config.trackcurrentoutput[0] <= MAX_GPIO_OUTPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput1 pin given %d\n",config.trackcurrentoutput[0]);
@@ -743,7 +852,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackcurrentoutput[1] = atoi(token);
-					if((config.trackcurrentoutput[1] >= -1) && (config.trackcurrentoutput[1] <= MAXWIRINGPIINPUTPINS))
+					if((config.trackcurrentoutput[1] >= -1) && (config.trackcurrentoutput[1] <= MAX_GPIO_OUTPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput2 pin given %d\n",config.trackcurrentoutput[1]);
@@ -764,7 +873,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackcurrentoutput[2] = atoi(token);
-					if((config.trackcurrentoutput[2] >= -1) && (config.trackcurrentoutput[2] <= MAXWIRINGPIINPUTPINS))
+					if((config.trackcurrentoutput[2] >= -1) && (config.trackcurrentoutput[2] <= MAX_GPIO_OUTPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput3 pin given %d\n",config.trackcurrentoutput[2]);
@@ -785,7 +894,7 @@ int read_yastrc(char *filename)
 					#endif
 
 					config.trackcurrentoutput[3] = atoi(token);
-					if((config.trackcurrentoutput[3] >= -1) && (config.trackcurrentoutput[3] <= MAXWIRINGPIINPUTPINS))
+					if((config.trackcurrentoutput[3] >= -1) && (config.trackcurrentoutput[3] <= MAX_GPIO_OUTPUTPINS))
 						icount ++;
 					else {
 						fprintf(stderr, "read_yastrc: Wrong TrackCurrentOutput4 pin given %d\n",config.trackcurrentoutput[3]);

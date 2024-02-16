@@ -1,11 +1,14 @@
 # install script for yast
-# 2019-11-12
+# 2024-02-15
 # should be started from /home/pi/yast
+#
+# now uses lgpio setup as default
+#
 
 # wiring Pi
-echo "********************************"
-echo " Installing WiringPi"
-echo "********************************"
+#echo "********************************"
+#echo " Installing WiringPi"
+#echo "********************************"
 
 # old and latest 2.52 from Gordon
 #cd ..
@@ -18,12 +21,31 @@ echo "********************************"
 #wget https://github.com/WiringPi/WiringPi/archive/refs/tags/2.61-1.tar.gz
 #
 
-if [ -f /usr/bin/gpio ]
+#if [ -f /usr/bin/gpio ]
+#then
+#	echo "wiringpi already exists....."
+#	/usr/bin/gpio -v
+#else
+#	sudo apt-get install wiringpi
+#fi
+
+#lgpio
+echo "********************************"
+echo " Installing lgpio"
+echo "********************************"
+
+if [ -f /usr/local/include/lgpio.h ]
 then
-	echo "wiringpi already exists....."
-	/usr/bin/gpio -v
+	echo "lgpio already exists....."
 else
-	sudo apt-get install wiringpi
+	cd ..
+	wget http://abyz.me.uk/lg/lg.zip
+	unzip lg.zip
+	cd lg
+	make
+	# sudo make install
+	cd ..
+	cd yast	
 fi
 
 # libcurses
@@ -42,7 +64,6 @@ echo "********************************"
 
 sudo apt-get install -y gcc libasound2 libasound2-dev 
 
-
 # CodePgae 437 
 # check for codepage already installed
 
@@ -59,7 +80,6 @@ else
 fi
 
 # ntpdate
-
 echo "********************************"
 echo " Installing ntpdate"
 echo "********************************"

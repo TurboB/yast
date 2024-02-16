@@ -1,9 +1,9 @@
-/*  2017-01-17 20:22  */
+/*  2024-02-15 20:22  */
 /* 
 yast - yet another slotcar timer
-File: TrafficLight.h -> Software display based Traffic Light / Start Light
+File: trafficLight.h -> Software display based Traffic Light / Start Light
 
-Copyright (C)  2015,2016,2017 Martin Berentsen
+Copyright (C)  2015 - 2024 Martin Berentsen
 
 
 This file is part of yast.

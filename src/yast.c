@@ -1,4 +1,4 @@
-/*  2024-02-06 17:00  */
+/*  2024-02-15 19:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
@@ -35,37 +35,54 @@ along with yast.  If not, see <http://www.gnu.org/licenses/>.
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
+#include <inttypes.h>
 #include <sys/time.h>
 #include <locale.h>
 
-#ifdef OFFLINE
-#include "curses.h"  	/* taken out of the ncurses5-dev package, win32 as pdcurses */
-#endif
-#ifndef OFFLINE
-#include <wiringPi.h>  	/* heder from wiringPi package */
-#include <curses.h>  	/* taken out of the ncurses5-dev or ncursesw5-dev package, win32 as pdcurses */
-#include <signal.h>
-#endif
-#ifdef MCP23008
-#include <mcp23008.h>  	/* heder from wiringPi package */
-#endif
-#ifdef MCP23017
-#include <mcp23017.h>  	/* heder from wiringPi package */
-#endif
-#ifdef MCP23017EASY
-#include <mcp23017.h>  	/* heder from wiringPi package */
-#endif
-#ifdef SN3218
-#include <sn3218.h>   	/* heder from wiringPi package */
+// #ifdef OFFLINE
+// #include "curses.h"  	/* taken out of the ncurses5-dev package, win32 as pdcurses */
+// #endif
+
+// #ifndef OFFLINE
+
+#ifdef  WIRINGPI
+#include <wiringPi.h>  	/* header from wiringPi package */
 #endif
 
+#ifdef LGPIO
+#include <lgpio.h>	/* header for lgpio lib package */
+#endif
+
+#include <curses.h>  	/* taken out of the ncurses5-dev or ncursesw5-dev package, win32 as pdcurses */
+#include <signal.h>
+
+// #endif /* OFFLINE */
+
+#ifdef MCP23008
+#include <mcp23008.h>  	/* header from wiringPi package */
+#endif
+#ifdef MCP23017
+#include <mcp23017.h>  	/* header from wiringPi package */
+#endif
+#ifdef MCP23017EASY
+#include <mcp23017.h>  	/* header from wiringPi package */
+#endif
+#ifdef SN3218
+#include <sn3218.h>   	/* header from wiringPi package */
+#endif
+
+/* include yast own files */
+
 #include "yast_define.h"
-#include "TrafficLight.h"
+#include "trafficLight.h"
 #include "font_3x.h"
 #include "config.h"
 #include "files.h"
 #include "display.h"
 #include "sound.h"
+#include "gpio.h"
+#include "i2c.h"
+
 
 #define RESETALLTRACKS          \
 for(j=0;j<TRACKLIM;j++) {       \
@@ -121,6 +138,17 @@ unsigned int snd_buffer_len[SND_NUMBER_OF_TONES]; 			/* define length inside ton
 struct tm *timeinfo;	/* timeinfo and rawtime used for RTC view and file output */
 time_t rawtime;			/* timeinfo and rawtime used for RTC view and file output */
 
+#ifdef LGPIO
+int lghandle;		/* handle for lgpio lib */
+int lgret;		/* int return var for lib functions */
+lgChipInfo_t cInfo;	/* A pointer to a lgChipInfo_t object  */
+static int userdata_1=1; /* dummy user data for ISR */
+static int userdata_2=2;
+static int userdata_3=3;
+static int userdata_4=4;
+#endif
+
+
 /* ---------------------------------------------------------------------- */
 /*   return time im ms as long */
 /* ---------------------------------------------------------------------- */
@@ -133,7 +161,24 @@ unsigned long GetTime(void){
 The functions will be called when the interrupt triggers.
 ------------------------------------------------------------------------*/
 
+#ifdef WIRINGPI
 void Track_1_ISR(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_1_ISR(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	if(timingactive[0]){
 		secondtime[0] = GetTime();
 		if(firsttime[0] > 0) {
@@ -163,7 +208,25 @@ void Track_1_ISR(void) {
 	screenupdate = 1;
 }
 
+
+#ifdef WIRINGPI
 void Track_2_ISR(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_2_ISR(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	if(timingactive[1]){
 		secondtime[1] = GetTime();
 		if(firsttime[1] > 0) {
@@ -193,7 +256,25 @@ void Track_2_ISR(void) {
 	screenupdate = 1;
 }
 
+
+#ifdef WIRINGPI
 void Track_3_ISR(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_3_ISR(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	if(timingactive[2]){
 		secondtime[2] = GetTime();
 		if(firsttime[2] > 0) {
@@ -223,7 +304,25 @@ void Track_3_ISR(void) {
 	screenupdate = 1;
 }
 
+
+#ifdef WIRINGPI
 void Track_4_ISR(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_4_ISR(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	if(timingactive[3]){
 		secondtime[3] = GetTime();
 		if(firsttime[3] > 0) {
@@ -258,19 +357,87 @@ The functions will be called when the interrupt triggers.
 These are only hardware check dummy's
 ------------------------------------------------------------------------*/
 
+#ifdef WIRINGPI
 void Track_1_ISR_DUMMY(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_1_ISR_DUMMY(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	printf("ISR detected on Track 1\n");
 }
 
+#ifdef WIRINGPI
 void Track_2_ISR_DUMMY(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_2_ISR_DUMMY(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	printf("ISR detected on Track 2\n");
 }
 
+#ifdef WIRINGPI
 void Track_3_ISR_DUMMY(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_3_ISR_DUMMY(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	printf("ISR detected on Track 3\n");
 }
 
+#ifdef WIRINGPI
 void Track_4_ISR_DUMMY(void) {
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+void Track_4_ISR_DUMMY(int e, lgGpioAlert_p evt, void *data)
+{
+//   int i;
+//   int userdata = *(int*)data;
+//   for (i=0; i<e; i++)
+//   {
+//      printf("u=%d t=%"PRIu64" c=%d g=%d l=%d f=%d (%d of %d)\n",
+//         userdata, evt[i].report.timestamp, evt[i].report.chip,
+//         evt[i].report.gpio, evt[i].report.level,
+//         evt[i].report.flags, i+1, e);
+//   }
+#endif /* LGPIO */
+
 	printf("ISR detected on Track 4\n");
 }
 
@@ -435,92 +602,6 @@ void printcopyright(void)
 	printf("along with this program.  If not, see <http://www.gnu.org/licenses/>.\n\n\n");
 }
 
-/* -------------------------------------------
-ncurses printout overall timing for all known tracks
-input:  nout Number of used tracks
----------------------------------------------- */
-void view_overall(int nout)
-{
-	int i;
-	for(i=0;i<nout /*TRACKLIM */ ;i++)
-	{
-		move(FONTHEIGHT+(i*FONTHEIGHT),CURSES_OVERALLFASTEST_LINE_X );
-		printw("Record: %.3f     ",overallfastest[i]/1000.0);
-	}
-}
-
-/* -------------------------------------------
-ncurses printout the last three track times 
-input:  nout Number of used tracks
----------------------------------------------- */
-void view_last(int nout)
-{
-	int i,j;
-	for(i=0;i<nout /*TRACKLIM */ ;i++)
-	{
-	switch(lapcount[i]) {
-	
-	case 0:
-		break;
-	case 1:
-		break;
-	case 2:
-		for(j=1;j<=1;j++) {
-			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
-		}		
-		break;
-	case 3:
-		for(j=1;j<=2;j++) {
-			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
-		}
-		break;
-	default:
-		for(j=1;j<=3;j++) {
-			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
-		}
-		break;		
-	}
-	
-	} /* for(i) */	
-}
-
-/* -------------------------------------------
-ncurses clear the last three track times 
-input:  nout Number of track to clear
----------------------------------------------- */
-void clear_last(int nout)
-{
-	int j;
-
-	if( (nout >= 0) && (nout <=3) ) {
-
-		for(j=1;j<=3;j++) {
-			move((nout*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("          ");
-		}
-	}
-
-}
-/* ---------------------------------------------
-printout driver names with respect to the tracks
- - max. 13 chars, please check in config at start
-input:  nout Number of used tracks
------------------------------------------------- */
-void view_drivernames(int nout)
-{
-	int i;
-	for(i=0;i<nout /*TRACKLIM */ ;i++)
-	{
-/*	if( (trackdriversname[i] != NULL) && (strlen(trackdriversname[i]) < 14) ){ */
-	if(trackdriversname[i] != NULL) {
-		move(FONTHEIGHT+(i*FONTHEIGHT),CURSES_DRIVERSNAME_LINE_X );
-		printw("Driver: %s",trackdriversname[i]);
-		}
-	}
-}
 
 /******************************************************************
 - signal handler for exit
@@ -906,7 +987,7 @@ active is also 1 or 0
 If it's already on or off it stays on or off
 SCR must be open -> move and printw must be possible
 ------------------------------------------------------------------------*/
-void set_trackcurrent(int onoff, int active)
+int set_trackcurrent(int onoff, int active)
 {
 	if( (config.trackcurrentoutput[0] >=0) && (active == 1) )
 	{
@@ -920,12 +1001,28 @@ void set_trackcurrent(int onoff, int active)
 			trackcurrent = 1;
 			move(CUR_POWER_LINE_Y,CUR_POWER_LINE_X);  /* (y,x) */
 			printw("On");
-			#ifndef OFFLINE
+
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[0],HIGH);
+			#endif /* WIRINGPI */
+
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[0], LG_HIGH);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[0]); 
+				return 1; }
+			#endif /* LGPIO */
+
 			#ifdef MCP23017
 			digitalWrite(MCP23017_pinBase + MCP23017_BACKSIDE,MCP23017_ON);		/* set alive LED to ON */
 			#endif /* MCP23017 */
-			#endif /* OFFLINE */
+
+			#ifdef I2C
+			yaSetMCP23017(MCP23017_BACKSIDE, YA_HIGH);  /* Set trackpower LED high */
+			#endif /* I2C */
+
 			if(config.soundactive == 1) { /* make some noise, it track power is switched off */
 #ifdef ALSA_SOUND
 			SND_play(1);
@@ -938,12 +1035,28 @@ void set_trackcurrent(int onoff, int active)
 			trackcurrent = 0;
 			move(CUR_POWER_LINE_Y,CUR_POWER_LINE_X);  /* (y,x) */
 			printw("--");
-			#ifndef OFFLINE
+
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[0],LOW);
+			#endif /* WIRINGPI */
+
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[0], LG_LOW);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[0]); 
+				return 1; }
+			#endif /* LGPIO */
+			
 			#ifdef MCP23017
 			digitalWrite(MCP23017_pinBase + MCP23017_BACKSIDE,MCP23017_OFF);		/* set alive LED to OFF */
 			#endif /* MCP23017 */
-			#endif /* OFFLINE */
+
+			#ifdef I2C
+			yaSetMCP23017(MCP23017_BACKSIDE, YA_LOW); /* Set trackpower LED low */
+			#endif /* I2C */
+
 			if(config.soundactive == 1) { /* make some noise, it track power is switched off */
 #ifdef ALSA_SOUND
 			SND_play(2);
@@ -959,15 +1072,35 @@ void set_trackcurrent(int onoff, int active)
 		switch(onoff)
 		{
 			case 1:
-			#ifndef OFFLINE
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[1],HIGH);
-			#endif /* OFFLINE */
+			#endif /* WIRINGPI */
+	
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[1], LG_HIGH);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[1]); 
+				return 1; }
+			#endif /* LGPIO */
+				
 			break;
 
 			default:
-			#ifndef OFFLINE
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[1],LOW);
-			#endif /* OFFLINE */
+			#endif /* WIRINGPI */
+
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[1], LG_LOW);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[1]); 
+				return 1; }
+			#endif /* LGPIO */
+			
 			break;
 		}
 	}
@@ -978,15 +1111,36 @@ void set_trackcurrent(int onoff, int active)
 		switch(onoff)
 		{
 			case 1:
-			#ifndef OFFLINE
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[2],HIGH);
-			#endif /* OFFLINE */
+			#endif /* WIRINGPI */
+
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[2], LG_HIGH);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[2]); 
+				return 1; }
+			#endif /* LGPIO */
+			
 			break;
 
 			default:
-			#ifndef OFFLINE
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[2],LOW);
-			#endif /* OFFLINE */
+			#endif /* WIRINGPI */
+
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[2], LG_LOW);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[2]); 
+				return 1; }
+			#endif /* LGPIO */
+						
+			
 			break;
 		}
 	}
@@ -997,19 +1151,39 @@ void set_trackcurrent(int onoff, int active)
 		switch(onoff)
 		{
 			case 1:
-			#ifndef OFFLINE
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[3],HIGH);
-			#endif /* OFFLINE */
+			#endif /* WIRINGPI */
+			
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[3], LG_HIGH);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[3]); 
+				return 1; }
+			#endif /* LGPIO */
+						
 			break;
 
 			default:
-			#ifndef OFFLINE
+			#ifdef WIRINGPI
 			digitalWrite(config.trackcurrentoutput[3],LOW);
-			#endif /* OFFLINE */
+			#endif /* WIRINGPI */
+			
+			#ifdef LGPIO
+			lgret = lgGpioWrite(lghandle, config.trackcurrentoutput[3], LG_LOW);
+			if (lgret < 0) 
+			{
+				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+				yaGpioGetMode(lghandle,config.trackcurrentoutput[3]); 
+				return 1; }
+			#endif /* LGPIO */
+						
 			break;
 		}
 	}
-
+	return 0;
 } /* set_trackcurrent  */
 
 /* ----------------------------------------------------------------------
@@ -1057,7 +1231,7 @@ int main(int argc, char *argv[])
 	config.trackcolor[3] = COLOR_YELLOW;
 	config.soundactive = 0;			/* predefine the sound already active =1 or not =0; */
 
-	#ifndef OFFLINE
+	#ifdef WIRINGPI
 	config.trackinputpin[0] = PIN_IN_TRACK_1;	/* set the wiringPi input pin to track number */
 	config.trackinputpin[1] = PIN_IN_TRACK_2;
 	config.trackinputpin[2] = PIN_IN_TRACK_3;
@@ -1070,7 +1244,23 @@ int main(int argc, char *argv[])
 	config.trackinputpud[1] = PIN_IN_PUD_2;
 	config.trackinputpud[2] = PIN_IN_PUD_3;
 	config.trackinputpud[3] = PIN_IN_PUD_4;
-	#endif
+	#endif /* WIRINGPI */
+
+	#ifdef LGPIO
+	config.trackinputpin[0] = PIN_IN_TRACK_1;	/* set the wiringPi input pin to track number */
+	config.trackinputpin[1] = PIN_IN_TRACK_2;
+	config.trackinputpin[2] = PIN_IN_TRACK_3;
+	config.trackinputpin[3] = PIN_IN_TRACK_4;
+	config.trackinputevent[0] = PIN_IN_EVENT_1;	/* set the wiringPi input pin event type */
+	config.trackinputevent[1] = PIN_IN_EVENT_2;
+	config.trackinputevent[2] = PIN_IN_EVENT_3;
+	config.trackinputevent[3] = PIN_IN_EVENT_4;
+	config.trackinputpud[0] = PIN_IN_PUD_1;		/* set the wiringPi input pin pull up/down */
+	config.trackinputpud[1] = PIN_IN_PUD_2;
+	config.trackinputpud[2] = PIN_IN_PUD_3;
+	config.trackinputpud[3] = PIN_IN_PUD_4;
+	#endif /* LGPIO */
+	
 
 	trackdriversname[0] = NULL; 			/* "Martin B."; , later on max 13 chars */
 	trackdriversname[1] = NULL;
@@ -1363,6 +1553,10 @@ int main(int argc, char *argv[])
 			printf("yast Version: %s\ncompiled at %s on %s\n",VERSION,__TIME__,__DATE__);
 			if(RaspberryPiVersion() != 0)
 				printf("no Pi hardware descriptor found\n");
+			#ifdef LGPIO
+			lgret = lguVersion();
+			printf("lg Version: %0x (%d.%d.%d) \n", lgret, lgret&0x0000ff, (lgret>>8)&0x00ff, lgret>>16);
+			#endif /* LGPIO */
 			if(LinuxVersion() != 0)
 				printf("no Linux version descriptor found\n");
 			exit(0);
@@ -1375,6 +1569,14 @@ int main(int argc, char *argv[])
 			printf("------------------------------------------------------------------\n");
 			printf("Version : %s\nCompiled at : %s %s\n",VERSION,__TIME__,__DATE__);
 			printf("Compile options :\n");
+#ifdef WIRINGPI
+			printf(" #define WIRINGPI\n");
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+			printf(" #define LGPIO\n");
+#endif /* LGPIO */
+
 #ifdef ALSA_SOUND
 			printf(" #define ALSA_SOUND\n");
 #endif /* ALSA_SOUND */
@@ -1505,8 +1707,10 @@ int main(int argc, char *argv[])
 	if(config.outfile > 0)
 		printf("writing timing output to file\n");
 
-	#ifndef OFFLINE
-	printf("wiringPiSetup....\n");
+	/* WiringPi version here */
+
+	#ifdef WIRINGPI
+	printf("wiringPi Setup....\n");
 
 	if(CheckLock(GPIOLOCKFILENAME) > 0)
 	{
@@ -1530,8 +1734,7 @@ int main(int argc, char *argv[])
 	pullUpDnControl(config.trackinputpin[3],config.trackinputpud[3]);
 
 	printf("Input Port  Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",config.trackinputpin[0], config.trackinputpin[1], config.trackinputpin[2], config.trackinputpin[3]);
-	printf("Input State Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",digitalRead(0), digitalRead(1), digitalRead(2), digitalRead(3));
-
+	printf("Input State Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",digitalRead(config.trackinputpin[0]), digitalRead(config.trackinputpin[1]), digitalRead(config.trackinputpin[2]), digitalRead(config.trackinputpin[3]));
 	printf("Output Port Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",config.trackcurrentoutput[0], config.trackcurrentoutput[1], config.trackcurrentoutput[2], config.trackcurrentoutput[3]);
 
 	/* implement the IRS for all tracks  */
@@ -1624,14 +1827,281 @@ int main(int argc, char *argv[])
 
 	}
 
-	#endif  /* #ifdef OFFLINE */
+	#endif  /*  WIRINGPI */
+
+	/* lgpio version here */
+
+	#ifdef LGPIO
+	printf(" lgpio Setup....\n");
+
+	if(CheckLock(GPIOLOCKFILENAME) > 0)
+	{
+		fprintf(stderr,"Old lockfile active found, exiting....\n");
+		exit(0);
+	}
+	if(CreateLock(GPIOLOCKFILENAME, "yast" /* argv[0] */ ) == -1)
+		exit(0);
+
+	// wiringPiSetup();
+	lghandle = lgGpiochipOpen(0);
+	if (lghandle < 0) { printf("ERROR: %s (%d)\n", lguErrorText(lghandle), lghandle); return 1; }
+	else printf("lgGpiochipOpen done\n");
+	
+	lgret = lguVersion();
+	printf("lg Version: %0x (%d.%d.%d) \n", lgret, lgret&0x0000ff, (lgret>>8)&0x00ff, lgret>>16);
+
+	lgret = lgGpioGetChipInfo(lghandle, &cInfo);
+
+	if (lgret == LG_OKAY)
+	{
+	printf("ChipInfo: lines=%d name=%s label=%s\n", cInfo.lines, cInfo.name, cInfo.label);
+	}
+		else
+		{
+		printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+		return 1;
+	}
+
+	printf("Input Port  Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",config.trackinputpin[0], config.trackinputpin[1], config.trackinputpin[2], config.trackinputpin[3]);
+	printf("Input State Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",lgGpioRead(lghandle,config.trackinputpin[0]), lgGpioRead(lghandle,config.trackinputpin[1]), lgGpioRead(lghandle,config.trackinputpin[2]), lgGpioRead(lghandle,config.trackinputpin[3]));
+	printf("Output Current Port Track_1: %d Track_2: %d Track_3: %d Track_4: %d\n",config.trackcurrentoutput[0], config.trackcurrentoutput[1], config.trackcurrentoutput[2], config.trackcurrentoutput[3]);
+
+	/* implement the IRS for all tracks  */
+	if(hardwarecheck == 0) {
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[0],  Track_1_ISR, &userdata_1);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[0]); 
+			return 1; }
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[1],  Track_2_ISR, &userdata_2);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[1]); 
+			return 1; }
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[2],  Track_3_ISR, &userdata_3);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[2]); 
+			return 1; }
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[3],  Track_4_ISR, &userdata_4);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[3]); 
+			return 1; }
+
+	}
+	else {
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[0],  Track_1_ISR_DUMMY, &userdata_1);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[0]); 
+			return 1; }
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[1],  Track_2_ISR_DUMMY, &userdata_2);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[1]); 
+			return 1; }
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[2],  Track_3_ISR_DUMMY, &userdata_3);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[2]); 
+			return 1; }
+
+		lgret = lgGpioSetAlertsFunc(lghandle, config.trackinputpin[3],  Track_4_ISR_DUMMY, &userdata_4);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackinputpin[3]); 
+			return 1; }
+
+	}
+
+	lgret = lgGpioClaimAlert(lghandle, config.trackinputpud[0], config.trackinputevent[0], config.trackinputpin[0], -1); 
+	if (lgret < 0) 
+	{
+		printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+		yaGpioGetMode(lghandle,config.trackinputpin[0]); 
+		return 1; }
+
+	lgret = lgGpioClaimAlert(lghandle, config.trackinputpud[1], config.trackinputevent[1], config.trackinputpin[1], -1); 
+	if (lgret < 0) 
+	{
+		printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+		yaGpioGetMode(lghandle,config.trackinputpin[1]); 
+		return 1; }
+
+	lgret = lgGpioClaimAlert(lghandle, config.trackinputpud[2], config.trackinputevent[2], config.trackinputpin[2], -1); 
+	if (lgret < 0) 
+	{
+		printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+		yaGpioGetMode(lghandle,config.trackinputpin[2]); 
+		return 1; }
+
+	lgret = lgGpioClaimAlert(lghandle, config.trackinputpud[3], config.trackinputevent[3], config.trackinputpin[3], -1); 
+	if (lgret < 0) 
+	{
+		printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+		yaGpioGetMode(lghandle,config.trackinputpin[3]); 
+		return 1; }
+
+	printf("Setting up GPIO's for output lines ....\n");
+
+	if( config.trackcurrentoutput[0] >=0)
+	{
+		for(i=0;i<TRACKLIM;i++)
+		{
+			if(config.trackcurrentoutput[0] == config.trackinputpin[i])
+			{
+				printf("TrackCurrentOutput 1 is already an input (%d)\n",config.trackcurrentoutput[0]);
+				exit(-1);
+			}
+		}
+//		#ifdef WIRINGPI
+//		pinMode(config.trackcurrentoutput[0], OUTPUT);
+//		#endif /* WIRINGPI */
+	
+//		#ifdef LGPIO
+		lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[0], LG_LOW);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackcurrentoutput[0]); 
+			return 1; }
+//		#endif /* LGPIO */
+	
+		printf("TrackCurrentOutput 1 set to GPIO Pin %d\n",config.trackcurrentoutput[0]);
+
+		if(config.trackpoweractive == 1)
+			printf("Track power switching activated!\n");
+
+	}
+
+	if( config.trackcurrentoutput[1] >=0)
+	{
+		for(i=0;i<TRACKLIM;i++)
+		{
+			if(config.trackcurrentoutput[1] == config.trackinputpin[i])
+			{
+				printf("TrackCurrentOutput 2 is already an input (%d)\n",config.trackcurrentoutput[1]);
+				exit(-1);
+			}
+		}
+
+//		#ifdef WIRINGPI
+//		pinMode(config.trackcurrentoutput[1], OUTPUT);
+//		#endif /* WIRINGPI */
+
+//		#ifdef LGPIO
+		lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[1], LG_LOW);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackcurrentoutput[1]); 
+			return 1; }
+//		#endif /* LGPIO */
+
+		printf("TrackCurrentOutput 2 set to GPIO Pin %d\n",config.trackcurrentoutput[1]);
+
+	}
+
+	if( config.trackcurrentoutput[2] >=0)
+	{
+		for(i=0;i<TRACKLIM;i++)
+		{
+			if(config.trackcurrentoutput[2] == config.trackinputpin[i])
+			{
+				printf("TrackCurrentOutput 3 is already an input (%d)\n",config.trackcurrentoutput[2]);
+				exit(-1);
+			}
+		}
+
+//		#ifdef WIRINGPI
+//		pinMode(config.trackcurrentoutput[2], OUTPUT);
+//		#endif /* WIRINGPI */
+
+//		#ifdef LGPIO
+		lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[2], LG_LOW);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackcurrentoutput[2]); 
+			return 1; }
+//		#endif /* LGPIO */
+		
+		printf("TrackCurrentOutput 3 set to GPIO Pin %d\n",config.trackcurrentoutput[2]);
+
+	}
+
+	if( config.trackcurrentoutput[3] >=0)
+	{
+		for(i=0;i<TRACKLIM;i++)
+		{
+			if(config.trackcurrentoutput[3] == config.trackinputpin[i])
+			{
+				printf("TrackCurrentOutput 4 is already an input (%d)\n",config.trackcurrentoutput[3]);
+				exit(-1);
+			}
+		}
+
+//		#ifdef WIRINGPI
+//		pinMode(config.trackcurrentoutput[3], OUTPUT);
+//		#endif /* WIRINGPI */
+		
+//		#ifdef LGPIO
+		lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[3], LG_LOW);
+		if (lgret < 0) 
+		{
+			printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+			yaGpioGetMode(lghandle,config.trackcurrentoutput[3]); 
+			return 1; }
+//		#endif /* LGPIO */
+
+		printf("TrackCurrentOutput 4 set to GPIO Pin %d\n",config.trackcurrentoutput[3]);
+
+	}
+
+	if(config.trackpoweractive == 0) {
+	/* set timing overhed to zero, because it makes no sense */
+		config.panicdelaytime = 0;  /* panic delay for timing end to zero */
+		config.timeraceenddelaytime = 0; /* race delay for timing end to zero */
+		printf("Track power not activated, panicdelaytime and timeraceenddelaytime set to zero\n");
+
+	}
+
+	#endif  /* LGPIO  */
+
 
 	/* start traffic light hardware */
+
+	#ifdef I2C
+	printf("Starting traffic light hardware ....\n");
+	printf("Setting up MCP23017 GPIO's ....\n");
+	if( yaMCP23017Setup(NumberOfMCP23017) != 32)   /* place togeter lgpio andWiringpi (later), can return <0 for errors, and bits as usable, only lgpio later */
+	{
+		printf(" i2c MCP23017 error\n");
+	}
+	else printf(" i2c setup with device %s is o.k.\n",I2CDEVICENAME);
+	#endif /* I2C */
 
 	#ifdef MCP23017
 	printf("Starting traffic light hardware ....\n");
 	printf("Setting up MCP23017 GPIO's ....\n");
 
+	
 	mcp23017Setup(MCP23017_pinBase + 0  , MC23017_ADDR_IC00);  	/* first MCP23017 with 0x00 address */
 	mcp23017Setup(MCP23017_pinBase + 16 , MC23017_ADDR_IC01);	/* second MCP23017 with 0x01 address */
 
@@ -1710,13 +2180,46 @@ int main(int argc, char *argv[])
 	if(hardwarecheck == 1) {
 
 
+	/*
+		must be done for all tracks and libs
+	*/
+
 		if( (config.trackcurrentoutput[0] >=0) && (config.trackpoweractive == 1) )
 		{
-			digitalWrite(config.trackcurrentoutput[0],HIGH); /* switching power on */
-			printf("Track Power on\n");
+//			#ifdef WIRINGPI
+//			digitalWrite(config.trackcurrentoutput[0],HIGH); /* switching power on */
+//			#endif /* WIRINGPI */
+
+//			#ifdef LGPIO
+//			lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[0], LG_HIGH);
+//			if (lgret < 0) 
+//			{
+//				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+//				yaGpioGetMode(lghandle,config.trackcurrentoutput[0]); 
+//				return 1; }
+//			#endif /* LGPIO */
+
+			yaDigitalWrite(config.trackcurrentoutput[0],YA_HIGH); /* switching power on */
+
+			printf("Track 1 Power on\n");
 		}
 
-		delay(500);  /* delay between power and sound */
+		if( (config.trackcurrentoutput[1] >=0) && (config.trackpoweractive == 1) )
+		{
+			yaDigitalWrite(config.trackcurrentoutput[1],YA_HIGH); /* switching power on */
+
+			printf("Track 2 Power on\n");
+		}
+
+//		#ifdef WIRINGPI
+//		delay(500);  /* delay between power and sound */
+//		#endif
+//		#ifdef LGPIO
+//		lguSleep(0.5);
+//		#endif
+
+		yaSleep(0.5);
+
 
 		if(config.soundactive == 1){
 			printf("HEY,  - Check this sound - if compiled in.....\n");
@@ -1746,7 +2249,16 @@ int main(int argc, char *argv[])
 #ifdef ALSA_SOUND
 			SND_play(j+1);
 #endif /* ALSA_SOUND */
-			delay(750);  /* delay between sounds */
+//			#ifdef WIRINGPI
+//			delay(750);  /* delay between sounds */
+//			#endif
+//			#ifdef LGPIO
+//			lguSleep(0.75);
+//			#endif
+			
+			yaSleep(0.75);
+
+
 			}
 			printf("sound done\n");
 
@@ -1756,7 +2268,7 @@ int main(int argc, char *argv[])
 
 		while( stop == 0) { /* the hardware test core starts here */
 
-	#ifndef OFFLINE
+	#ifdef WIRINGPI
 
 	#ifdef MCP23017
 
@@ -1829,7 +2341,7 @@ int main(int argc, char *argv[])
 		/******************************************************************************************/
 
 
-	#endif /* offline */
+	#endif /* WIRINGPI */
 
 		}
 
@@ -1837,8 +2349,30 @@ int main(int argc, char *argv[])
 
 		if( (config.trackcurrentoutput[0] >=0) && (config.trackpoweractive == 1) )
 		{
-			digitalWrite(config.trackcurrentoutput[0],LOW); /* switching power off */
-			printf("Track Power off\n");
+
+//			#ifdef WIRINGPI
+//			digitalWrite(config.trackcurrentoutput[0],LOW); /* switching power off */
+//			#endif /* WIRINGPI */
+
+//			#ifdef LGPIO
+//			lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[0], LG_LOW);
+//			if (lgret < 0) 
+//			{
+//				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
+//				yaGpioGetMode(lghandle,config.trackcurrentoutput[0]); 
+//				return 1; }
+//			#endif /* LGPIO */
+
+			yaDigitalWrite(config.trackcurrentoutput[0],YA_LOW); /* switching power off */
+
+			printf("Track 1 Power off\n");
+		}
+
+		if( (config.trackcurrentoutput[1] >=0) && (config.trackpoweractive == 1) )
+		{
+			yaDigitalWrite(config.trackcurrentoutput[1],YA_LOW); /* switching power off */
+
+			printf("Track 2 Power off\n");
 		}
 
 		exit(0);
@@ -1994,9 +2528,12 @@ int main(int argc, char *argv[])
 
 	while( stop == 0) { /* the real core starts here */
 
-		#ifndef OFFLINE
+		#ifdef WIRINGPI
 		delay(10);  /* minimize the load from 1.0 down to less 0.1 */
-		#endif
+		#endif /* WIRINGPI */
+		#ifdef LGPIO
+		lguSleep(0.01);
+		#endif /* LGPIO */
 
 		/* mvprintw(CUR_STATE_Y,CUR_STATE_X,"State:%.2d",gostate); */
 		mvprintw(CUR_STATE_Y,CUR_STATE_X,"S:%.2d",gostate);
@@ -2554,6 +3091,7 @@ int main(int argc, char *argv[])
 		}
 
 		/* and from now the keyboard */
+		/* IS THIS REALLY REQUIRED IN LIVE MODUS */
 		inchr = getch();
 		if(inchr)
 		switch(inchr){
@@ -2563,22 +3101,54 @@ int main(int argc, char *argv[])
 			switch(inchr){
 				case 49:
 				printmessage("Simulate Track 1 event");
+				
+				#ifdef WIRINGPI
 				Track_1_ISR();  /* Simulate Track Pulse */
+				#endif /* WIRINGPI */
+				
+				#ifdef LGPIO
+				Track_1_ISR(0, 0, NULL);  /* Simulate Track Pulse */
+				#endif /* LGPIO */
+				
 				break;
 
 				case 50:
 				printmessage("Simulate Track 2 event");
+
+				#ifdef WIRINGPI
 				Track_2_ISR();  /* Simulate Track Pulse */
+				#endif /* WIRINGPI */
+
+				#ifdef LGPIO
+				Track_2_ISR(0, 0, NULL);  /* Simulate Track Pulse */
+				#endif /* LGPIO */
+
 				break;
 
 				case 51:
 				printmessage("Simulate Track 3 event");
+
+				#ifdef WIRINGPI
 				Track_3_ISR();  /* Simulate Track Pulse */
+				#endif /* WIRINGPI */
+
+				#ifdef LGPIO
+				Track_3_ISR(0, 0, NULL);  /* Simulate Track Pulse */
+				#endif /* LGPIO */
+
 				break;
 
 				case 52:
 				printmessage("Simulate Track 4 event");
+
+				#ifdef WIRINGPI
 				Track_4_ISR();  /* Simulate Track Pulse */
+				#endif /* WIRINGPI */
+
+				#ifdef LGPIO
+				Track_4_ISR(0, 0, NULL);  /* Simulate Track Pulse */
+				#endif /* LGPIO */
+
 				break;
 
 				default:
@@ -2586,29 +3156,30 @@ int main(int argc, char *argv[])
 			}
 			break;
 
-			#ifdef OFFLINE		/* ALT_X on PD curses only */
+			/* OLD STUFF for development under PD CURSES on Windows */
+//			#ifdef OFFLINE		/* ALT_X on PD curses only */
 
-			case ALT_1:
-			printmessage("Simulate Track 1 event");
-			Track_1_ISR();  /* Simulate Track Pulse */
-			break;
+//			case ALT_1:
+//			printmessage("Simulate Track 1 event");
+//			Track_1_ISR();  /* Simulate Track Pulse */
+//			break;
 
-			case ALT_2:
-			printmessage("Simulate Track 2 event");
-			Track_2_ISR();  /* Simulate Track Pulse */
-			break;
+//			case ALT_2:
+//			printmessage("Simulate Track 2 event");
+//			Track_2_ISR();  /* Simulate Track Pulse */
+//			break;
 
-			case ALT_3:
-			printmessage("Simulate Track 3 event");
-			Track_3_ISR();  /* Simulate Track Pulse */
-			break;
+//			case ALT_3:
+//			printmessage("Simulate Track 3 event");
+//			Track_3_ISR();  /* Simulate Track Pulse */
+//			break;
 
-			case ALT_4:
-			printmessage("Simulate Track 4 event");
-			Track_4_ISR();  /* Simulate Track Pulse */
-			break;
+//			case ALT_4:
+//			printmessage("Simulate Track 4 event");
+//			Track_4_ISR();  /* Simulate Track Pulse */
+//			break;
 
-			#endif
+//			#endif /* OFFLINE */
 
 			case KEY_F(1):
 			if(gostate != G_RACE) {
@@ -2959,6 +3530,12 @@ int main(int argc, char *argv[])
 
 	}
 
+
+	/******************************************************************************************/
+	/* switch off track current here */
+
+	set_trackcurrent(0,config.trackpoweractive);
+
 	/******************************************************************************************/
 	/* switch starting traffic light off here */
 
@@ -2974,18 +3551,30 @@ int main(int argc, char *argv[])
 		digitalWrite(MCP23017_pinBase + i,MCP23017_OFF);
 	#endif
 
-	/*********************************************************/
-	/* switch off track current here */
+	endwin();
 
-	set_trackcurrent(0,config.trackpoweractive);
+	#ifdef I2C
+//	for (i = 0 ; i <= 31 ; i++)						/* clear all LEDs */
+//		yaDigitalWrite(i,YA_LOW);
 
-	#ifndef OFFLINE
-		DeleteLock(GPIOLOCKFILENAME);
-	#endif /* OFFLINE */
+	if ( yaMCP23017Release(NumberOfMCP23017) == 0 )
+		printf("i2c %s free again\n",I2CDEVICENAME);
+	#endif /* I2C */
+
+
 
 	if(config.soundactive == 1) {
 	#ifdef ALSA_SOUND
-		delay(450);  /* wait for sound ready, can be done better */
+
+//		#ifdef WIRINGPI
+//		delay(450);  /* wait for sound ready, can be done better */
+//		#endif
+//		#ifdef LGPIO
+//		lguSleep(0.45);
+//		#endif
+
+		yaSleep(0.45);
+
 		SND_close();
 	#endif /* ALSA_SOUND */
 	}
@@ -3019,6 +3608,18 @@ int main(int argc, char *argv[])
 	}
 
 	store_environment(config.storagefile_name);  /*  store overall lap times in a file */
+
+
+	#ifdef LGPIO	
+	lgret = lgGpiochipClose(lghandle);
+	if(lgret < 0)
+		printf("lg close failed\n");			
+	#endif /* LGPIO */
+
+//	#ifndef OFFLINE
+		DeleteLock(GPIOLOCKFILENAME);
+//	#endif /* OFFLINE */
+
 
 	return 0;
 

@@ -28,6 +28,10 @@
 	void printd(const char *fmt,...);
 	void printmessage(const char *fmt,...);
 	void ClearResults(int);
+	void view_overall(int nout);
+	void view_last(int nout);
+	void clear_last(int nout);
+	void view_drivernames(int nout);
 	
 #endif
 

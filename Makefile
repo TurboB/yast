@@ -1,9 +1,12 @@
 #
 # This is the YAST Makefile
-# Date: 2022-07-14
+# Date: 2024-02-13
 #
 
-VERSION := 0.4.14
+VERSION := 0.5.0
+
+# GPIOLIB := -DWIRINGPI
+GPIOLIB := -DLGPIO
 
 # HARDWARE := -DSN3218=1
 # HARDWARE := -DMCP23017=1
@@ -21,13 +24,15 @@ FONTSIZE := -DFONT3X5
 CC	:= gcc
 
 # CP437 version
-CFLAGS  := -Wall $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE) 
+CFLAGS  := -Wall $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE) $(GPIOLIB)
 # UNICODE version
 # CFLAGS  := -Wall -lncursesw -lm -lwiringPi $(ALSA_SOUND_LIB) $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE) -DUNICODE
 
-LDLIBS  = -lwiringPi -lncurses -lm $(ALSA_SOUND_LIB)
+# LDLIBS  = -lwiringPi -lncurses -lm $(ALSA_SOUND_LIB)
+LDLIBS  = -llgpio -lncurses -lm $(ALSA_SOUND_LIB)
 
-MYFLAGS := -DALSA_SOUND -DMCP23017=1 -lasound 
+# MYFLAGS := -DALSA_SOUND -DMCP23017=1 -lasound 
+MYFLAGS := -DALSA_SOUND -lasound -DI2C
 SRCDIR  := src/
 OBJDIR  := obj/
 DATADIR := result/

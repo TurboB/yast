@@ -87,7 +87,7 @@ int CreateLock(char *name, char *progname)
   char *user;  
 
   pid = getpid();
-  user = (char *)getenv("LOGNAME");
+  user = (char *)getenv("LOGNAME");  /* get login name */
 
   printf("writing new LOCKFILE %s \n",name);
   if( (lock_fd = fopen(name,"w")) != NULL )

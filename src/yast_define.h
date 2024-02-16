@@ -1,9 +1,9 @@
-/*  2018-11-21 20:00  */
+/*  2024-02-15 20:00  */
 /* 
     yast - yet another slotcar timer
     File: yast_define.h -> all compile time definitions of the project
 
-    Copyright (C)  2015,2016,2017,2018 Martin Berentsen
+    Copyright (C)  2015 - 2024 Martin Berentsen
 
 
     This file is part of yast.
@@ -43,7 +43,7 @@
 #define RESULTFILEPATH 	"result/"   	/* path to result file, "/" must be at the end */
 #define STORAGEFILENAME "yastdata.txt"	/* storage of the runtime data */    
 #define CONFFILENAME 	"yast.conf"		/* configuration file name */
-#define GPIOLOCKFILENAME "/var/lock/pigpio"	 /* file name to lock the Raspberry Pi GPIO connecten over WiringPi */
+#define GPIOLOCKFILENAME "/var/lock/lgpio"	 /* file name to lock the Raspberry Pi GPIO connecten over WiringPi */
 
 #define DATESPACELENGTH 120				/* length of the filename */
 #define MAXNAMECOUNT	2500
@@ -101,7 +101,7 @@
 
 /*  Hardware related definitions, wiringPi related */
 
-#ifndef OFFLINE
+#ifdef WIRINGPI
 
 #define PIN_IN_TRACK_1 0  		/* Hardware definition for Track light barrier input */
 #define PIN_IN_EVENT_1 INT_EDGE_RISING
@@ -116,12 +116,44 @@
 #define PIN_IN_EVENT_4 INT_EDGE_RISING
 #define PIN_IN_PUD_4 	PUD_OFF
 
-#endif
 
-#define MAXWIRINGPIINPUTPINS 20  	/* All GPIO Pins of the RaspberryPi by number */
+#define MIN_GPIO_INPUTPINS 0  	/* All GPIO Pins of the RaspberryPi by number */
+#define MAX_GPIO_INPUTPINS 20  	/* All GPIO Pins of the RaspberryPi by number */
+#define MAX_GPIO_OUTPUTPINS 20  /* All GPIO Pins of the RaspberryPi by number */
 
+#endif /* WIRINGPI */
+
+#ifdef LGPIO
+
+/* possible are:  LG_RISING_EDGE  or LG_FALLING_EDGE */
+/* possible are: LG_SET_PULL_UP LG_SET_PULL_DOWN LG_SET_PULL_NONE */
+
+#define PIN_IN_TRACK_1 17  		/* Hardware definition for Track light barrier input */
+#define PIN_IN_EVENT_1 LG_RISING_EDGE
+#define PIN_IN_PUD_1 	LG_SET_PULL_NONE
+#define PIN_IN_TRACK_2 18
+#define PIN_IN_EVENT_2 LG_RISING_EDGE
+#define PIN_IN_PUD_2 	LG_SET_PULL_NONE
+#define PIN_IN_TRACK_3 27
+#define PIN_IN_EVENT_3 LG_RISING_EDGE
+#define PIN_IN_PUD_3 	LG_SET_PULL_NONE		/* PUD_DOWN for unused */
+#define PIN_IN_TRACK_4 22
+#define PIN_IN_EVENT_4 LG_RISING_EDGE
+#define PIN_IN_PUD_4 	LG_SET_PULL_NONE
+
+
+#define MIN_GPIO_INPUTPINS 17  	/* All GPIO Pins of the RaspberryPi by number */
+#define MAX_GPIO_INPUTPINS 27  	/* All GPIO Pins of the RaspberryPi by number */
+#define MAX_GPIO_OUTPUTPINS 27  /* All GPIO Pins of the RaspberryPi by number */
+
+#endif /* LGPIO */
 
 /* I2C related defines */
+
+#define I2CDEVICENAME "/dev/i2c-1"
+#define YA_HIGH 1
+#define YA_LOW	0
+#define NumberOfMCP23017 2
 
 /* Layout for the MCP23017 traffic light
  YELLOW (01) (02) (03) (04) (05)

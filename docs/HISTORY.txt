@@ -1,6 +1,15 @@
 	yast - yet another slotcar timer
 	Changes
 
+0.5.0: 2024-02-15
+	- first version to compile against lgpio (https://abyz.me.uk/lg/index.html)
+	- Compile option OFFLINE is out. Now only yast can only be used with LGPIO or WinringPi on system
+	- the complete hardware for traffic lights can't be used at this time
+	- new compile define started with -DI2C for i2c bus init without WiringPi,
+	  can only be used for dual MCP23017 init and debugging  
+	- more clean exit of program
+	- very dirty define block usage and error handling in this early state 
+	- docu needs to be more reworked
 0.4.14: 2024-02-06
 	- more version infos to look forward to change fom WiringPi to another GPIO
 	  library. Because WiringPi development ends with step to Pi5 and Bookworm
