@@ -133,7 +133,7 @@ At the 26 / 40 Pin GPIO port of the Raspberry Pi you will find the
 IO Pins at most Models the following way:
 
 | Schematic Name | Pinheader Number | lgpio Number | WiringPi Number | Track Number |
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|:---:|:---:|
 | GPIO 17 | PIN 11 | 17 | 0 | 1 |
 | GPIO 18 | PIN 12 | 18 | 1 | 2 |
 | GPIO 27 | PIN 13 | 27 | 2 | 3 |
