@@ -1,6 +1,6 @@
 #
 # This is the YAST Makefile
-# Date: 2024-02-13
+# Date: 2024-02-16
 #
 
 VERSION := 0.5.0

@@ -1,5 +1,5 @@
 # install script for yast
-# 2024-02-15
+# 2024-02-16
 # should be started from /home/pi/yast
 #
 # now uses lgpio setup as default

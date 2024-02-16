@@ -22,7 +22,6 @@ You should have received a copy of the GNU General Public License
 along with yast.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -40,7 +39,6 @@ along with yast.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "yast_define.h"
 #include "config.h"
-
 
 // Define constants for MCP23017 register numbers. They'll be explained later.
 #define IODIRA 0x00
@@ -62,7 +60,6 @@ static uint8_t gpioState[4]; // used to get the output status in memory
 void yaSetMCP23017(int ioNumber, int val) {
   // This function sends bytes (received as arguments)
   // to the chips' GPIOA, GPIOB registers.
-
   /* this is not the fastest way, but works for beginning */
 
   if( (mcph[0] <= 0) | (mcph[1] <=0) )
