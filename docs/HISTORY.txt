@@ -1,7 +1,7 @@
 	yast - yet another slotcar timer
 	Changes
 
-0.5.0: 2024-02-15
+0.5.0: 2024-02-16
 	- first version to compile against lgpio (https://abyz.me.uk/lg/index.html)
 	- Compile option OFFLINE is out. Now only yast can only be used with LGPIO or WinringPi on system
 	- the complete hardware for traffic lights can't be used at this time
@@ -13,6 +13,7 @@
 0.4.14: 2024-02-06
 	- more version infos to look forward to change fom WiringPi to another GPIO
 	  library. Because WiringPi development ends with step to Pi5 and Bookworm
+	- first tag set to this version
 0.4.13: 2022-02-24, 2022-07-14
 	- going forward to 4 chan track current output switching, setup works
 	- checked against wiringPi from https://github.com/WiringPi/WiringPi, version 2.61
