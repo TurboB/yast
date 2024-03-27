@@ -5,7 +5,6 @@ File: yast.c -> main c source
 
 Copyright (C)  2015 - 2024 Martin Berentsen
 
-
 This file is part of yast.
 
 yast is free software: you can redistribute it and/or modify
@@ -255,7 +254,6 @@ void Track_2_ISR(int e, lgGpioAlert_p evt, void *data)
 	}
 	screenupdate = 1;
 }
-
 
 #ifdef WIRINGPI
 void Track_3_ISR(void) {
@@ -2301,7 +2299,7 @@ int main(int argc, char *argv[])
 			digitalWrite(MCP23017_pinBase + MCP23017_RED_1,MCP23017_OFF);
 			digitalWrite(MCP23017_pinBase + MCP23017_RED_4,MCP23017_OFF);
 			digitalWrite(MCP23017_pinBase + MCP23017_RED_6,MCP23017_OFF);
-			digitalWrite(MCP23017_pinBase + MCP23017_RED_8,MCP23017_OFF);
+ 			digitalWrite(MCP23017_pinBase + MCP23017_RED_8,MCP23017_OFF);
 			digitalWrite(MCP23017_pinBase + MCP23017_RED_9,MCP23017_OFF);
 			digitalWrite(MCP23017_pinBase + MCP23017_YELLOW_2,MCP23017_OFF);
 			digitalWrite(MCP23017_pinBase + MCP23017_YELLOW_4,MCP23017_OFF);
@@ -3554,14 +3552,13 @@ int main(int argc, char *argv[])
 	endwin();
 
 	#ifdef I2C
-//	for (i = 0 ; i <= 31 ; i++)						/* clear all LEDs */
-//		yaDigitalWrite(i,YA_LOW);
+	for (i = 0 ; i <= 31 ; i++)						/* clear all LEDs */
+		yaSetMCP23017(i, YA_LOW); 
+	yaSleep(0.25);
 
 	if ( yaMCP23017Release(NumberOfMCP23017) == 0 )
 		printf("i2c %s free again\n",I2CDEVICENAME);
 	#endif /* I2C */
-
-
 
 	if(config.soundactive == 1) {
 	#ifdef ALSA_SOUND

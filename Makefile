@@ -3,7 +3,7 @@
 # Date: 2024-02-16
 #
 
-VERSION := 0.5.0
+VERSION := 0.5.1
 
 # GPIOLIB := -DWIRINGPI
 GPIOLIB := -DLGPIO

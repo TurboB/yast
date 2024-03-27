@@ -1,6 +1,9 @@
 	yast - yet another slotcar timer
 	Changes
 
+
+0.5.1: 2024-02-16
+	- MCP23017 tested, seems to work after fix
 0.5.0: 2024-02-16
 	- first version to compile against lgpio (https://abyz.me.uk/lg/index.html)
 	- Compile option OFFLINE is out. Now only yast can only be used with LGPIO or WinringPi on system

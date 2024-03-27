@@ -18,7 +18,7 @@
 #cd ..
 #
 # newer versions from new team, seems to be future standard 
-#wget https://github.com/WiringPi/WiringPi/archive/refs/tags/2.61-1.tar.gz
+# wget https://github.com/WiringPi/WiringPi/archive/refs/tags/2.61-1.tar.gz
 #
 
 #if [ -f /usr/bin/gpio ]
@@ -34,8 +34,9 @@ echo "********************************"
 echo " Installing lgpio"
 echo "********************************"
 
-if [ -f /usr/local/include/lgpio.h ]
+if [ -f /usr/local/bin/rgs ]
 then
+	/usr/local/bin/rgs -v
 	echo "lgpio already exists....."
 else
 	cd ..
@@ -43,7 +44,7 @@ else
 	unzip lg.zip
 	cd lg
 	make
-	# sudo make install
+	sudo make install
 	cd ..
 	cd yast	
 fi

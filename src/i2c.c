@@ -55,14 +55,15 @@ static const char *i2cdevice = I2CDEVICENAME ;	// Filesystem path to access the 
 uint8_t buffer[2];                       	// Initialize a buffer for two bytes to write to the device
 int mcph[2];					// handle to the chips
 
-static uint8_t gpioState[4]; // used to get the output status in memory
+static uint8_t gpioState[4] = { 0,0,0,0 }; // used to get the output status in memory
 
 void yaSetMCP23017(int ioNumber, int val) {
   // This function sends bytes (received as arguments)
   // to the chips' GPIOA, GPIOB registers.
   /* this is not the fastest way, but works for beginning */
+  /* now four times faster */
 
-  if( (mcph[0] <= 0) | (mcph[1] <=0) )
+  if( (mcph[0] <= 0) | (mcph[1] <=0) ) /* This test isn't very good, but better then nothimg */
   {
     printf("mcp header not valid\n");
     return;
@@ -71,25 +72,57 @@ void yaSetMCP23017(int ioNumber, int val) {
   switch(val){
    case YA_HIGH:
 
-    if(ioNumber < 8)
+    if(ioNumber < 8) {
      gpioState[0] = gpioState[0] | (0x01 << ioNumber); 
-    if((ioNumber >= 8) & ( ioNumber < 16))
+     buffer[0] = GPIOA;
+     buffer[1] = gpioState[0];
+     write(mcph[0], buffer, 2) ; //GPIOA set byte 1
+     }
+    if((ioNumber >= 8) & ( ioNumber < 16)) {
      gpioState[1] = gpioState[1] | (0x01 << (ioNumber-8)); 
-    if((ioNumber >= 16) & ( ioNumber < 24))
+     buffer[0] = GPIOB;
+     buffer[1] = gpioState[1];
+     write(mcph[0], buffer, 2) ; //GPIOB set byte 2
+     }
+    if((ioNumber >= 16) & ( ioNumber < 24)) {
      gpioState[2] = gpioState[2] | (0x01 << (ioNumber-16)); 
-    if((ioNumber >= 24) & ( ioNumber < 32))
+     buffer[0] = GPIOA;
+     buffer[1] = gpioState[2];
+     write(mcph[1], buffer, 2) ; //GPIOA set byte 3
+     }
+    if((ioNumber >= 24) & ( ioNumber < 32)) {
      gpioState[3] = gpioState[3] | (0x01 << (ioNumber-24)); 
+     buffer[0] = GPIOB;
+     buffer[1] = gpioState[3];
+     write(mcph[1], buffer, 2) ; //GPIOB set byte 4
+     }
     break;
   
    case YA_LOW:
-    if(ioNumber < 8)
+    if(ioNumber < 8) {
      gpioState[0] = gpioState[0] & ~(0x01 << ioNumber); 
-    if((ioNumber >= 8) & ( ioNumber < 16))
+     buffer[0] = GPIOA;
+     buffer[1] = gpioState[0];
+     write(mcph[0], buffer, 2) ; //GPIOA set byte 1
+     }
+    if((ioNumber >= 8) & ( ioNumber < 16)) {
      gpioState[1] = gpioState[1] & ~(0x01 << (ioNumber-8)); 
-    if((ioNumber >= 16) & ( ioNumber < 24))
+     buffer[0] = GPIOB;
+     buffer[1] = gpioState[1];
+     write(mcph[0], buffer, 2) ; //GPIOB set byte 2
+     }     
+    if((ioNumber >= 16) & ( ioNumber < 24)) {
      gpioState[2] = gpioState[2] & ~(0x01 << (ioNumber-16)); 
-    if((ioNumber >= 24) & ( ioNumber < 32))
+     buffer[0] = GPIOA;
+     buffer[1] = gpioState[2];
+     write(mcph[1], buffer, 2) ; //GPIOA set byte 3
+     }
+    if((ioNumber >= 24) & ( ioNumber < 32)) {
      gpioState[3] = gpioState[3] & ~(0x01 << (ioNumber-24)); 
+     buffer[0] = GPIOB;
+     buffer[1] = gpioState[3];
+     write(mcph[1], buffer, 2) ; //GPIOB set byte 4
+     }     
     break;
     
     default:
@@ -97,22 +130,22 @@ void yaSetMCP23017(int ioNumber, int val) {
 }
 
   // Chip 0
-  buffer[0] = GPIOA;
-  buffer[1] = gpioState[0];
-  write(mcph[0], buffer, 2) ; //GPIOA set byte 1
+//  buffer[0] = GPIOA;
+//  buffer[1] = gpioState[0];
+//  write(mcph[0], buffer, 2) ; //GPIOA set byte 1
 
-  buffer[0] = GPIOB;
-  buffer[1] = gpioState[1];
-  write(mcph[0], buffer, 2) ; //GPIOB set byte 2
+//  buffer[0] = GPIOB;
+//  buffer[1] = gpioState[1];
+//  write(mcph[0], buffer, 2) ; //GPIOB set byte 2
 
   // Chip 1
-  buffer[0] = GPIOA;
-  buffer[1] = gpioState[2];
-  write(mcph[1], buffer, 2) ; //GPIOA set byte 3
+//  buffer[0] = GPIOA;
+//  buffer[1] = gpioState[2];
+//  write(mcph[1], buffer, 2) ; //GPIOA set byte 3
 
-  buffer[0] = GPIOB;
-  buffer[1] = gpioState[3];
-  write(mcph[1], buffer, 2) ; //GPIOB set byte 4
+//  buffer[0] = GPIOB;
+//  buffer[1] = gpioState[3];
+//  write(mcph[1], buffer, 2) ; //GPIOB set byte 4
 }
 
 
@@ -186,10 +219,7 @@ if(devcount > 1)
     } else {
         printf("MCP23017 #2 open error");
         return -2;
-        }        
-  
-  
-  
+        }          
   }
 
   // Chip 1

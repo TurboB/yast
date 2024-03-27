@@ -5,9 +5,9 @@
 The basic system requirements are:
 - a Raspberry Pi1/2/3/4/a/b/+ 
 - track signal input hardware
-- a running Raspbian image (Wheezy, Jessie, Stretch, Buster, Bullseye)
+- a running Raspbian image (Wheezy, Jessie, Stretch, Buster, Bullseye, Bookworm)
 - a working Internet connection (to make installing easy, can also be done without )
-- wiringPi package
+- lgpio or wiringPi package
 - libncurses5-dev package
 - cp437 definitions 
 - ASCII screen resolution of 80 x 36 (ideal case)
@@ -41,22 +41,22 @@ A network connection is required only for installation of the packages, later on
 can be used offline. Or the Memory Card can be used in a different Pi. In this way it's easy to
 use a Type A or A+. For this installation example the user "pi" is used, because it's the standard.
 
-First the WiringPi package must be downloaded and installed.
+First the lgpio package must be downloaded and installed.
 Please check first an existing installatin by
 
-<cite>gpio -v<br></cite>
+<cite>rgs -v</cite>
 
-On my Raspian Buster a 2.50 was already installed, an update to 2.52 as Gordons latest version works.
-Please use wiringPi Version 2.36 or later, because there is a fix inside for first time ISR event usage.
-For a Raspberry Pi >3 please update to Version 2.52, because of correct Pi
-version handling. How to do this is shown on wiringPi website.
+If you get a version number, it seems to be O.K.
+But in the normal case you have to install like shown on 
+zhis website: https://abyz.me.uk/lg/download.html
 
-<cite>git clone git://git.drogon.net/wiringPi<br>
-cd wiringPi<br>
-./build<br></cite>
+<cite>wget http://abyz.me.uk/lg/lg.zip<br>
+unzip lg.zip<br>
+cd lg<br>
+make<br>
+sudo make install<br></cite>
 
-Newer version from https://github.com/WiringPi/WiringPi was tested with
-version 2.61. 
+For the old WiringPi installation please take a look down this file.
 
 Than the Curses package must be downloaded and installed
 <cite>sudo apt-get install libncurses5-dev</cite><br>
@@ -169,4 +169,28 @@ First the alsa sound system development files are required. Download them by:
 <cite> sudo apt-get install gcc libasound2 libasound2-dev</cite><br>
 and set in the <cite>Makefile</cite> <br>
 <cite> ALSA_SOUND_LIB := -lasound<br>ALSA_SOUND := -DALSA_SOUND</cite><br>
+
+
+
+outdated:
+------------------------------------------------------------------------------
+WiringPi installation on Raspberry Pi.
+
+First the WiringPi package must be downloaded and installed.
+Please check first an existing installatin by
+
+<cite>gpio -v<br></cite>
+
+On my Raspian Buster a 2.50 was already installed, an update to 2.52 as Gordons latest version works.
+Please use wiringPi Version 2.36 or later, because there is a fix inside for first time ISR event usage.
+For a Raspberry Pi >3 please update to Version 2.52, because of correct Pi
+version handling. How to do this is shown on wiringPi website.
+
+<cite>git clone git://git.drogon.net/wiringPi<br>
+cd wiringPi<br>
+./build<br></cite>
+
+Newer version from https://github.com/WiringPi/WiringPi was tested with
+version 2.61. 
+---------------------------------------------------------------------------------
 	
