@@ -1,9 +1,9 @@
-/*  2018-11-15 20:00  */
+/*  2024-03-29 14:00  */
 /*
     yast - yet another slotcar timer
 	File: font_3x.h -> ASCII font with ncurses, 3x3 and 3x5, based on codepage CP437
 
-    Copyright (C)  2015,2016,2017,2018 Martin Berentsen
+    Copyright (C)  2015 - 2024 Martin Berentsen
 
 
     This file is part of yast.
@@ -439,7 +439,7 @@ void print_lap(int track, unsigned long ul_LapCount){
 	attrset(COLOR_PAIR(track+1));
 
 	if( ((ul_LapCount)/1000%10)> 0)
-		mvprintw(CURSES_TRACKRESULT_LINE_Y+2+(track*FONTHEIGHT), 1,"%d",(ul_LapCount)/1000%10);         /*  print the first digit small */
+		mvprintw(CURSES_TRACKRESULT_LINE_Y+2+(track*FONTHEIGHT), 1,"%ld",(ul_LapCount)/1000%10);         /*  print the first digit small */
 	mvprintnum3x(CURSES_TRACKRESULT_LINE_Y+(track*FONTHEIGHT), CURSES_3x_LAPNUM_X+1,(int) (ul_LapCount)/100%10 );
 	mvprintnum3x(CURSES_TRACKRESULT_LINE_Y+(track*FONTHEIGHT), CURSES_3x_LAPNUM_X+5,(int) (ul_LapCount)/10%10  );
 	mvprintnum3x(CURSES_TRACKRESULT_LINE_Y+(track*FONTHEIGHT), CURSES_3x_LAPNUM_X+9,(int) (ul_LapCount)%10     );

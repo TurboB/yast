@@ -1,4 +1,4 @@
-/*  2024-02-10 23:00  */
+/*  2024-03-29 14:00  */
 /*
     yast - yet another slotcar timer
 	File: display.c -> contains some screen routines of the project
@@ -153,19 +153,19 @@ void view_last(int nout)
 	case 2:
 		for(j=1;j<=1;j++) {
 			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
+			printw("%ld: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
 		}		
 		break;
 	case 3:
 		for(j=1;j<=2;j++) {
 			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
+			printw("%ld: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
 		}
 		break;
 	default:
 		for(j=1;j<=3;j++) {
 			move((i*FONTHEIGHT)+j+1, CUR_PLACE_X );
-			printw("%d: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
+			printw("%ld: %.3f    ",lapcount[i]-j,laptime[i][(lapcount[i]-j-1)] / 1000.0);
 		}
 		break;		
 	}

@@ -85,8 +85,14 @@ echo "********************************"
 echo " Installing ntpdate"
 echo "********************************"
 
-sudo apt-get install ntpdate
+if [ -f /usr/sbin/ntpdate ] 
+then
+	echo "ntpdate already exists ....."
+else
+	sudo apt-get -y install ntpdate
+fi 
 
+echo " going back"
 if [ -d yast ]
 then
 	cd yast

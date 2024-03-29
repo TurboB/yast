@@ -1,4 +1,4 @@
-/*  2024-02-15 19:00  */
+/*  2024-03-29 14:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
@@ -1594,7 +1594,7 @@ int main(int argc, char *argv[])
 #ifdef OFFLINE
 			printf(" #define OFFLINE\n");
 #endif /* OFFLINE */
-			printf(" Reserved lap memory is : %d laps x %d tracks x %d Bytes = %.2f kBytes\n",LAPLIM,TRACKLIM,sizeof(long),(float)(LAPLIM*TRACKLIM*sizeof(long))/1024.0);
+			printf(" Reserved lap memory is : %d laps x %d tracks x %ld Bytes = %.2f kBytes\n",LAPLIM,TRACKLIM,sizeof(long),(float)(LAPLIM*TRACKLIM*sizeof(long))/1024.0);
 			printf("Config options :\n");
 			printf(" Number of tracks : %d\n",config.numberoftracks);
 			printf(" Minimum lap time : %ld ms\n",config.minlaptime);
@@ -1698,7 +1698,7 @@ int main(int argc, char *argv[])
 		printf("no Pi hardware descriptor found\n");
 	if(LinuxVersion() != 0)
 		printf("no Linux version descriptor found\n");
-	printf("Reserved lap memory is: %d laps x %d tracks x %d Bytes = %.2f kBytes\n",LAPLIM,TRACKLIM,sizeof(long),(float)(LAPLIM*TRACKLIM*sizeof(long))/1024.0);
+	printf("Reserved lap memory is: %d laps x %d tracks x %ld Bytes = %.2f kBytes\n",LAPLIM,TRACKLIM,sizeof(long),(float)(LAPLIM*TRACKLIM*sizeof(long))/1024.0);
 	printf("Race lap counter set to %d laps\n",endlap);
 	printf("Race time counter set to %d seconds\n",endtime);
 	printf("Minimum lap time set to %ld ms\n",config.minlaptime);
@@ -2538,7 +2538,7 @@ int main(int argc, char *argv[])
 
 		/* Print out the time */
 		acttime = GetTime() - starttime;
-		mvprintw(CUR_CLOCK_Y,CUR_CLOCK_X,"%.2d:%.2d:%.2d:%.3d",(acttime/(1000*60*60))%100,(acttime/(1000*60))%60,(acttime/1000)%60,acttime%1000);
+		mvprintw(CUR_CLOCK_Y,CUR_CLOCK_X,"%.2ld:%.2ld:%.2ld:%.3ld",(acttime/(1000*60*60))%100,(acttime/(1000*60))%60,(acttime/1000)%60,acttime%1000);
 
 		/* make some times a fully screen painting update -> required for RTC, nice to have else */
 		/* was %1000, now %250 for slow pi1, because the 1000 is just 60 times a second possible */
