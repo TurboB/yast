@@ -1,9 +1,9 @@
-/*  2018-02-08 19:00  */
+/*  2024-03-29 17:00  */
 /*
     yast - yet another slotcar timer
 	File: sound.c -> contains some sound routines of the project
 
-    Copyright (C)  2016,2017,2018 Martin Berentsen
+    Copyright (C)  2016 - 2024 Martin Berentsen
 
 
     This file is part of yast.
@@ -268,9 +268,10 @@ SND_play(int soundnumber)
 ************************************************************************/
 int SND_play(int soundnumber)
 {
+    if( (soundnumber <= 0) || (soundnumber > SND_NUMBER_OF_TONES) )
+	return -1;
+
 #ifdef ALSA_SOUND
-	if( (soundnumber <= 0) || (soundnumber > SND_NUMBER_OF_TONES) )
-		return -1;
 	
     frames = snd_pcm_prepare(playback_handle);
     frames = snd_pcm_writei(playback_handle, snd_buffer[ soundnumber - 1 ], snd_buffer_len[ soundnumber-1] );    /* sending values to sound driver */

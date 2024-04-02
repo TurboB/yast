@@ -1,9 +1,14 @@
 # install script for yast
-# 2024-02-16
+# 2024-04-02
 # should be started from /home/pi/yast
 #
 # now uses lgpio setup as default
 #
+
+echo "******************************************************"
+echo " yast timer install script "
+echo "******************************************************"
+
 
 # wiring Pi
 #echo "********************************"
@@ -63,7 +68,13 @@ echo "********************************"
 echo " Installing alsa sound dev"
 echo "********************************"
 
-sudo apt-get install -y gcc libasound2 libasound2-dev 
+if [ -f /usr/include/alsa/asoundlib.h ] 
+then
+	echo " alsa dev files already exists ....."
+else
+	sudo apt-get install -y libasound2
+	sudo apt-get install -y libasound2-dev 
+fi
 
 # CodePgae 437 
 # check for codepage already installed
@@ -74,7 +85,7 @@ echo "********************************"
 
 if [ -f /usr/share/consoletrans/cp437.acm.gz ]
 then
-	echo "Codepage file already exists ....."
+	echo " Codepage file already exists ....."
 else
 	wget ftp://ftp4.gwdg.de/pub/linux/handhelds/distributions/intimate/beta/usr/share/consoletrans/cp437.acm.gz
 	sudo mv -v cp437.acm.gz /usr/share/consoletrans
@@ -88,11 +99,14 @@ echo "********************************"
 if [ -f /usr/sbin/ntpdate ] 
 then
 	echo "ntpdate already exists ....."
+	/usr/sbin/ntpdate -v
 else
 	sudo apt-get -y install ntpdate
 fi 
 
-echo " going back"
+echo "******************************************************"
+echo " going back, make should work now"
+echo "******************************************************"
 if [ -d yast ]
 then
 	cd yast

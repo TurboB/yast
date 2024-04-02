@@ -2,9 +2,10 @@
 	Changes
 
 
-0.5.2: 2024-03-29
-	- final install test on Bookworm and fixes on some warnings, UPS, alsa does not work without errors
-	- some int definitions also seams not to be gcc version compatible
+0.5.2: 2024-04-02
+	- final install test on Bookworm and fixes on some warnings, UPS, alsa does not work without errors -> fresh Bookworm with no trouble again
+	- some int definitions also seems not to be gcc version compatible
+	- lockfile user rights also seems to br different -> fresh Bookworm with no trouble again
 0.5.1: 2024-02-16
 	- MCP23017 tested, seems to work after fix
 0.5.0: 2024-02-16
