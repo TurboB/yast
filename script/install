@@ -1,5 +1,5 @@
 # install script for yast
-# 2024-04-02
+# 2024-06-14
 # should be started from /home/pi/yast
 #
 # now uses lgpio setup as default
@@ -87,8 +87,15 @@ if [ -f /usr/share/consoletrans/cp437.acm.gz ]
 then
 	echo " Codepage file already exists ....."
 else
-	wget ftp://ftp4.gwdg.de/pub/linux/handhelds/distributions/intimate/beta/usr/share/consoletrans/cp437.acm.gz
-	sudo mv -v cp437.acm.gz /usr/share/consoletrans
+	if wget http://ftp.gwdg.de/pub/linux/handhelds/distributions/intimate/release/usr/share/consoletrans/cp437.acm.gz ; then
+		sudo cp -v cp437.acm.gz /usr/share/consoletrans
+		rm -v cp437.acm.gz
+	else
+		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+		echo "!! ERROR:                      !!"
+		echo "!! can't get file cp437.acm.gz !!"
+		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+	fi
 fi
 
 # ntpdate
