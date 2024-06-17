@@ -445,12 +445,12 @@ You see here the Version 0.1.9. Font is here 3x3 (small).
 
 
 ## History
-Some rough milestones are:
-Startup with first public test release version 0.1.  
-With version 0.2 a more clear build structure and a new font is inside.  
-Track power switching since version 0.3.  
-UNICODE is implemented since 0.4.  
-First step to become independend from WiringPi from 0.5 with lgpio.
+Some rough milestones are:\
+Startup with first public test release version 0.1.\
+With version 0.2 a more clear build structure and a new font is inside.\
+Track power switching since version 0.3.\
+UNICODE is implemented since 0.4.\ 
+First step to become independend from WiringPi from 0.5 with lgpio.\
 For more details see [HISTORY](docs/HISTORY.txt).
 
 
@@ -465,17 +465,19 @@ For more details see [TODO](docs/ToDo.txt).
   
 
 ## References
-http://wiringpi.com/ (io)  
+https://abyz.me.uk/lg/py_lgpio.html (io)\
+https://pinout.xyz (io)\
+https://abyz.me.uk/lg/index.html (io)\
+https://github.com/keriszafir/mcp23017-demo/tree/master (i2c)\
+https://github.com/phillipnasher/mcp23017 (i2c)\
+http://codeandlife.com/2012/07/03/benchmarking-raspberry-pi-gpio-speed (io)\  
+http://elinux.org/Rpi_Low-level_peripherals#cite_note-20 (io)\  
+http://hobbyelektronik.org/w/index.php/Raspberry_Pi_IO (io)\
+http://wiringpi.com (io)\ 
 https://github.com/WiringPi/WiringPi (io)\
-https://pinout.xyz/ (io)\
-https://abyz.me.uk/lg/index.html (io)
-https://github.com/keriszafir/mcp23017-demo/tree/master (i2c)
-http://codeandlife.com/2012/07/03/benchmarking-raspberry-pi-gpio-speed/ (io)  
-http://elinux.org/Rpi_Low-level_peripherals#cite_note-20 (io)  
-http://hobbyelektronik.org/w/index.php/Raspberry_Pi_IO (io)  
-http://openbook.galileo-press.de/linux_unix_programmierung/Kap13-002.htm (curses)  
-http://equalarea.com/paul/alsa-audio.html (sound)  
-http://users.suse.com/~mana/alsa090_howto.html (sound)  
+http://openbook.galileo-press.de/linux_unix_programmierung/Kap13-002.htm (curses)\
+http://equalarea.com/paul/alsa-audio.html (sound)\
+http://users.suse.com/~mana/alsa090_howto.html (sound)\
 http://www.alsa-project.org/alsa-doc/alsa-lib/ (sound) 
 
  

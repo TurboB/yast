@@ -3,30 +3,82 @@
 ## YAST System Requirement
     
 The basic system requirements are:
-- a Raspberry Pi1/2/3/4/a/b/+ 
+- a Raspberry Pi 1/2/3/4/a/b/+ 
 - track signal input hardware
 - a running Raspbian image (Wheezy, Jessie, Stretch, Buster, Bullseye, Bookworm)
 - a working Internet connection (to make installing easy, can also be done without )
-- lgpio or wiringPi package
-- libncurses5-dev package
-- cp437 definitions 
+- lgpio or wiringPi package (done by script)
+- libncurses5-dev package (done by script)
+- cp437 definitions (done by script)
 - ASCII screen resolution of 80 x 36 (ideal case)
 
 ## Basic system Installation
 
 Write a raspbian image to the SD-card.
-I prefer no light versions of the raspbian distribution, so at first boot it comes up with desktop.
-So boot to CLI and I2C can be easy configured.
+I prefer no light versions of the raspbian distribution.
+You can do it by an easy use the Raspberry Pi Imager. 
+Preconfigurations are also possible here.
 
-![Raspberry Pi GFX Configuration Screenshot](pictures/RPI_CONF_1280x1024_01.PNG "Raspberry Pi GFX Configuration Screenshot")
+![Raspberry Pi Imager Configuration Screenshot](pictures/RaspberryPiImager_001.png "Raspberry Pi Imager Configuration Screenshot")
 
-![Raspberry Pi GFX Configuration Screenshot](pictures/RPI_CONF_1280x1024_02.PNG "Raspberry Pi GFX Configuration Screenshot")
+At first boot it comes up with desktop.
+Boot to CLI and I2C can be easy configured by usage of the
+Raspberry Pi Configuration tool on the Desktop.
+
+![Raspberry Pi GFX Configuration Screenshot](pictures/2024-06-07-204316_2560x1024_scrot.png "Raspberry Pi GFX Configuration Screenshot")
+
+![Raspberry Pi GFX Configuration Screenshot](pictures/2024-06-07-204337_2560x1024_scrot.png "Raspberry Pi GFX Configuration Screenshot")
     
-The desktop can also be used to download the yast package from this page or to connect
-easy an USB-Stick.
-    
+After a reboot you should now stay at CLI and logged in.
+Please bring now you system into the latest update state.
+
+<cite> sudo apt-get update
+<br> sudo apt-get upgrade
+<br> </cite>
         
+## Automatic - Installation with installation script
+
+When you are logged in as standard user pi, you can follow the description
+from here.
+
+Use git to clone a copy with: 
+
+<cite> git clone https://github.com/TurboB/yast.git </cite>
+
+Run in yast directory the install script.
+This install script tries to install lgpio, libncurses5-dev, cp437.acm and ntpdate.
+
+<cite> cd yast <br> ./script/install
+      <br> </cite><br>
+
+Now you can configure you yast individually
+by editing your Makefile or or use it without changes.
+
+Now run the make process.
+
+      <br> make
+      <br> </cite><br>
+
+Now it should work for you.
+	  
+Start it by usage of a script to add some startup parameters there and
+also to change to the nice font.
+
+<cite> ./script/startyast
+      <br> </cite><br>
+
+
 ## Installation step by step by hand
+
+Some parts in the following chapters may be outdated or related
+to older distributions.
+
+An USB Stick can also be used to get the packages onto your Raspberry Pi.
+Place the yastfile.tgz in your local directory and untar it:
+
+<cite> mkdir yast
+      <br> cd yast
+      <br> tar -xvzf ../yastfile.tgz <br> </cite>
 
 The yast can be used on a local console, inside a network terminal or inside a terminal
 of the X-Server. But it is codepage 437 based. So the easiest way is to
@@ -83,27 +135,6 @@ Now a classic combination follows, and there it is....
 A script for switching on and of the screen and fontmode is included and called
 
 <cite>./script/startyast</cite><br>
-
-## Automatic - Installation with installation script
-
-Use git to clone a copy with: 
-
-<cite> git clone https://github.com/TurboB/yast.git </cite>
-
-or place the yastfile.tgz in your local directory and untar it:
-
-<cite> mkdir yast
-      <br> cd yast
-      <br> tar -xvzf ../yastfile.tgz <br> </cite>
-
-Run in yast directory the install script, and after your configuration
-the make
-
-<cite> ./script/install
-      <br> make
-      <br> </cite><br>
-	  
-This install script tries to install wiringPi, libncurses5-dev, cp437.acm and ntpdate.
 
 
 ## Wheezy - Distribution specials on Raspbian Wheezy
@@ -171,8 +202,7 @@ and set in the <cite>Makefile</cite> <br>
 <cite> ALSA_SOUND_LIB := -lasound<br>ALSA_SOUND := -DALSA_SOUND</cite><br>
 
 
-
-outdated:
+Since EOL of WiringPi really outdated:
 ------------------------------------------------------------------------------
 WiringPi installation on Raspberry Pi.
 
