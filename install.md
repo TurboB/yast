@@ -100,7 +100,7 @@ Please check first an existing installatin by
 
 If you get a version number, it seems to be O.K.
 But in the normal case you have to install like shown on 
-zhis website: https://abyz.me.uk/lg/download.html
+this website: https://abyz.me.uk/lg/download.html
 
 <cite>wget http://abyz.me.uk/lg/lg.zip<br>
 unzip lg.zip<br>
@@ -120,10 +120,15 @@ A copy of it is placed under
 <cite>/usr/share/consoletrans</cite><br>
 After this you can place a copy of the download yast_XXX.tgz in your pi directory or on a USB-Stick.
 Mounting a USB-Stick with respect to user pi is mounted in the following way.
-Your USB-Stick can be found at /dev/sda or /dev/sda1.
+Your USB-Stick can be found at /dev/sda or /dev/sda1.\
+
 <cite>sudo mount -t vfat -o uid=pi,gid=pi /dev/sda1 /media/usbstick/</cite><br>
+
 This requires, that a clean directory
-<cite>/media/usbstick/</cite> exists.
+
+<cite>/media/usbstick/</cite><br>
+
+exists.
 
 Now a classic combination follows, and there it is....
 
