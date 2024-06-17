@@ -56,7 +56,7 @@ by editing your Makefile or or use it without changes.
 
 Now run the make process.
 
-      <br> make
+<cite> make
       <br> </cite><br>
 
 Now it should work for you.

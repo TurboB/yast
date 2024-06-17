@@ -122,7 +122,7 @@ However, for me it works as a first timing solution.
 ## Hardware
 
 I use a Raspberry Pi Mod 4. Also Type 1 Mod. B, a 3 Mod B and a 4 Mod. B. A 1 Mod B+ is tested. But also Type A, A+,
-B2 and all others up to Mod.5 are usable (I think so).\
+B2 and all others up to Mod.5 are usable (I think so).
 
 The track power switching is done by switching a GPIO pin for every track.
 The pin can be chosen by config file.
@@ -419,9 +419,7 @@ After race driving ntp can be activated again.
 
 ## Download
 
-For testing you can download the source file as TGZ from here.
-
-Or you clone yast with git.
+You can clone yast with git.
 
 `git clone https://github.com/TurboB/yast.git `
 
@@ -449,7 +447,7 @@ Some rough milestones are:\
 Startup with first public test release version 0.1.\
 With version 0.2 a more clear build structure and a new font is inside.\
 Track power switching since version 0.3.\
-UNICODE is implemented since 0.4.\ 
+UNICODE is implemented since 0.4.\
 First step to become independend from WiringPi from 0.5 with lgpio.\
 For more details see [HISTORY](docs/HISTORY.txt).
 
@@ -470,10 +468,10 @@ https://pinout.xyz (io)\
 https://abyz.me.uk/lg/index.html (io)\
 https://github.com/keriszafir/mcp23017-demo/tree/master (i2c)\
 https://github.com/phillipnasher/mcp23017 (i2c)\
-http://codeandlife.com/2012/07/03/benchmarking-raspberry-pi-gpio-speed (io)\  
-http://elinux.org/Rpi_Low-level_peripherals#cite_note-20 (io)\  
+http://codeandlife.com/2012/07/03/benchmarking-raspberry-pi-gpio-speed (io)\
+http://elinux.org/Rpi_Low-level_peripherals#cite_note-20 (io)\
 http://hobbyelektronik.org/w/index.php/Raspberry_Pi_IO (io)\
-http://wiringpi.com (io)\ 
+http://wiringpi.com (io)\
 https://github.com/WiringPi/WiringPi (io)\
 http://openbook.galileo-press.de/linux_unix_programmierung/Kap13-002.htm (curses)\
 http://equalarea.com/paul/alsa-audio.html (sound)\
