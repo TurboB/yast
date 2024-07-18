@@ -67,6 +67,18 @@ also to change to the nice font.
 <cite> ./script/startyast
       <br> </cite><br>
 
+For an autostart of YAST after boot you can add the following 
+lines at the end of your .bashrc file.
+
+<cite>     if [ -f ~/yast/script/autorun_yast_on_tty1 ]; then
+<br>        . ~/yast/script/autorun_yast_on_tty1 start
+<br>        . ~/yast/script/bigfont
+<br> fi
+</cite>
+
+With this script only on the first console window YAST willbe started.
+Place the yastfile.tgz in your local directory and untar it:
+
 
 ## Installation step by step by hand
 
