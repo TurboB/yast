@@ -1,4 +1,4 @@
-/*  2024-02-13 23:00  */
+/*  2024-10-25 23:00  */
 /*
 yast - yet another slotcar timer
 File: i2c -> i2c software interface for linux
@@ -57,16 +57,18 @@ int mcph[2];					// handle to the chips
 
 static uint8_t gpioState[4] = { 0,0,0,0 }; // used to get the output status in memory
 
-void yaSetMCP23017(int ioNumber, int val) {
+// void yaSetMCP23017(int ioNumber, int val) {
+int yaSetMCP23017(int ioNumber, int val) {
   // This function sends bytes (received as arguments)
   // to the chips' GPIOA, GPIOB registers.
-  /* this is not the fastest way, but works for beginning */
+  /* this is not the fastest way, but works for beginning , later*/
   /* now four times faster */
 
   if( (mcph[0] <= 0) | (mcph[1] <=0) ) /* This test isn't very good, but better then nothimg */
   {
-    printf("mcp header not valid\n");
-    return;
+    printf("mcp header not valid (%d:%d)\n",mcph[0],mcph[1]);
+    printf("-> Is the i2c interface already in action ?\n");
+    return -1;
   }
 
   switch(val){
@@ -127,6 +129,8 @@ void yaSetMCP23017(int ioNumber, int val) {
     
     default:
      break;
+     
+     return 0;
 }
 
   // Chip 0
@@ -146,6 +150,8 @@ void yaSetMCP23017(int ioNumber, int val) {
 //  buffer[0] = GPIOB;
 //  buffer[1] = gpioState[3];
 //  write(mcph[1], buffer, 2) ; //GPIOB set byte 4
+
+     return 0;
 }
 
 

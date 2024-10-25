@@ -1,4 +1,4 @@
-/*  2024-02-13 23:00  */
+/*  2024-10-25 23:00  */
 /*
 yast - yet another slotcar timer
 File: i2c.h -> i2c interface for linux
@@ -28,7 +28,8 @@ along with yast.  If not, see <http://www.gnu.org/licenses/>.
 
 #endif
 
-void yaSetMCP23017(int ioNumber, int val);
+// void yaSetMCP23017(int ioNumber, int val);
+int yaSetMCP23017(int ioNumber, int val);
 int yaMCP23017Setup(int devcount);
 int yaMCP23017Release(int devcount);
 

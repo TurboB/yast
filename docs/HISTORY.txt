@@ -2,6 +2,8 @@
 	Changes
 
 
+0.5.3: 2024-10-25
+	- i2c setup fail detection optimized
 0.5.2: 2024-04-02
 	- final install test on Bookworm and fixes on some warnings, UPS, alsa does not work without errors -> fresh Bookworm with no trouble again
 	- some int definitions also seems not to be gcc version compatible

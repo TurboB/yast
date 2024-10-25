@@ -2091,6 +2091,8 @@ int main(int argc, char *argv[])
 	if( yaMCP23017Setup(NumberOfMCP23017) != 32)   /* place togeter lgpio andWiringpi (later), can return <0 for errors, and bits as usable, only lgpio later */
 	{
 		printf(" i2c MCP23017 error\n");
+		printf(" -> Is the i2c interface already in action ?\n");
+		return 1;				/* exit here required to prevent confusion */
 	}
 	else printf(" i2c setup with device %s is o.k.\n",I2CDEVICENAME);
 	#endif /* I2C */
