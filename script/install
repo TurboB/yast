@@ -1,14 +1,32 @@
 # install script for yast
-# 2024-06-14
+# 2024-10-28
 # should be started from /home/pi/yast
 #
 # now uses lgpio setup as default
 #
 
 echo "******************************************************"
-echo " yast timer install script "
+echo " yast slotcar timer install script "
 echo "******************************************************"
 
+echo " installed will be: "
+echo " - lgpio "
+echo " - libcurses-dev "
+echo " - alsa-dev "
+echo " - cp437 "
+echo " - ntpdate "
+
+echo " Would you like to install? (Y or N)"
+
+read x
+
+# now check if $x is "Y"
+if [ "$x" != "Y" ]; then
+    echo " cancel the install script here"
+    exit
+fi
+
+echo "starting the install script here" 
 
 # wiring Pi
 #echo "********************************"

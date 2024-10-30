@@ -70,7 +70,8 @@ int yaDigitalWrite(int gpio_num, int level)
 
         #ifdef LGPIO
         int lgret;
-        lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , gpio_num, level);
+//        lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , gpio_num, level);
+        lgret = lgGpioWrite(lghandle, gpio_num, level);
         if (lgret < 0) 
         {
  	        printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);

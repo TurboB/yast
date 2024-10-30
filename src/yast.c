@@ -2186,29 +2186,30 @@ int main(int argc, char *argv[])
 
 		if( (config.trackcurrentoutput[0] >=0) && (config.trackpoweractive == 1) )
 		{
-//			#ifdef WIRINGPI
-//			digitalWrite(config.trackcurrentoutput[0],HIGH); /* switching power on */
-//			#endif /* WIRINGPI */
-
-//			#ifdef LGPIO
-//			lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[0], LG_HIGH);
-//			if (lgret < 0) 
-//			{
-//				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
-//				yaGpioGetMode(lghandle,config.trackcurrentoutput[0]); 
-//				return 1; }
-//			#endif /* LGPIO */
-
-			yaDigitalWrite(config.trackcurrentoutput[0],YA_HIGH); /* switching power on */
+			yaDigitalWrite(config.trackcurrentoutput[0],LG_HIGH); /* switching power on */
 
 			printf("Track 1 Power on\n");
 		}
 
 		if( (config.trackcurrentoutput[1] >=0) && (config.trackpoweractive == 1) )
 		{
-			yaDigitalWrite(config.trackcurrentoutput[1],YA_HIGH); /* switching power on */
+			yaDigitalWrite(config.trackcurrentoutput[1],LG_HIGH); /* switching power on */
 
 			printf("Track 2 Power on\n");
+		}
+
+		if( (config.trackcurrentoutput[2] >=0) && (config.trackpoweractive == 1) )
+		{
+			yaDigitalWrite(config.trackcurrentoutput[2],LG_HIGH); /* switching power on */
+
+			printf("Track 3 Power on\n");
+		}
+
+		if( (config.trackcurrentoutput[3] >=0) && (config.trackpoweractive == 1) )
+		{
+			yaDigitalWrite(config.trackcurrentoutput[3],LG_HIGH); /* switching power on */
+
+			printf("Track 4 Power on\n");
 		}
 
 //		#ifdef WIRINGPI
@@ -2219,7 +2220,6 @@ int main(int argc, char *argv[])
 //		#endif
 
 		yaSleep(0.5);
-
 
 		if(config.soundactive == 1){
 			printf("HEY,  - Check this sound - if compiled in.....\n");
@@ -2267,6 +2267,10 @@ int main(int argc, char *argv[])
 		printf("starting (nearly) endless hardware check modus,\nend with CTRL-C\nand wait......\n");
 
 		while( stop == 0) { /* the hardware test core starts here */
+
+	#ifdef I2C
+	yaSetMCP23017(MCP23017_BACKSIDE, YA_HIGH);  /* Set trackpower LED high */
+	#endif /* I2C */
 
 	#ifdef WIRINGPI
 
@@ -2340,8 +2344,9 @@ int main(int argc, char *argv[])
 
 		/******************************************************************************************/
 
-
 	#endif /* WIRINGPI */
+
+		yaSleep(0.5);
 
 		}
 
@@ -2349,31 +2354,35 @@ int main(int argc, char *argv[])
 
 		if( (config.trackcurrentoutput[0] >=0) && (config.trackpoweractive == 1) )
 		{
-
-//			#ifdef WIRINGPI
-//			digitalWrite(config.trackcurrentoutput[0],LOW); /* switching power off */
-//			#endif /* WIRINGPI */
-
-//			#ifdef LGPIO
-//			lgret = lgGpioClaimOutput(lghandle, 0 /*LFLAGS*/ , config.trackcurrentoutput[0], LG_LOW);
-//			if (lgret < 0) 
-//			{
-//				printf("ERROR: %s (%d)\n", lguErrorText(lgret), lgret);
-//				yaGpioGetMode(lghandle,config.trackcurrentoutput[0]); 
-//				return 1; }
-//			#endif /* LGPIO */
-
-			yaDigitalWrite(config.trackcurrentoutput[0],YA_LOW); /* switching power off */
+			yaDigitalWrite(config.trackcurrentoutput[0],LG_LOW); /* switching power off */
 
 			printf("Track 1 Power off\n");
 		}
 
 		if( (config.trackcurrentoutput[1] >=0) && (config.trackpoweractive == 1) )
 		{
-			yaDigitalWrite(config.trackcurrentoutput[1],YA_LOW); /* switching power off */
+			yaDigitalWrite(config.trackcurrentoutput[1],LG_LOW); /* switching power off */
 
 			printf("Track 2 Power off\n");
 		}
+
+		if( (config.trackcurrentoutput[2] >=0) && (config.trackpoweractive == 1) )
+		{
+			yaDigitalWrite(config.trackcurrentoutput[2],LG_LOW); /* switching power off */
+
+			printf("Track 3 Power off\n");
+		}
+
+		if( (config.trackcurrentoutput[3] >=0) && (config.trackpoweractive == 1) )
+		{
+			yaDigitalWrite(config.trackcurrentoutput[3],LG_LOW); /* switching power off */
+
+			printf("Track 4 Power off\n");
+		}
+
+	#ifdef I2C
+	yaSetMCP23017(MCP23017_BACKSIDE, YA_LOW);  /* Set trackpower LED low */
+	#endif /* I2C */
 
 		exit(0);
 
@@ -3556,6 +3565,7 @@ int main(int argc, char *argv[])
 	#ifdef I2C
 	for (i = 0 ; i <= 31 ; i++)						/* clear all LEDs */
 		yaSetMCP23017(i, YA_LOW); 
+
 	yaSleep(0.25);
 
 	if ( yaMCP23017Release(NumberOfMCP23017) == 0 )
