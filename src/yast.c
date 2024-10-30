@@ -2256,7 +2256,7 @@ int main(int argc, char *argv[])
 //			lguSleep(0.75);
 //			#endif
 			
-			yaSleep(0.75);
+			yaSleep(1.00);
 
 
 			}
