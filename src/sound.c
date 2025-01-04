@@ -1,9 +1,9 @@
-/*  2024-03-29 17:00  */
+/*  2025-01-03 17:00  */
 /*
     yast - yet another slotcar timer
 	File: sound.c -> contains some sound routines of the project
 
-    Copyright (C)  2016 - 2024 Martin Berentsen
+    Copyright (C)  2016 - 2025 Martin Berentsen
 
 
     This file is part of yast.
@@ -66,7 +66,7 @@ int SND_generate_defaults(int srate)
 
     /* default SINE WAVE Tone generatoion */
     
-	/* tone 0  ( power off ) */
+	/* tone 1  ( power off ) */
 	freq = 300;                	/* frequency */
 	buffer_len = 11024;		/* < SND_BUFFER_SIZE */
 
@@ -84,7 +84,7 @@ int SND_generate_defaults(int srate)
     }       
     snd_buffer_len[0] = buffer_len;
 
-	/* tone 1  ( power on ) */
+	/* tone 2  ( power on ) */
 	freq = 300;                	/* frequency */
 	buffer_len = 11024;		/* < SND_BUFFER_SIZE */
 
@@ -101,7 +101,7 @@ int SND_generate_defaults(int srate)
     }       
     snd_buffer_len[1] = buffer_len;
 
-	/* tone 2  ( valid timing ) */
+	/* tone 3  ( valid timing ) */
 	freq = 960;			/* frequency */
 	buffer_len = 8820;		/* < SND_BUFFER_SIZE */
 	
@@ -115,7 +115,7 @@ int SND_generate_defaults(int srate)
     }       
     snd_buffer_len[2] = buffer_len;
 
-	/* tone 3  ( non valid timing ) */
+	/* tone 4  ( non valid timing ) */
 	freq = 590;			/* frequency */
 	buffer_len = 8820;		/* < SND_BUFFER_SIZE */
 	
@@ -129,7 +129,7 @@ int SND_generate_defaults(int srate)
     }       
     snd_buffer_len[3] = buffer_len;
 
-	/* tone 4  ( timing end after time race ) */
+	/* tone 5  ( timing end after time race ) */
 	freq = 175;			/* frequency */
 	buffer_len = 16000;		/* <= SND_BUFFER_SIZE */
 	
@@ -249,7 +249,7 @@ int SND_setup(void)
 		exit(0);
 	}
 
-	printf("- ALSA SETUP with %d sample rate and %d buffer size\n",SND_SAMPLE_RATE,SND_BUFFER_SIZE);
+	printf("- ALSA SETUP with %d sample rate and %d buffer size, %d times\n",SND_SAMPLE_RATE,SND_BUFFER_SIZE,SND_NUMBER_OF_TONES);
 	SND_generate_defaults(SND_SAMPLE_RATE);
 
 #endif /* ALSA_SOUND */

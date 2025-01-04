@@ -1,4 +1,4 @@
-/*  2024-03-29 14:00  */
+/*  2024-12-09 23:00  */
 /*
 yast - yet another slotcar timer
 File: yast.c -> main c source
@@ -133,7 +133,7 @@ unsigned long supplyofftime[TRACKLIM] = {0,0,0,0};		/*  Track supply on (0) or o
 unsigned char timingactive[TRACKLIM] = {0,0,0,0};			/*  Timing on (1) and off (0) */
 int stop = 0;									/* used to exit the core, it's the only way */
 short snd_buffer[SND_NUMBER_OF_TONES] [SND_BUFFER_SIZE];	/* define default the tone arrays */
-unsigned int snd_buffer_len[SND_NUMBER_OF_TONES]; 			/* define length inside tones */
+unsigned long int snd_buffer_len[SND_NUMBER_OF_TONES]; 			/* define length inside tones */
 struct tm *timeinfo;	/* timeinfo and rawtime used for RTC view and file output */
 time_t rawtime;			/* timeinfo and rawtime used for RTC view and file output */
 
@@ -1258,12 +1258,16 @@ int main(int argc, char *argv[])
 	config.trackinputpud[2] = PIN_IN_PUD_3;
 	config.trackinputpud[3] = PIN_IN_PUD_4;
 	#endif /* LGPIO */
-	
 
-	trackdriversname[0] = NULL; 			/* "Martin B."; , later on max 13 chars */
+	config.resultfile_name = NULL;		/* Just init the chars */
+	config.resultfile_path = NULL;
+	config.storagefile_name = NULL;
+
+	trackdriversname[0] = NULL; 		/* "Martin B."; , later on max 13 chars caused by display space */
 	trackdriversname[1] = NULL;
 	trackdriversname[2] = NULL;
 	trackdriversname[3] = NULL;
+
 
 	/* set locale, required for unicode */
 #ifdef UNICODE
@@ -3624,6 +3628,14 @@ int main(int argc, char *argv[])
 	if(lgret < 0)
 		printf("lg close failed\n");			
 	#endif /* LGPIO */
+
+	/* free taken mamory for clean exit */
+	if(config.resultfile_name != NULL)
+		free(config.resultfile_name); 
+	if(config.resultfile_path != NULL)
+		free(config.resultfile_path);
+	if(config.storagefile_name != NULL)
+		free(config.storagefile_name);	
 
 //	#ifndef OFFLINE
 		DeleteLock(GPIOLOCKFILENAME);

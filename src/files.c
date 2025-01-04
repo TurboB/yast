@@ -31,6 +31,11 @@
 #include "files.h"
 #include "display.h"
 
+// #include "yast_define.h"
+// #include "config.h"
+
+// extern struct CONFIG config;	/* announce the config memory */
+
 /* ----------------------------------------------------------------------
 int PathExists(char *sPath) 
 returns 0 if true, -1 if not
@@ -86,6 +91,8 @@ int CreateLock(char *name, char *progname)
   pid_t pid;
   char *user;  
 
+  printd("CreateLock -%s-%s-\n",name,progname);
+      
   pid = getpid();
   user = (char *)getenv("LOGNAME");  /* get login name */
 
@@ -116,6 +123,8 @@ int CheckLock(char *name)
   char buff[30];
   pid_t pid;
   
+  printd("CheckLock -%s-\n",name);
+      
   if( (lock_fd = fopen(name,"r")) != NULL )
     {
       printf("LOCKFILE %s exists\n",name);
@@ -157,6 +166,7 @@ lockfile contains: PID executablename user
 ***********************************************************************/ 
 int DeleteLock( char *filename)
 {
+  printd("DeleteLock -%s-\n",filename);
   return remove(filename);
 }
 

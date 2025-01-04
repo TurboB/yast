@@ -2,6 +2,9 @@
 	Changes
 
 
+0.5.5: 2025-01-03
+	- fixed - wrong sound len var init
+	! bug with track timing to fast, reason unclear
 0.5.4: 2024-10-30
 	- track power switching in testmode works now again
 0.5.3: 2024-10-25

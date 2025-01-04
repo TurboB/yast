@@ -1,9 +1,9 @@
 #
 # This is the YAST Makefile
-# Date: 2024-10-30
+# Date: 2025-01-03
 #
 
-VERSION := 0.5.4
+VERSION := 0.5.5
 
 # GPIOLIB := -DWIRINGPI
 GPIOLIB := -DLGPIO
@@ -24,7 +24,7 @@ FONTSIZE := -DFONT3X5
 CC	:= gcc
 
 # CP437 version
-CFLAGS  := -Wall $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE) $(GPIOLIB)
+CFLAGS  := -Wall $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE) $(GPIOLIB) 
 # UNICODE version
 # CFLAGS  := -Wall -lncursesw -lm -lwiringPi $(ALSA_SOUND_LIB) $(ALSA_SOUND) $(HARDWARE) -DVERSION=\"$(VERSION)\" $(FONTSIZE) -DUNICODE
 
