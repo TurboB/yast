@@ -1,4 +1,4 @@
-/*  2025-01-03 17:00  */
+/*  2025-01-05 17:00  */
 /*
     yast - yet another slotcar timer
 	File: sound.c -> contains some sound routines of the project
@@ -165,10 +165,10 @@ int SND_setup(void)
     snd_pcm_uframes_t buffer_size;
     snd_pcm_uframes_t period_size;
       
-    if ((err = snd_pcm_open(&playback_handle, device, SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK)) < 0) {
-            fprintf(stderr,"Playback open error: %s\n", snd_strerror(err));
-        exit(0);
-    }
+    	if ((err = snd_pcm_open(&playback_handle, device, SND_PCM_STREAM_PLAYBACK, SND_PCM_NONBLOCK)) < 0) {
+            	fprintf(stderr,"Playback open error: %s\n", snd_strerror(err));
+            	exit(0);
+	}
 
 
 	if ((err = snd_pcm_hw_params_malloc (&hw_params)) < 0) {
@@ -182,6 +182,7 @@ int SND_setup(void)
 				snd_strerror (err));
 		exit (0);
 	}
+		
 	if ((err = snd_pcm_hw_params_set_access (playback_handle, hw_params, SND_PCM_ACCESS_RW_INTERLEAVED)) < 0) {
 		fprintf (stderr, "cannot set access type (%s)\n",
 				 snd_strerror (err));
@@ -222,23 +223,21 @@ int SND_setup(void)
 		exit (0);
 	}
 
-   if((err = snd_pcm_hw_params_set_period_size_near(playback_handle, hw_params, &period_size, &dir)) < 0)
-       {
-       fprintf(stderr, "snd_pcm_hw_params_set_period_size failed");
-      	exit(0);
-       }
+	if ((err = snd_pcm_hw_params_set_period_size_near(playback_handle, hw_params, &period_size, &dir)) < 0) {
+		fprintf(stderr, "snd_pcm_hw_params_set_period_size failed");
+             	exit(0);
+	}
  
-     if((err = snd_pcm_hw_params_set_buffer_size_near(playback_handle, hw_params, &buffer_size)) < 0)
-       {
-       fprintf(stderr,"snd_pcm_hw_params_set_buffer_size failed");
-      	exit(0);
-       }
+	if ((err = snd_pcm_hw_params_set_buffer_size_near(playback_handle, hw_params, &buffer_size)) < 0) {
+		fprintf(stderr,"snd_pcm_hw_params_set_buffer_size failed");
+		exit(0);
+	}
     
     /* set hardware parameter */
 	if ((err = snd_pcm_hw_params (playback_handle, hw_params)) < 0) {
 		fprintf (stderr, "cannot set parameters (%s)\n",
 				 snd_strerror (err));
-		exit (0);
+		exit(0);
 	}
 	
 	snd_pcm_hw_params_free (hw_params);
@@ -250,8 +249,12 @@ int SND_setup(void)
 	}
 
 	printf("- ALSA SETUP with %d sample rate and %d buffer size, %d times\n",SND_SAMPLE_RATE,SND_BUFFER_SIZE,SND_NUMBER_OF_TONES);
-	SND_generate_defaults(SND_SAMPLE_RATE);
-
+	
+	if (SND_generate_defaults(SND_SAMPLE_RATE) != 0 ) {
+		fprintf (stderr, "cannot prepare audio samples \n");
+		exit(0);
+	}
+	
 #endif /* ALSA_SOUND */
 	
     return 0;
@@ -274,14 +277,16 @@ int SND_play(int soundnumber)
 #ifdef ALSA_SOUND
 	
     frames = snd_pcm_prepare(playback_handle);
-    frames = snd_pcm_writei(playback_handle, snd_buffer[ soundnumber - 1 ], snd_buffer_len[ soundnumber-1] );    /* sending values to sound driver */
-
     if (frames < 0) {
-        frames = snd_pcm_recover(playback_handle, frames, 0);
+           fprintf(stderr,"snd_pcm_prepare failed: %s\n", snd_strerror(frames));
         }
+        
+    frames = snd_pcm_writei(playback_handle, snd_buffer[ soundnumber - 1 ], snd_buffer_len[ soundnumber-1] );    /* sending values to sound driver */
     if (frames < 0) {
            fprintf(stderr,"snd_pcm_writei failed: %s\n", snd_strerror(frames));
+           frames = snd_pcm_recover(playback_handle, frames, 0);
         }
+
     
 #endif /* ALSA_SOUND */
 

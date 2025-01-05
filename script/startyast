@@ -49,7 +49,8 @@ sync
 if [ -x ./yast ] 
 then 
 	date >> yast_error.log
-	./yast -s -a -D 2 -r -o -t 300 -N1 Martin -N2 Martin 2>> yast_error.log
+#	./yast -s -a -D 2 -r -o -t 300 -N1 Martin -N2 Martin 2>> yast_error.log
+	./yast -s -a -r -o -t 300 -N1 Martin -N2 Martin 2>> yast_error.log
 fi
 
 echo "unicode on ......"

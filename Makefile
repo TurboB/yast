@@ -1,9 +1,9 @@
 #
 # This is the YAST Makefile
-# Date: 2025-01-03
+# Date: 2025-01-05
 #
 
-VERSION := 0.5.5
+VERSION := 0.5.6
 
 # GPIOLIB := -DWIRINGPI
 GPIOLIB := -DLGPIO
