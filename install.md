@@ -179,15 +179,15 @@ Alsa can be forced system wide by placing a config file
 which contains
 
 <cite>
-pcm.!default {
-    type hw
-    card 2
-}
-
-ctl.!default {
-    type hw
-    card 2
-}
+pcm.!default {<br>
+    type hw<br>
+    card 2<br>
+}<br>
+<br>
+ctl.!default {<br>
+    type hw<br>
+    card 2<br>
+}<br>
 </cite><br>
 
 
@@ -198,7 +198,8 @@ The screen saver and screen blanking on Raspberry Pi console should be disabled.
 For this, edit the file  
 <cite> /etc/kbd/config</cite><br>
 and change the values:
-<cite>BLANK_TIME=0<br>
+<cite><br>
+BLANK_TIME=0<br>
 POWERDOWN_TIME=0</cite><br>
 
 The default value for both were 30 = 30 min.
