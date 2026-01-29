@@ -122,7 +122,8 @@ However, for me it works as a first timing solution.
 ## Hardware
 
 I use a Raspberry Pi Mod 4. Also Type 1 Mod. B, a 3 Mod B and a 4 Mod. B. A 1 Mod B+ is tested. But also Type A, A+,
-B2 and all others up to Mod.5 are usable (I think so).
+B2 and all others are usable. Mod 5 is untested by me, so if anyone tries,
+let me know.
 
 The track power switching is done by switching a GPIO pin for every track.
 The pin can be chosen by config file.

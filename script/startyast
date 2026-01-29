@@ -1,7 +1,7 @@
 #
 # yast standard startup 
 #
-# 2018-06-30
+# 2025-01-26
 #
 # stop ntp or timesyncd
 # set console to unicode with big font and back
@@ -48,9 +48,12 @@ sync
 
 if [ -x ./yast ] 
 then 
+echo "starting yast ......"
 	date >> yast_error.log
 #	./yast -s -a -D 2 -r -o -t 300 -N1 Martin -N2 Martin 2>> yast_error.log
 	./yast -s -a -r -o -t 300 -N1 Martin -N2 Martin 2>> yast_error.log
+else
+	echo "!!! no yast compiled file found"
 fi
 
 echo "unicode on ......"

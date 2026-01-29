@@ -1,7 +1,12 @@
 	yast - yet another slotcar timer
 	Changes
 
-
+0.5.7: 2026-01-26
+	- first installation test on "Trixie"
+	! ntpdate is not available
+	-> was moved inside package "ntpsec-ntpdate"
+	! Alsa open failed
+	-> config not clear in default, the file /etc/asound.conf must be set to "Headphones"
 0.5.6: 2025-01-05
 	- sound init and play slightly tuned
 0.5.5: 2025-01-03

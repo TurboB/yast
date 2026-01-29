@@ -5,8 +5,8 @@
 The basic system requirements are:
 - a Raspberry Pi 1/2/3/4/a/b/+ 
 - track signal input hardware
-- a running Raspbian image (Wheezy, Jessie, Stretch, Buster, Bullseye, Bookworm)
-- a working Internet connection (to make installing easy, can also be done without )
+- a running Raspbian image (Wheezy, Jessie, Stretch, Buster, Bullseye, Bookworm, Trixie)
+- a working Internet connection (to make installing easy, can also be done without)
 - lgpio or wiringPi package (done by script)
 - libncurses5-dev package (done by script)
 - cp437 definitions (done by script)
@@ -70,9 +70,8 @@ also to change to the nice font.
 For an autostart of YAST after boot you can add the following 
 lines at the end of your .bashrc file.
 
-<cite>     if [ -f ~/yast/script/autorun_yast_on_tty1 ]; then
+<cite> if [ -f ~/yast/script/autorun_yast_on_tty1 ]; then
 <br>        . ~/yast/script/autorun_yast_on_tty1 start
-<br>        . ~/yast/script/bigfont
 <br> fi
 </cite>
 
@@ -152,6 +151,45 @@ Now a classic combination follows, and there it is....
 A script for switching on and of the screen and fontmode is included and called
 
 <cite>./script/startyast</cite><br>
+
+
+## Trixie - Distribution specials on Raspbian Jessie
+
+The sound card order will be different every startup.
+So you must force alsa to use allways the same output device.
+
+You can check it by
+<cite>cat /proc/asound/cards</cite><br>
+
+and it will be something like this:
+
+<cite>
+ 0 [vc4hdmi0       ]: vc4-hdmi - vc4-hdmi-0
+                      vc4-hdmi-0
+ 1 [vc4hdmi1       ]: vc4-hdmi - vc4-hdmi-1
+                      vc4-hdmi-1
+ 2 [Headphones     ]: bcm2835_headpho - bcm2835 Headphones
+                      bcm2835 Headphones
+</cite><br>
+
+Alsa can be forced system wide by placing a config file 
+
+<cite>/etc/asound.cfg</cite><br>
+
+which contains
+
+<cite>
+pcm.!default {
+    type hw
+    card 2
+}
+
+ctl.!default {
+    type hw
+    card 2
+}
+</cite><br>
+
 
 
 ## Wheezy - Distribution specials on Raspbian Wheezy

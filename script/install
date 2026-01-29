@@ -124,9 +124,24 @@ echo "********************************"
 if [ -f /usr/sbin/ntpdate ] 
 then
 	echo "ntpdate already exists ....."
-	/usr/sbin/ntpdate -v
+	/usr/bin/whereis ntpdate 
 else
-	sudo apt-get -y install ntpdate
+
+
+	Version_helper=` /usr/bin/cat /etc/os-release | /usr/bin/grep VERSION= | /usr/bin/cut -d= -f2 | /usr/bin/tr -d '"' `
+
+	echo "detected OS Version is:"
+	echo "$Version_helper"
+
+	if [ "$Version_helper" = "13 (trixie)" ]
+	then
+		echo "Trixie installation"
+		sudo apt-get -y install ntpsec-ntpdate
+	else	
+		echo "not Trixie installation"
+		sudo apt-get -y install ntpdate
+	fi
+
 fi 
 
 echo "******************************************************"
@@ -136,3 +151,4 @@ if [ -d yast ]
 then
 	cd yast
 fi
+

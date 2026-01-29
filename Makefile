@@ -3,7 +3,7 @@
 # Date: 2025-01-05
 #
 
-VERSION := 0.5.6
+VERSION := 0.5.7
 
 # GPIOLIB := -DWIRINGPI
 GPIOLIB := -DLGPIO
